@@ -11,7 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @Data
-@Entity
+@Entity(name="collaborator")
 public class Collaborator {
 
     @Id
