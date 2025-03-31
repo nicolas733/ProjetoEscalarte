@@ -23,7 +23,7 @@ public class Collaborator {
     private String nome;
 
     @NotEmpty
-    @Email
+    @Email()
     private String email;
 
     @NotEmpty
