@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.model;
+package br.com.sistemacadastro.sistemacadastro.collaborator.model;
 
 import jakarta.validation.constraints.NotBlank;
 

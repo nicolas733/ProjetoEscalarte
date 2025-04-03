@@ -1,8 +1,8 @@
-package br.com.sistemacadastro.sistemacadastro.controller;
+package br.com.sistemacadastro.sistemacadastro.collaborator.controller;
 
-import br.com.sistemacadastro.sistemacadastro.model.Collaborator;
-import br.com.sistemacadastro.sistemacadastro.model.CollaboratorDto;
-import br.com.sistemacadastro.sistemacadastro.repository.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.collaborator.model.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.collaborator.model.CollaboratorDto;
+import br.com.sistemacadastro.sistemacadastro.collaborator.repository.CollaboratorRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller

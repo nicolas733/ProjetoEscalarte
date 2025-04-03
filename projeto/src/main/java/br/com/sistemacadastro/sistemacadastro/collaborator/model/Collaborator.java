@@ -1,15 +1,15 @@
-package br.com.sistemacadastro.sistemacadastro.model;
+package br.com.sistemacadastro.sistemacadastro.collaborator.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @Entity(name="collaborator")
@@ -23,7 +23,7 @@ public class Collaborator {
     private String nome;
 
     @NotEmpty
-    @Email()
+    @Email
     private String email;
 
     @NotEmpty
@@ -31,5 +31,25 @@ public class Collaborator {
 
     @CreationTimestamp
     private LocalDate createdAt;
+/*
+    @NotEmpty
+    private String typeuser;
 
+    @NotEmpty
+    private String cpf;
+
+    @NotEmpty
+    private String telefone;
+
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    private Date dataNascimento;
+
+
+    @ManyToOne
+    @JoinColumn(name = "setores_id", nullable = false)
+    private Setores setores;
+
+ */
 }
+

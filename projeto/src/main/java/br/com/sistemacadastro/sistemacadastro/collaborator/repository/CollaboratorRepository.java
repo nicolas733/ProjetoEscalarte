@@ -1,6 +1,6 @@
-package br.com.sistemacadastro.sistemacadastro.repository;
+package br.com.sistemacadastro.sistemacadastro.collaborator.repository;
 
-import br.com.sistemacadastro.sistemacadastro.model.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.collaborator.model.Collaborator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.services;
+package br.com.sistemacadastro.sistemacadastro.collaborator.services;
 /*
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
