@@ -1,10 +1,12 @@
 package br.com.sistemacadastro.sistemacadastro.cargos.model;
 
-
+import br.com.sistemacadastro.sistemacadastro.Setores.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.collaborator.model.Collaborator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity(name="cargos")
@@ -20,12 +22,14 @@ public class Cargos {
     @NotEmpty
     private String cargahorario;
 
-    @ManyToOne
-    @JoinColumn(name = "collaborator_id")
-    private Collaborator collaborator;
+    @OneToMany(mappedBy = "cargo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Collaborator> colaboradores;
 
-    @Column(name = "collaborator_id", insertable = false, updatable = false)
-    private int collaboratorId;
+    @OneToOne
+    @JoinColumn(name = "setores_id")
+    private Setores setores;
 
-    // falta setores
+    @Column(name = "setores_id", insertable = false, updatable = false)
+    private int setoresId;
 }
+

@@ -1,4 +1,3 @@
-/*
 package br.com.sistemacadastro.sistemacadastro.Setores.model;
 
 import br.com.sistemacadastro.sistemacadastro.collaborator.model.Collaborator;
@@ -29,10 +28,8 @@ public class Setores {
     @OneToMany(mappedBy = "setores", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collaborator> collaborators;
 
-    @OneToOne
-    @JoinColumn(name = "collaborator_id", referencedColumnName = "id", unique = true)
-    private Collaborator collaborator;
+    // REMOVE esta parte, pois agora o relacionamento está só em Collaborator:
+    // @OneToOne
+    // @JoinColumn(name = "collaborator_id", referencedColumnName = "id", unique = true)
+    // private Collaborator collaborator;
 }
-
- */
-
