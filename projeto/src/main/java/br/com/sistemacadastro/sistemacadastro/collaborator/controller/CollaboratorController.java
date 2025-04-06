@@ -69,6 +69,10 @@ public class CollaboratorController {
         collaborator.setNome(collaboratorDto.getNome());
         collaborator.setEmail(collaboratorDto.getEmail());
         collaborator.setSenha(collaboratorDto.getSenha());
+        collaborator.setTypeuser(collaboratorDto.getTypeuser());
+        collaborator.setTelefone(collaboratorDto.getTelefone());
+        collaborator.setCpf(collaboratorDto.getCpf());
+        collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
 
         repo.save(collaborator);
 
