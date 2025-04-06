@@ -21,15 +21,5 @@ public class Cargos {
 
     @NotEmpty
     private String cargahorario;
-
-    @OneToMany(mappedBy = "cargo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Collaborator> colaboradores;
-
-    @OneToOne
-    @JoinColumn(name = "setores_id")
-    private Setores setores;
-
-    @Column(name = "setores_id", insertable = false, updatable = false)
-    private int setoresId;
 }
 

@@ -24,6 +24,4 @@ public class Turnos {
     @NotBlank
     private String horarioFim;
 
-    @OneToMany(mappedBy = "turno", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Collaborator> colaboradores;
 }

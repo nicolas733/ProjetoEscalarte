@@ -22,14 +22,13 @@ public class Setores {
     @NotBlank
     private int quantidadeColaboradores;
 
-    @NotBlank
-    private String cargosetor;
+    @OneToOne
+    @JoinColumn(name = "gerente_id", referencedColumnName = "id", unique = true)
+    private Collaborator gerenteSetor;
 
-    @OneToMany(mappedBy = "setores", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Collaborator> collaborators;
+    //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
+    //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
+    @Column(name = "gerente_id", updatable = false, insertable = false)
+    private int gerenteId;
 
-    // REMOVE esta parte, pois agora o relacionamento está só em Collaborator:
-    // @OneToOne
-    // @JoinColumn(name = "collaborator_id", referencedColumnName = "id", unique = true)
-    // private Collaborator collaborator;
 }

@@ -18,12 +18,20 @@ public class Contrato {
     boolean ativo;
 
     @NotBlank
-    String cargaHoraria;
+    private int cargaHorariaDiaria;
+
+    @NotBlank
+    private int diasTrabalhadosSemanal;
+
+    @NotBlank
+    private int diasTrabalhadosMensal;
 
     @OneToOne()
     @JoinColumn(name = "collaborator_id")
     private Collaborator collaborator;
 
+    //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
+    //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "collaborator_id", insertable = false, updatable = false)
     private int collaboratorId;
 
@@ -31,6 +39,8 @@ public class Contrato {
     @JoinColumn(name = "cargos_id")
     private Cargos cargos;
 
+    //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
+    //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "cargos_id", insertable = false, updatable = false)
     private int cargosId;
 

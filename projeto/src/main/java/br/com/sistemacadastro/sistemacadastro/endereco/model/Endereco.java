@@ -20,11 +20,12 @@ public class Endereco {
     private String rua;
 
     @NotBlank
-    private int cep;
+    private String cep;
 
     @NotBlank
     private String complemento;
 
-
+    @NotBlank
+    private int numero;
 
 }

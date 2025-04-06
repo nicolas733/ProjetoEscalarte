@@ -2,6 +2,7 @@ package br.com.sistemacadastro.sistemacadastro.collaborator.model;
 
 import br.com.sistemacadastro.sistemacadastro.Setores.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.cargos.model.Cargos;
+import br.com.sistemacadastro.sistemacadastro.contrato.model.Contrato;
 import br.com.sistemacadastro.sistemacadastro.endereco.model.Endereco;
 import br.com.sistemacadastro.sistemacadastro.escalas.model.Escalas;
 import br.com.sistemacadastro.sistemacadastro.turnos.model.Turnos;
@@ -49,24 +50,25 @@ public class Collaborator {
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
-    @ManyToOne
-    @JoinColumn(name = "setores_id", nullable = false) // Essa é a FK para o setor
-    private Setores setores;
 
-    @OneToOne(mappedBy = "collaborator", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Escalas escala;
+    //Um colaborador em uma escala
+    // esta fazendo um relacionamento e incluindo escalas_id na table de Collaborator
+    @OneToOne
+    @JoinColumn(name = "escalas_id")
+    private Escalas escalas;
 
-    @ManyToOne
-    @JoinColumn(name = "turno_id", nullable = false)
-    private Turnos turno;
+    //Um contrato para um colaborador
+    //o join esta relacionandp as duas tabelas e dizendo q nessa tabela vai receber uma fk de contrato
+    @OneToOne
+    @JoinColumn(name = "contrato_id")
+    private Contrato contrato;
 
-    @ManyToOne
-    @JoinColumn(name = "cargo_id", nullable = false)
-    private Cargos cargo;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "endereco_id", nullable = false, unique = true)
+    //Um colaborador possui um endereço e um endereço possui um colaborador
+    //JoinCollumn esta relacionando com a table endereço e recebendo nessa table um FK
+    @OneToOne
+    @JoinColumn(name = "endereco_id")
     private Endereco endereco;
+
 
 }
 
