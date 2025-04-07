@@ -12,7 +12,7 @@
                 <div class="col-md-8 mx-auto rounded border p-4 m-4">
                     <h2 class="text-center mb-5">Cadastrar Colaborador</h2>
 
-                    <form method="POST" th:action="@{/cadastrar}" enctype="multipart/form-data" th:object="${collaboratorDto}">
+                    <form method="POST" th:action="@{/collaborator/cadastrar}" enctype="multipart/form-data" th:object="${collaboratorDto}">
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Nome</label>
                             <div class="col-sm-8">

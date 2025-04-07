@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/collaborator")
 public class CollaboratorController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class CollaboratorController {
     public String logarCollaborator(Collaborator collaborator, Model model, HttpServletResponse response) {
         Collaborator collaboratorLogado = this.repo.login(collaborator.getEmail(), collaborator.getSenha());
         if (collaboratorLogado != null) {
-            return "redirect:/main";
+            return "redirect:/collaborator/main";
         }
         model.addAttribute("erro", "Usuario invalido");
         return "login";
@@ -76,7 +76,7 @@ public class CollaboratorController {
 
         repo.save(collaborator);
 
-        return "redirect:/main";
+        return "redirect:/collaborator/main";
     }
 
     @GetMapping("/edit/{id}")
@@ -93,7 +93,7 @@ public class CollaboratorController {
             model.addAttribute("collaboratorDto", collaboratorDto);
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
-            return "redirect:/main";
+            return "redirect:/collaborator/main";
         }
 
         return "EditCollaborator";
@@ -119,7 +119,7 @@ public class CollaboratorController {
         }catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
-        return "redirect:/main";
+        return "redirect:/collaborator/main";
     }
 
     @GetMapping("/delete")
@@ -131,7 +131,7 @@ public class CollaboratorController {
             System.out.println("Erro: " + ex.getMessage());
         }
 
-        return "redirect:/main";
+        return "redirect:/collaborator/main";
     }
 }
 

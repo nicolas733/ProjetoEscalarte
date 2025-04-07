@@ -19,7 +19,7 @@ public class Setores {
     @NotNull
     private String nomesetor;
 
-    @NotBlank
+    @NotNull
     private int quantidadeColaboradores;
 
     @OneToOne
@@ -29,6 +29,6 @@ public class Setores {
     //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "gerente_id", updatable = false, insertable = false)
-    private int gerenteId;
+    private Integer gerenteId;
 
 }

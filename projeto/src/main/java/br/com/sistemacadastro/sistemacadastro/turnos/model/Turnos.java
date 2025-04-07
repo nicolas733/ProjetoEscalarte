@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import java.sql.Time;
 import java.util.List;
 
 @Data
@@ -19,9 +20,9 @@ public class Turnos {
     private String nome;
 
     @NotBlank
-    private String horarioInicio;
+    private Time horarioInicio;
 
     @NotBlank
-    private String horarioFim;
+    private Time horarioFim;
 
 }
