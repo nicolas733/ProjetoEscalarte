@@ -9,8 +9,8 @@
     <body class="container">
         <h1 class = "text-center my-4">Administração </h1>
         <a class="btn btn-primary" href="/collaborator/cadastrar">Cadastrar Colaboradores</a>
-        <a class="btn btn-primary" href="/cargo/cadastrarCargo">Cadastrar Cargos</a>
         <a class="btn btn-primary" href="/setores/cadastrarSetor">Cadastrar Setores</a>
+        <a class="btn btn-primary" href="/cargo/cadastrarCargo">Cadastrar Cargos</a>
         <h2>Colaboradores</h2>
         <table class="table">
             <thead>
@@ -19,6 +19,10 @@
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Senha</th>
+                    <th>Tipo de Usuario</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>Data de Nascimento</th>
                     <th>Data de Cadastro</th>
                 </tr>
             </thead>
@@ -28,14 +32,19 @@
                     <td th:text="${collaborator.nome}"></td>
                     <td th:text="${collaborator.email}"></td>
                     <td th:text="${collaborator.senha}"></td>
+                    <td th:text="${collaborator.typeuser}"></td>
+                    <td th:text="${collaborator.cpf}"></td>
+                    <td th:text="${collaborator.telefone}"></td>
+                    <td th:text="${collaborator.dataNascimento}"></td>
+
                     <td th:text="${collaborator.createdAt.toString().substring(0,10)}"></td>
                     <td style="white-space: nowrap">
                         <a class="btn btn-primary btn-sm"
-                           th:href="@{/edit/{id}(id=${collaborator.id})}">Editar</a>
+                           th:href="@{/collaborator/edit/{id}(id=${collaborator.id})}">Editar</a>
 
 
                         <a class="btn btn-danger btn-sm"
-                           th:href="@{/delete(id=${collaborator.id})}" onclick="return confirm('Deseja realmente Excluir')">Excluir</a>
+                           th:href="@{/collaborator/delete(id=${collaborator.id})}" onclick="return confirm('Deseja realmente Excluir')">Excluir</a>
                     </td>
 
                 </tr>
