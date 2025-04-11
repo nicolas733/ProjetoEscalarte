@@ -3,6 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.modules.Setores.Controller;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.model.SetoresDto;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.repository.SetoresRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.Collaborator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,12 @@ public class SetoresController {
 
     @Autowired
     private SetoresRepository repo;
+
+
+    @GetMapping("")
+    public String home() {
+        return "setores";
+    }
 
     @GetMapping("/cadastrarSetor")
     public String showCadastrarPage(Model model) {
@@ -36,7 +43,7 @@ public class SetoresController {
         setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
         repo.save(setores);
 
-        return "redirect:/admin/main";
+        return "redirect:/admin/setorcargo";
     }
 
 
@@ -54,7 +61,7 @@ public class SetoresController {
             model.addAttribute("setoresDto", setoresDto);
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
-            return "redirect:/admin/main";
+            return "redirect:/admin/setorcargo";
         }
 
         return "EditSetores";
@@ -79,7 +86,7 @@ public class SetoresController {
         }catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
-        return "redirect:/admin/main";
+        return "redirect:/admin/setorcargo";
     }
 
     @GetMapping("/deletesetor")
@@ -91,7 +98,7 @@ public class SetoresController {
             System.out.println("Erro: " + ex.getMessage());
         }
 
-        return "redirect:/admin/main";
+        return "redirect:/admin/setorcargo";
     }
 }
 

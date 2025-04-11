@@ -159,10 +159,10 @@
     <span>Escalarte</span>
   </div>
   <ul class="menu">
-    <li class="active"><a href="logar.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-    <li><a href="setores.html"><i data-lucide="briefcase"></i>Setores</a></li>
-    <li><a href="usuarios.html"><i data-lucide="users"></i>Usuários</a></li>
-    <li><a href="escala.html"><i data-lucide="calendar"></i>Escalas</a></li>
+    <li><a href="/admin/dashboard"><i data-lucide="users"></i>Dashboard</a></li>
+    <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
+    <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
+    <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
   </ul>
 </div>
 
@@ -178,17 +178,17 @@
   <div class="cards">
     <div class="card">
       <div class="card-title">Setores</div>
-      <div class="card-value"></div>
+      <div class="card-value" th:text="${totalSetores}"></div>
       <div class="card-icon"><i data-lucide="briefcase"></i></div>
     </div>
     <div class="card">
       <div class="card-title">Usuários</div>
-      <div class="card-value"></div>
+      <div class="card-value" th:text="${totalColaboradores}"></div>
       <div class="card-icon"><i data-lucide="users"></i></div>
     </div>
     <div class="card">
       <div class="card-title">Cargos</div>
-      <div class="card-value"></div>
+      <div class="card-value" th:text="${totalCargos}"></div>
       <div class="card-icon"><i data-lucide="briefcase"></i></div>
     </div>
     <div class="card">

@@ -35,7 +35,7 @@ public class CargoController{
         cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
         repository.save(cargos);
 
-        return "redirect:/admin/main";
+        return "redirect:/admin/setorcargo";
     }
 
 
@@ -52,7 +52,7 @@ public class CargoController{
             model.addAttribute("cargosDto", cargosDto);
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
-            return "redirect:/admin/main";
+            return "redirect:/admin/setorcargo";
         }
 
         return "EditCargo";
@@ -77,7 +77,7 @@ public class CargoController{
         }catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
-        return "redirect:/admin/main";
+        return "redirect:/admin/setorcargo";
     }
 
     @GetMapping("/deletecargo")
@@ -89,7 +89,7 @@ public class CargoController{
             System.out.println("Erro: " + ex.getMessage());
         }
 
-        return "redirect:/admin/main";
+        return "redirect:/admin/setorcargo";
     }
 
 }

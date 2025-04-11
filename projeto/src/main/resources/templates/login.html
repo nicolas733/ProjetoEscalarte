@@ -153,13 +153,13 @@
 <body>
 <div class="login">
     <div class="login__header">
-        <img src="./img/logo.png" alt="Logo escaLARTE" class="login__logo" />
+        <img src="../static/img/logo.png" alt="Logo escaLARTE" class="login__logo" />
         <h1 class="login__title">Escalarte</h1>
     </div>
 
     <form class="login__form" action="/collaborator/logar" method="POST">
-        <div th:if="${erro}" class="error-message">
-            <p style="color: red;" th:text="${erro}"></p>
+        <div th:if="${erro}" style="color:red;">
+            <p th:text="${erro}"></p>
         </div>
 
         <div class="login__form-group">

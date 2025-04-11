@@ -92,6 +92,44 @@
             padding: 30px;
         }
 
+
+        .btn-primary {
+            background-color: #ef5350;
+            color: white;
+        }
+
+
+
+        .btn-primary:hover {
+            background-color: #c62828 ;
+            border-color: #c62828 ;
+        }
+
+
+        .btn-primary:focus,
+        .btn-primary:focus-visible {
+            background-color: #c62828;
+            border-color: #c62828;
+            box-shadow: 0 0 0 0.25rem rgba(198, 40, 40, 0.5) ;
+            outline: none;
+        }
+
+
+        .btn-primary:active {
+            background-color: #b71c1c;
+            border-color: #b71c1c ;
+            box-shadow: none ;
+        }
+
+
+        .btn-primary.btn-sm {
+            background-color: orange;
+        }
+        .btn-danger {
+            background-color: #d32f2f;
+            color: white;
+        }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -182,19 +220,17 @@
         <span>Escalarte</span>
     </div>
     <ul class="menu">
-        <li><a href="logar.html"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-        <li><a href="setores.html"><i data-lucide="briefcase"></i>Setores</a></li>
-        <li class="active" ><a href="usuarios.html"><i data-lucide="users"></i>Usuários</a></li>
-        <li><a href="escala.html"><i data-lucide="calendar"></i>Escalas</a></li>
+        <li><a href="/admin/dashboard"><i data-lucide="users"></i>Dashboard</a></li>
+        <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
+        <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
+        <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
     </ul>
 </div>
 
 <div class="main">
     <div class="header">
         <div class="header-title">Gerenciar Usuários</div>
-        <button class="add-user" data-bs-toggle="modal" data-bs-target="#userModal">
-            <i data-lucide="plus"></i> Adicionar Usuário
-        </button>
+            <a class="btn btn-primary" href="/collaborator/cadastrar">Cadastrar Cargos</a>
     </div>
 
 
@@ -225,8 +261,6 @@
                 <td th:text="${collaborator.cpf}"></td>
                 <td th:text="${collaborator.telefone}"></td>
                 <td th:text="${collaborator.dataNascimento}"></td>
-                <td th:text="${collaborator.setor.nomesetor}"></td>
-                <td th:text="${collaborator.cargo.nomeCargo}"></td>
                 <td style="white-space: nowrap">
                     <a class="btn btn-warning btn-sm"
                        th:href="@{/collaborator/edit/{id}(id=${collaborator.id})}">Editar</a>
@@ -240,7 +274,7 @@
     </div>
 
 </div>
-
+<!--
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <form method="POST" th:action="@{/collaborator/cadastrar}" enctype="multipart/form-data" th:object="${collaboratorDto}" class="modal-content">
@@ -315,8 +349,10 @@
                 <button type="submit" class="btn btn-danger">Cadastrar</button>
             </div>
         </form>
+
     </div>
 </div>
+-->
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

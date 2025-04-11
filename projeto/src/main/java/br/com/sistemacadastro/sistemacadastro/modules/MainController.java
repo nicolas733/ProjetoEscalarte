@@ -33,15 +33,13 @@ public class MainController {
     private SetoresRepository reposito;
 
 
+
     @GetMapping({"/main"})
     public String listarDados(Model model) {
         List<Collaborator> collaborators = repo.findAll();
-        List<Setores> setores = reposito.findAll();
-        List<Cargos> cargos = repository.findAll();
         model.addAttribute("collaborators", collaborators);
-        model.addAttribute("setores", setores);
-        model.addAttribute("cargos", cargos);
-        return "home";
+        model.addAttribute("collaborator", new Collaborator());
+        return "usuarios";
     }
 
     @GetMapping("")
@@ -49,5 +47,35 @@ public class MainController {
         return "home";
     }
 
+
+    @GetMapping("/dashboard")
+    public String mostrarDashboard(Model model) {
+        long total = repo.count(); // Conta diretamente no banco
+        model.addAttribute("totalColaboradores", total);
+        long totalSetor = reposito.count();
+        model.addAttribute("totalSetores", totalSetor);
+        long totalCargo = repository.count();
+        model.addAttribute("totalCargos", totalCargo);
+        return "dashboard";
+    }
+
+    @GetMapping("/setorcargo")
+    public String mostrarSetoresCargos(Model model) {
+        List<Setores> setores = reposito.findAll();
+        model.addAttribute("setores", setores);
+        model.addAttribute("novoSetor", new Setores());
+        List<Cargos> cargos = repository.findAll();
+        model.addAttribute("cargos", cargos);
+        model.addAttribute("novoCargo", new Cargos());
+
+        return "setores";
+    }
+
+
+
+    @GetMapping("/escala")
+    public String mostrarEscala(Model model) {
+        return "escala";
+    }
 }
 
