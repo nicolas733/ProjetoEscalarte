@@ -155,7 +155,7 @@
 <body>
 <div class="sidebar">
   <div class="logo">
-    <img src="./img/logo.png" alt="Logo" />
+    <img src="/img/logo.png" alt="Logo" />
     <span>Escalarte</span>
   </div>
   <ul class="menu">
@@ -163,6 +163,7 @@
     <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
     <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
     <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+    <li><a href="/admin/solici"><i data-lucide="calendar"></i>Solicitações</a></li>
   </ul>
 </div>
 
@@ -193,7 +194,7 @@
     </div>
     <div class="card">
       <div class="card-title">Solicitações</div>
-      <div class="card-value"></div>
+      <div class="card-value" th:text="${totalSolicitacoes}"></div>
       <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
     </div>
   </div>

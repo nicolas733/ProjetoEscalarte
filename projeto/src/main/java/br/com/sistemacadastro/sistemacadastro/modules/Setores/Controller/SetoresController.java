@@ -3,15 +3,12 @@ package br.com.sistemacadastro.sistemacadastro.modules.Setores.Controller;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.model.SetoresDto;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.Collaborator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/setores")

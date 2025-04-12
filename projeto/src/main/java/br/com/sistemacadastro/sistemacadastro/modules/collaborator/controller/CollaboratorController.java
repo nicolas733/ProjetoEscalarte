@@ -11,9 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-    @Controller
+@Controller
     @RequestMapping("/collaborator")
     public class CollaboratorController {
 
@@ -25,15 +23,23 @@ import java.util.List;
             return "login";
         }
 
-        @PostMapping("/logar")
-        public String logarCollaborator(Collaborator collaborator, Model model, HttpServletResponse response) {
-            Collaborator collaboratorLogado = this.repo.login(collaborator.getEmail(), collaborator.getSenha());
-            if (collaboratorLogado != null) {
+
+    @PostMapping("/logar")
+    public String logar(Collaborator collaborator, Model model, HttpServletResponse response) {
+        Collaborator collaboratorLogado = this.repo.findFirstByEmailAndSenha(collaborator.getEmail(), collaborator.getSenha());
+        if (collaboratorLogado != null) {
+            String tipo = collaboratorLogado.getTypeuser();
+            if (tipo.equals("1")) {
                 return "redirect:/admin/dashboard";
+            } else if (tipo.equals("2")) {
+                return "redirect:/gerente/dashboard";
+            } else if (tipo.equals("3")) {
+                return "redirect:/admin/dashboardColaborador";
             }
-            model.addAttribute("erro", "Usuario invalido");
-            return "login";
         }
+        model.addAttribute("erro", "Usuario invalido");
+        return "login";
+    }
 
 
 
@@ -47,13 +53,13 @@ import java.util.List;
         public String showCadastrarPage(Model model) {
             CollaboratorDto collaboratorDto = new CollaboratorDto();
             model.addAttribute("collaboratorDto", collaboratorDto);
-            return "cadastroCo"; // Retorna o template correto diretamente
+            return "adminpages/cadastroCo"; // Retorna o template correto diretamente
         }
 
         @PostMapping("/cadastrar")
         public String cadastrarColaborador(@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result) {
             if (result.hasErrors()) {
-                return "cadastroCo";
+                return "adminpages/cadastroCo";
             }
             Collaborator collaborator = new Collaborator();
             collaborator.setNome(collaboratorDto.getNome());
@@ -91,7 +97,7 @@ import java.util.List;
                 return "redirect:/admin/main";
             }
 
-            return "EditCollaborator";
+            return "adminpages/EditCollaborator";
         }
 
 
@@ -103,7 +109,7 @@ import java.util.List;
                 model.addAttribute("collaborator", collaborator);
 
                 if (result.hasErrors()) {
-                    return "EditCollaborator";
+                    return "adminpages/EditCollaborator";
                 }
                 collaborator.setNome(collaboratorDto.getNome());
                 collaborator.setEmail(collaboratorDto.getEmail());

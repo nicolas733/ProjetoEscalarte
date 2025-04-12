@@ -4,17 +4,14 @@ package br.com.sistemacadastro.sistemacadastro.modules;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.cargos.model.Cargos;
-import br.com.sistemacadastro.sistemacadastro.modules.cargos.model.CargosDto;
 import br.com.sistemacadastro.sistemacadastro.modules.cargos.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.Collaborator;
-import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.CollaboratorDto;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.repository.CollaboratorRepository;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+import br.com.sistemacadastro.sistemacadastro.modules.solicitacoes.model.Solicitacoes;
+import br.com.sistemacadastro.sistemacadastro.modules.solicitacoes.repository.SolicitacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +29,9 @@ public class MainController {
     @Autowired
     private SetoresRepository reposito;
 
+    @Autowired
+    private SolicitacaoRepository solicitacaoRepository;
+
 
 
     @GetMapping({"/main"})
@@ -39,7 +39,7 @@ public class MainController {
         List<Collaborator> collaborators = repo.findAll();
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("collaborator", new Collaborator());
-        return "usuarios";
+        return "adminpages/usuarios";
     }
 
     @GetMapping("")
@@ -56,7 +56,9 @@ public class MainController {
         model.addAttribute("totalSetores", totalSetor);
         long totalCargo = repository.count();
         model.addAttribute("totalCargos", totalCargo);
-        return "dashboard";
+        long totalSolicitacao = solicitacaoRepository.count();
+        model.addAttribute("totalSolicitacoes", totalSolicitacao);
+        return "adminpages/dashboard";
     }
 
     @GetMapping("/setorcargo")
@@ -68,14 +70,35 @@ public class MainController {
         model.addAttribute("cargos", cargos);
         model.addAttribute("novoCargo", new Cargos());
 
-        return "setores";
+        return "adminpages/setores";
     }
 
 
 
     @GetMapping("/escala")
     public String mostrarEscala(Model model) {
-        return "escala";
+        return "adminpages/escala";
     }
+
+    @GetMapping("/solici")
+    public String mostrarSolicitacao(Model model) {
+        List<Solicitacoes> solicitacoes = solicitacaoRepository.findAll();
+        model.addAttribute("solicitacoes", solicitacoes);
+        model.addAttribute("solicitacao", new Solicitacoes());
+        return "adminpages/Solici";
+    }
+
+
+
+    @GetMapping("/dashboardColaborador")
+    public String mostrarDashboardColaborador(Model model) {
+        return "colaboradorpages/dashboardColaborador";
+    }
+
+    @GetMapping("/escalaColaborador")
+    public String mostrarEscalaColaborador(Model model) {
+        return "colaboradorpages/escalaColaborador";
+    }
+
 }
 
