@@ -1,5 +1,8 @@
 package br.com.sistemacadastro.sistemacadastro.modules.collaborator.model;
 
+import br.com.sistemacadastro.sistemacadastro.modules.contrato.model.Contrato;
+import br.com.sistemacadastro.sistemacadastro.modules.endereco.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.modules.endereco.model.EnderecoDto;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
@@ -21,9 +24,6 @@ public class CollaboratorDto {
     @NotBlank(message = "A senha é obrigatório")
     private String senha;
 
-    @NotBlank(message = "Cadastro o tipo de usurio")
-    private String typeuser;
-
     @NotBlank(message = "O cpf é obrigatorio")
     private String cpf;
 
@@ -34,5 +34,9 @@ public class CollaboratorDto {
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
+    @NotNull(message = "O endereço é obrigatorio")
+    private Endereco endereco;
 
+    @NotNull
+    private Contrato contrato;
 }

@@ -258,7 +258,7 @@
                 <td><strong th:text="${collaborator.nome}"></strong></td>
                 <td th:text="${collaborator.email}"></td>
                 <td th:text="${collaborator.senha}"></td>
-                <td th:text="${collaborator.typeuser}"></td>
+                <td th:text="${collaborator.userType}"></td>
                 <td th:text="${collaborator.cpf}"></td>
                 <td th:text="${collaborator.telefone}"></td>
                 <td th:text="${collaborator.dataNascimento}"></td>
@@ -305,8 +305,8 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Tipo de Usuário</label>
-                        <input class="form-control" th:field="*{typeuser}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('typeuser')}" th:errors="*{typeuser}"></div>
+                        <input class="form-control" th:field="*{userType}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('userType')}" th:errors="*{userType}"></div>
                     </div>
 
                     <div class="col-md-6">

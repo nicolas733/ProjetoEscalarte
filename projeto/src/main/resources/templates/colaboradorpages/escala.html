@@ -6,7 +6,7 @@
     <title>Escalarte</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/lucide@latest" rel="stylesheet">
-
+    <link rel="shortcut icon" href="./img/logoEscalarte.ico" type="image/x-icon">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -96,12 +96,6 @@
             font-weight: 700;
         }
 
-        .header-subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
         .user-initials {
             background-color: #f1f3f4;
             width: 42px;
@@ -114,38 +108,28 @@
             color: #444;
         }
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        .badge-turno {
+            background-color: #e0e7ff;
+            color: #1e40af;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: inline-block;
         }
 
-        .card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card .card-title {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 6px;
-        }
-
-        .card .card-value {
-            font-size: 22px;
-            font-weight: bold;
-            color: #000;
-        }
-
-        .card-icon {
-            align-self: flex-end;
+        .btn-change {
+            background-color: transparent;
+            border: 1px solid #ef5350;
             color: #ef5350;
-            margin-top: 12px;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+        }
+
+        .btn-change:hover {
+            background-color: #ef5350;
+            color: white;
         }
 
         .mobile-nav {
@@ -183,6 +167,18 @@
             color: #ef5350;
         }
 
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            margin-bottom: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
         @media (max-width: 992px) {
             .sidebar {
                 display: none;
@@ -199,6 +195,10 @@
 
             .header-title {
                 font-size: 20px;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
             }
         }
 
@@ -218,11 +218,21 @@
 
         @media (max-width: 768px) {
             .main {
-                padding: 20px;
+                padding: 20px 15px;
             }
 
-            .cards {
-                grid-template-columns: 1fr 1fr;
+            .card {
+                padding: 15px;
+            }
+
+            .table th, .table td {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .badge-turno {
+                font-size: 0.65rem;
+                padding: 4px 8px;
             }
         }
 
@@ -231,26 +241,40 @@
                 font-size: 18px;
             }
 
-            .header-subtitle {
+            .table th, .table td {
                 font-size: 12px;
             }
 
-            .cards {
-                grid-template-columns: 1fr;
+            .badge-turno {
+                font-size: 0.6rem;
             }
 
-            .card {
-                padding: 15px;
-            }
-
-            .card .card-value {
-                font-size: 20px;
+            .btn-change {
+                font-size: 0.75rem;
+                padding: 4px 8px;
             }
         }
     </style>
 </head>
 
 <body>
+<nav class="navbar navbar-expand-lg d-lg-none fixed-top bg-white shadow-sm mobile-nav" id="mobileNav">
+    <div class="container-fluid">
+        <div class="mobile-logo">
+            <img src="./img/logo.png" alt="Logo">
+            <span class="navbar-brand">Escalarte</span>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mobileMenu">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="operador/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link active" href="operador/escala"><i data-lucide="calendar"></i>Minha Escala</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="sidebar" id="sidebar">
     <div class="logo">
@@ -259,34 +283,60 @@
     </div>
     <ul class="menu">
         <li><a href="/admin/dashboardColaborador"><i data-lucide="users"></i>Dashboard</a></li>
-        <li><a href="/admin/escalaColaborador"><i data-lucide="briefcase"></i> Escala</a></li>
+        <li><a href="/admin/escalacolaborador"><i data-lucide="briefcase"></i>Minha Escala</a></li>
     </ul>
 </div>
 
 <div class="main" id="main">
     <div class="header">
-        <div>
-            <div class="header-title">Dashboard</div>
-            <div class="header-subtitle">Bem-vindo, Operator User - Operador do setor IT</div>
+        <div class="header-content">
+            <div class="header-title">Minha Escala</div>
         </div>
-        <div class="user-initials">OU</div>
+        <a class="btn btn-primary" href="/solicitacao/alteracao">Solicitar Alteração</a>
     </div>
 
-    <div class="cards">
-        <div class="card">
-            <div class="card-title">Próximo Turno</div>
-            <div class="card-value">Amanhã, 08:00 - 17:00</div>
-            <div class="card-icon"><i data-lucide="clock"></i></div>
-        </div>
-        <div class="card">
-            <div class="card-title">Horas Totais</div>
-            <div class="card-value">40h esta semana</div>
-            <div class="card-icon"><i data-lucide="hourglass"></i></div>
-        </div>
-        <div class="card">
-            <div class="card-title">Solicitações Pendentes</div>
-            <div class="card-value">1</div>
-            <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
+    <div class="card p-3 mb-4">
+        <h5>Escala - abril de 2025</h5>
+    </div>
+
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Dia</th>
+                    <th>Turno</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2025-04-07</td>
+                    <td>seg.</td>
+                    <td><span class="badge-turno">Manhã 08:00 - 12:00</span></td>
+                    <td><button class="btn-change">Solicitar Alteração</button></td>
+                </tr>
+                <tr>
+                    <td>2025-04-08</td>
+                    <td>ter.</td>
+                    <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
+                    <td><button class="btn-change">Solicitar Alteração</button></td>
+                </tr>
+                <tr>
+                    <td>2025-04-09</td>
+                    <td>qua.</td>
+                    <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
+                    <td><button class="btn-change">Solicitar Alteração</button></td>
+                </tr>
+                <tr>
+                    <td>2025-04-10</td>
+                    <td>qui.</td>
+                    <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
+                    <td><button class="btn-change">Solicitar Alteração</button></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

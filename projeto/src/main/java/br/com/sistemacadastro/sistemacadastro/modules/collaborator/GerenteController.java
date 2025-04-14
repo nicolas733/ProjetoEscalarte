@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.modules;
+package br.com.sistemacadastro.sistemacadastro.modules.collaborator;
 
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.cargos.repository.CargoRepository;
@@ -30,7 +30,7 @@ public class GerenteController {
     private SolicitacaoRepository solicitacoesRepository;
 
 
-    @GetMapping("")
+    @GetMapping("/dashboard")
     public String dashboard(Model model) {
         int countMembrosDaEquipe = 0;
         model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);

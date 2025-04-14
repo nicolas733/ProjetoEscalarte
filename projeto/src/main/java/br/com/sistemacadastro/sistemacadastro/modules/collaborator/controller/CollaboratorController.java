@@ -3,6 +3,10 @@ package br.com.sistemacadastro.sistemacadastro.modules.collaborator.controller;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.Collaborator;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.CollaboratorDto;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.repository.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.contrato.model.Contrato;
+import br.com.sistemacadastro.sistemacadastro.modules.contrato.repository.ContratoRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.endereco.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.modules.endereco.repository.EnderecoRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,12 @@ import org.springframework.web.bind.annotation.*;
         @Autowired
         private CollaboratorRepository repo;
 
+        @Autowired
+        private EnderecoRepository repository;
+
+        @Autowired
+        private ContratoRepository repoContrato;
+
         @GetMapping("/login")
         public String login() {
             return "login";
@@ -28,13 +38,13 @@ import org.springframework.web.bind.annotation.*;
     public String logar(Collaborator collaborator, Model model, HttpServletResponse response) {
         Collaborator collaboratorLogado = this.repo.findFirstByEmailAndSenha(collaborator.getEmail(), collaborator.getSenha());
         if (collaboratorLogado != null) {
-            String tipo = collaboratorLogado.getTypeuser();
-            if (tipo.equals("1")) {
+            Collaborator.UserType tipo = collaboratorLogado.getUserType();
+            if (tipo.equals(Collaborator.UserType.ADMIN)) {
                 return "redirect:/admin/dashboard";
-            } else if (tipo.equals("2")) {
+            } else if (tipo.equals(Collaborator.UserType.GERENTE)) {
                 return "redirect:/gerente/dashboard";
-            } else if (tipo.equals("3")) {
-                return "redirect:/admin/dashboardColaborador";
+            } else if (tipo.equals(Collaborator.UserType.OPERADOR)) {
+                return "redirect:/admin/dashboard";
             }
         }
         model.addAttribute("erro", "Usuario invalido");
@@ -61,16 +71,29 @@ import org.springframework.web.bind.annotation.*;
             if (result.hasErrors()) {
                 return "adminpages/cadastroCo";
             }
+
+            //salva o endereço cadastrado
+            Endereco endereco = repository.save(collaboratorDto.getEndereco());
+
             Collaborator collaborator = new Collaborator();
             collaborator.setNome(collaboratorDto.getNome());
             collaborator.setEmail(collaboratorDto.getEmail());
             collaborator.setSenha(collaboratorDto.getSenha());
-            collaborator.setTypeuser(collaboratorDto.getTypeuser());
+            collaborator.setUserType(Collaborator.UserType.OPERADOR);
             collaborator.setTelefone(collaboratorDto.getTelefone());
             collaborator.setCpf(collaboratorDto.getCpf());
             collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
+            collaborator.setEndereco(endereco);
 
-            repo.save(collaborator);
+            //salva os dados do collaborador cadastrados
+            Collaborator colaboradorSalvo = repo.save(collaborator);
+
+            //Associa o contrato com o colaborador salvo acima
+            Contrato contrato = collaboratorDto.getContrato();
+            contrato.setCollaborator(colaboradorSalvo);
+            contrato.setAtivo(true);
+
+            repoContrato.save(contrato);
 
             return "redirect:/admin/main";
         }
@@ -85,7 +108,6 @@ import org.springframework.web.bind.annotation.*;
                 collaboratorDto.setNome(collaborator.getNome());
                 collaboratorDto.setEmail(collaborator.getEmail());
                 collaboratorDto.setSenha(collaborator.getSenha());
-                collaboratorDto.setTypeuser(collaborator.getTypeuser());
                 collaboratorDto.setTelefone(collaborator.getTelefone());
                 collaboratorDto.setCpf(collaborator.getCpf());
                 collaboratorDto.setDataNascimento(collaborator.getDataNascimento());
@@ -114,7 +136,6 @@ import org.springframework.web.bind.annotation.*;
                 collaborator.setNome(collaboratorDto.getNome());
                 collaborator.setEmail(collaboratorDto.getEmail());
                 collaborator.setSenha(collaboratorDto.getSenha());
-                collaborator.setTypeuser(collaboratorDto.getTypeuser());
                 collaborator.setTelefone(collaboratorDto.getTelefone());
                 collaborator.setCpf(collaboratorDto.getCpf());
                 collaborator.setDataNascimento(collaboratorDto.getDataNascimento());

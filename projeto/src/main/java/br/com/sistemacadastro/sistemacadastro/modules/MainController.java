@@ -42,10 +42,7 @@ public class MainController {
         return "adminpages/usuarios";
     }
 
-    @GetMapping("")
-    public String home() {
-        return "home";
-    }
+
 
 
     @GetMapping("/dashboard")
@@ -74,7 +71,6 @@ public class MainController {
     }
 
 
-
     @GetMapping("/escala")
     public String mostrarEscala(Model model) {
         return "adminpages/escala";
@@ -86,18 +82,17 @@ public class MainController {
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
         return "adminpages/Solici";
-    }
-
+    }//teste
 
 
     @GetMapping("/dashboardColaborador")
     public String mostrarDashboardColaborador(Model model) {
-        return "colaboradorpages/dashboardColaborador";
+        return "dashboard";
     }
 
     @GetMapping("/escalaColaborador")
     public String mostrarEscalaColaborador(Model model) {
-        return "colaboradorpages/escalaColaborador";
+        return "escala";
     }
 
 }
