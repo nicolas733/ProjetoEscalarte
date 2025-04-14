@@ -88,12 +88,12 @@ public class MainController {
 
     @GetMapping("/dashboardColaborador")
     public String mostrarDashboardColaborador(Model model) {
-        return "colaboradorpages/dashboardColaborador";
+        return "dashboard";
     }
 
     @GetMapping("/escalaColaborador")
     public String mostrarEscalaColaborador(Model model) {
-        return "colaboradorpages/escalaColaborador";
+        return "escala";
     }
 
 }

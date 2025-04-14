@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.modules;
+package br.com.sistemacadastro.sistemacadastro.modules.collaborator;
 
 import br.com.sistemacadastro.sistemacadastro.modules.Setores.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.cargos.repository.CargoRepository;
