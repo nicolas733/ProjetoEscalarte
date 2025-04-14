@@ -72,6 +72,47 @@
                     </div>
                 </div>
 
+                <h2>Endereço</h2>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Bairro</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="*{endereco.bairro}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Rua</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="*{endereco.rua}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.rua')}" th:errors="*{endereco.rua}"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Cep</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="*{endereco.cep}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Complemento</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="*{endereco.complemento}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.complemento')}" th:errors="*{endereco.complemento}"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Numero</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" th:field="*{endereco.numero}" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.numero')}" th:errors="*{endereco.numero}"></div>
+                    </div>
+                </div>
+
 
                 <!-- Campo Data de Edição (somente leitura) -->
                 <div class="row mb-3">
