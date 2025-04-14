@@ -30,7 +30,7 @@ public class GerenteController {
     private SolicitacaoRepository solicitacoesRepository;
 
 
-    @GetMapping("/dashboard")
+    @GetMapping("")
     public String dashboard(Model model) {
         int countMembrosDaEquipe = 0;
         model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);
@@ -54,5 +54,10 @@ public class GerenteController {
     @GetMapping("/escala")
     public String escala (Model model) {
         return "gerentepages/escala";
+    }
+
+    @GetMapping("/equipe")
+public String equipe (Model model) {
+        return "gerentepages/equipe";
     }
 }
