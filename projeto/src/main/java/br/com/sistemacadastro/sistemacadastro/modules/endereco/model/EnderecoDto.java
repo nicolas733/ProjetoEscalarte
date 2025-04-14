@@ -1,31 +1,23 @@
 package br.com.sistemacadastro.sistemacadastro.modules.endereco.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Entity(name = "endereco")
-public class Endereco {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @NotBlank
+public class EnderecoDto {
+    @NotBlank(message = "O bairro deve ser obrigatorio")
     private String bairro;
 
-    @NotBlank
+    @NotBlank(message = "A rua deve ser obrigatoria")
     private String rua;
 
-    @NotBlank
+    @NotBlank(message = "O cep deve ser obrigatorio")
     private String cep;
 
-    @NotBlank
+    @NotBlank(message = "O complemento deve ser obrigatorio")
     private String complemento;
 
-    @NotNull
+    @NotNull(message = "É obrigatorio o numero")
     private int numero;
-
 }

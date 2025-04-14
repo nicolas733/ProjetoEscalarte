@@ -71,7 +71,6 @@ public class MainController {
     }
 
 
-
     @GetMapping("/escala")
     public String mostrarEscala(Model model) {
         return "adminpages/escala";

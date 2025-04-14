@@ -4,7 +4,12 @@ import br.com.sistemacadastro.sistemacadastro.modules.cargos.model.Cargos;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.Collaborator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @Entity(name= "contrato")
@@ -14,17 +19,23 @@ public class Contrato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
     boolean ativo;
 
-    @NotBlank
+    @NotNull
     private int cargaHorariaDiaria;
 
-    @NotBlank
+    @NotNull
     private int diasTrabalhadosSemanal;
 
-    @NotBlank
+    @NotNull
     private int diasTrabalhadosMensal;
+
+    @CreationTimestamp
+    private LocalDate createdAt;
+
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    private Date dataFimContrato;
 
     @OneToOne()
     @JoinColumn(name = "collaborator_id")

@@ -59,22 +59,98 @@
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></div>
                             </div>
                         </div>
-<!--
+                        <h2>Endereço</h2>
                         <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Cargo</label>
+                            <label class="col-sm-4 col-form-label">Bairro</label>
                             <div class="col-sm-8">
-                                <select class="form-select" th:field="${collaboratorDto.cargo}">
-                                    <option value="Padeiro"></option>
-                                    <option value="Mecanico"></option>
-                                    <option value="Caixa"></option>
-                                    <option value="Pedreiro"></option>
-                                    <option value="Auxiliar"></option>
-                                    <option value="Outro"></option>
-                                </select>
-                                <p th:if="${#fields.hasErrors('cargo')}"th:errorclass="text-danger" th:errros="${collaboratorDto.cargo}"></p>
+                                <input class="form-control" th:field="*{endereco.bairro}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></div>
                             </div>
                         </div>
--->
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Rua</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{endereco.rua}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.rua')}" th:errors="*{endereco.rua}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Cep</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{endereco.cep}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Complemento</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{endereco.complemento}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.complemento')}" th:errors="*{endereco.complemento}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Numero</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{endereco.numero}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.numero')}" th:errors="*{endereco.numero}"></div>
+                            </div>
+                        </div>
+
+                        <h2>Contrato</h2>
+                        <p>De acordo com o contrato feito preencha os campos</p>
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Carga Horaria Diaria</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{contrato.cargaHorariaDiaria}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.cargaHorariaDiaria')}" th:errors="*{contrato.cargaHorariaDiaria}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por semana</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{contrato.diasTrabalhadosSemanal}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosSemanal')}" th:errors="*{contrato.diasTrabalhadosSemanal}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por mês</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{contrato.diasTrabalhadosMensal}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosMensal')}" th:errors="*{contrato.diasTrabalhadosMensal}"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-4 col-form-label">Data do fim do contrato</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" th:field="*{contrato.dataFimContrato}" th:errorclass="is-invalid">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.dataFimContrato')}" th:errors="*{contrato.dataFimContrato}"></div>
+                            </div>
+                        </div>
+
+
+                        <!--
+                                                <div class="row mb-3">
+                                                    <label class="col-sm-4 col-form-label">Cargo</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-select" th:field="${collaboratorDto.cargo}">
+                                                            <option value="Padeiro"></option>
+                                                            <option value="Mecanico"></option>
+                                                            <option value="Caixa"></option>
+                                                            <option value="Pedreiro"></option>
+                                                            <option value="Auxiliar"></option>
+                                                            <option value="Outro"></option>
+                                                        </select>
+                                                        <p th:if="${#fields.hasErrors('cargo')}"th:errorclass="text-danger" th:errros="${collaboratorDto.cargo}"></p>
+                                                    </div>
+                                                </div>
+                        -->
                         <div class="row">
                             <div class="offset-sm-4 col-sm-4 d-grid">
                                 <button type="submit" class="btn btn-primary">Cadastrar</button>

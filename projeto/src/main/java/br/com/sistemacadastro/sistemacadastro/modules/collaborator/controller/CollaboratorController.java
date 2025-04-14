@@ -3,6 +3,10 @@ package br.com.sistemacadastro.sistemacadastro.modules.collaborator.controller;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.Collaborator;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.model.CollaboratorDto;
 import br.com.sistemacadastro.sistemacadastro.modules.collaborator.repository.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.contrato.model.Contrato;
+import br.com.sistemacadastro.sistemacadastro.modules.contrato.repository.ContratoRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.endereco.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.modules.endereco.repository.EnderecoRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,12 @@ import org.springframework.web.bind.annotation.*;
 
         @Autowired
         private CollaboratorRepository repo;
+
+        @Autowired
+        private EnderecoRepository repository;
+
+        @Autowired
+        private ContratoRepository repoContrato;
 
         @GetMapping("/login")
         public String login() {
@@ -61,6 +71,10 @@ import org.springframework.web.bind.annotation.*;
             if (result.hasErrors()) {
                 return "adminpages/cadastroCo";
             }
+
+            //salva o endereço cadastrado
+            Endereco endereco = repository.save(collaboratorDto.getEndereco());
+
             Collaborator collaborator = new Collaborator();
             collaborator.setNome(collaboratorDto.getNome());
             collaborator.setEmail(collaboratorDto.getEmail());
@@ -69,8 +83,17 @@ import org.springframework.web.bind.annotation.*;
             collaborator.setTelefone(collaboratorDto.getTelefone());
             collaborator.setCpf(collaboratorDto.getCpf());
             collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
+            collaborator.setEndereco(endereco);
 
-            repo.save(collaborator);
+            //salva os dados do collaborador cadastrados
+            Collaborator colaboradorSalvo = repo.save(collaborator);
+
+            //Associa o contrato com o colaborador salvo acima
+            Contrato contrato = collaboratorDto.getContrato();
+            contrato.setCollaborator(colaboradorSalvo);
+            contrato.setAtivo(true);
+
+            repoContrato.save(contrato);
 
             return "redirect:/admin/main";
         }
