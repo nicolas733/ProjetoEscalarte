@@ -21,9 +21,6 @@ public class CollaboratorDto {
     @NotBlank(message = "A senha é obrigatório")
     private String senha;
 
-    @NotBlank(message = "Cadastro o tipo de usurio")
-    private String typeuser;
-
     @NotBlank(message = "O cpf é obrigatorio")
     private String cpf;
 

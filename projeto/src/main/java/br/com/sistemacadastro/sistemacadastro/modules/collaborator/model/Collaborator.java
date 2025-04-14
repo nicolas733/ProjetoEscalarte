@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -16,6 +17,11 @@ import java.util.Date;
 @Data
 @Entity(name="collaborator")
 public class Collaborator {
+    public enum UserType {
+        ADMIN,
+        GERENTE,
+        OPERADOR
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +40,8 @@ public class Collaborator {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @NotEmpty
-    private String typeuser;
+    @NotNull
+    private UserType userType;
 
     @NotEmpty
     private String cpf;

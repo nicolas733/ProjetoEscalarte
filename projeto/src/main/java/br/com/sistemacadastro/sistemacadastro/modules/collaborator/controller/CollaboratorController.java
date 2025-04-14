@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.*;
     public String logar(Collaborator collaborator, Model model, HttpServletResponse response) {
         Collaborator collaboratorLogado = this.repo.findFirstByEmailAndSenha(collaborator.getEmail(), collaborator.getSenha());
         if (collaboratorLogado != null) {
-            String tipo = collaboratorLogado.getTypeuser();
-            if (tipo.equals("1")) {
+            Collaborator.UserType tipo = collaboratorLogado.getUserType();
+            if (tipo.equals(Collaborator.UserType.ADMIN)) {
                 return "redirect:/admin/dashboard";
-            } else if (tipo.equals("2")) {
+            } else if (tipo.equals(Collaborator.UserType.GERENTE)) {
                 return "redirect:/gerente/dashboard";
-            } else if (tipo.equals("3")) {
-                return "redirect:/admin/dashboardColaborador";
+            } else if (tipo.equals(Collaborator.UserType.OPERADOR)) {
+                return "redirect:/admin/dashboard";
             }
         }
         model.addAttribute("erro", "Usuario invalido");
@@ -65,7 +65,7 @@ import org.springframework.web.bind.annotation.*;
             collaborator.setNome(collaboratorDto.getNome());
             collaborator.setEmail(collaboratorDto.getEmail());
             collaborator.setSenha(collaboratorDto.getSenha());
-            collaborator.setTypeuser(collaboratorDto.getTypeuser());
+            collaborator.setUserType(Collaborator.UserType.OPERADOR);
             collaborator.setTelefone(collaboratorDto.getTelefone());
             collaborator.setCpf(collaboratorDto.getCpf());
             collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
@@ -85,7 +85,6 @@ import org.springframework.web.bind.annotation.*;
                 collaboratorDto.setNome(collaborator.getNome());
                 collaboratorDto.setEmail(collaborator.getEmail());
                 collaboratorDto.setSenha(collaborator.getSenha());
-                collaboratorDto.setTypeuser(collaborator.getTypeuser());
                 collaboratorDto.setTelefone(collaborator.getTelefone());
                 collaboratorDto.setCpf(collaborator.getCpf());
                 collaboratorDto.setDataNascimento(collaborator.getDataNascimento());
@@ -114,7 +113,6 @@ import org.springframework.web.bind.annotation.*;
                 collaborator.setNome(collaboratorDto.getNome());
                 collaborator.setEmail(collaboratorDto.getEmail());
                 collaborator.setSenha(collaboratorDto.getSenha());
-                collaborator.setTypeuser(collaboratorDto.getTypeuser());
                 collaborator.setTelefone(collaboratorDto.getTelefone());
                 collaborator.setCpf(collaboratorDto.getCpf());
                 collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
