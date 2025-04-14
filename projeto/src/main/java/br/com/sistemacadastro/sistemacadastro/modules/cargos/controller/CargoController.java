@@ -22,13 +22,13 @@ public class CargoController{
     public String showCadastrarPageCargo(Model model) {
         CargosDto cargosDto = new CargosDto();
         model.addAttribute("cargosDto", cargosDto);
-        return "cadastroCargo"; // Retorna o template correto diretamente
+        return "adminpages/cadastroCargo"; // Retorna o template correto diretamente
     }
 
     @PostMapping("/cadastrarCargo")
     public String cadastrarCargos(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result) {
         if (result.hasErrors()) {
-            return "cadastroCargo";
+            return "adminpages/cadastroCargo";
         }
         Cargos cargos = new Cargos();
         cargos.setNomeCargo(cargosDto.getNomeCargo());
@@ -55,7 +55,7 @@ public class CargoController{
             return "redirect:/admin/setorcargo";
         }
 
-        return "EditCargo";
+        return "adminpages/EditCargo";
     }
 
 
@@ -67,7 +67,7 @@ public class CargoController{
             model.addAttribute("cargos", cargos);
 
             if (result.hasErrors()) {
-                return "EditCargo";
+                return "adminpages/EditCargo";
             }
             cargos.setNomeCargo(cargosDto.getNomeCargo());
             cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());

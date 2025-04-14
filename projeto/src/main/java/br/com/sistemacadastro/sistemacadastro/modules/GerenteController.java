@@ -30,7 +30,7 @@ public class GerenteController {
     private SolicitacaoRepository solicitacoesRepository;
 
 
-    @GetMapping("")
+    @GetMapping("/dashboard")
     public String dashboard(Model model) {
         int countMembrosDaEquipe = 0;
         model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);
@@ -40,7 +40,7 @@ public class GerenteController {
         model.addAttribute("countTotalCargos", countTotalCargos);
         int countEventosProximos = 0;
         model.addAttribute("countEventosProximos", countEventosProximos);
-        return "gerentepages/dashboard";
+        return "gerentepages/dashboardG";
     }
 
     @GetMapping("/solicitacoes")
@@ -48,12 +48,12 @@ public class GerenteController {
         List<Solicitacoes> solicitacoes = solicitacoesRepository.findAll();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
-        return "gerentepages/solicitacoes";
+        return "gerentepages/solicitacoesG";
     }
 
     @GetMapping("/escala")
     public String escala (Model model) {
-        return "gerentepages/escala";
+        return "gerentepages/escalaG";
     }
 
     @GetMapping("/equipe")

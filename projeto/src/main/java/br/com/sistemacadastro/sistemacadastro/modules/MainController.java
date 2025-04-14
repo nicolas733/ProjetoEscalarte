@@ -42,10 +42,7 @@ public class MainController {
         return "adminpages/usuarios";
     }
 
-    @GetMapping("")
-    public String home() {
-        return "home";
-    }
+
 
 
     @GetMapping("/dashboard")
@@ -86,8 +83,7 @@ public class MainController {
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
         return "adminpages/Solici";
-    }
-
+    }//teste
 
 
     @GetMapping("/dashboardColaborador")

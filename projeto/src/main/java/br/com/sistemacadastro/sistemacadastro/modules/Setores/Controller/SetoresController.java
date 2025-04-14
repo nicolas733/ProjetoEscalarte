@@ -27,13 +27,13 @@ public class SetoresController {
     public String showCadastrarPage(Model model) {
         SetoresDto setoresDto = new SetoresDto();
         model.addAttribute("setoresDto", setoresDto);
-        return "cadastroSe"; // Retorna o template correto diretamente
+        return "adminpages/cadastroSe"; // Retorna o template correto diretamente
     }
 
     @PostMapping("/cadastrarSetor")
     public String cadastrarSetores(@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result) {
         if (result.hasErrors()) {
-            return "cadastroSe";
+            return "adminpages/cadastroSe";
         }
         Setores setores = new Setores();
         setores.setNomesetor(setoresDto.getNomeSetor());
@@ -61,7 +61,7 @@ public class SetoresController {
             return "redirect:/admin/setorcargo";
         }
 
-        return "EditSetores";
+        return "adminpages/EditSetores";
     }
 
 
@@ -73,7 +73,7 @@ public class SetoresController {
             model.addAttribute("setores", setores);
 
             if (result.hasErrors()) {
-                return "EditSetores";
+                return "adminpages/EditSetores";
             }
             setores.setNomesetor(setoresDto.getNomeSetor());
             setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
