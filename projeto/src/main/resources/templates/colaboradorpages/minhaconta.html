@@ -220,17 +220,17 @@
         <span>Escalarte</span>
     </div>
     <ul class="menu">
-        <li><a href="/admin/dashboard"><i data-lucide="users"></i>Dashboard</a></li>
-        <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
-        <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
-        <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-        <li><a href="/admin/solici"><i data-lucide="calendar"></i>Solicitações</a></li>
+        <li><a href="/operador/dashboard"><i data-lucide="users"></i>Dashboard</a></li>
+        <li><a href="/operador/escala"><i data-lucide="briefcase"></i> Escala</a></li>
+        <li><a href="/operador/minhaconta"><i data-lucide="briefcase"></i> Minha Conta</a></li>
+
     </ul>
 </div>
 
 <div class="main">
     <div class="header">
-        <div class="header-title">Gerenciar Solicitações</div>
+        <div class="header-title">Meu Perfil</div>
+        <a class="btn btn-primary" href="/operador/alterarsenha">Alterar Senha</a>
     </div>
 
 
@@ -239,28 +239,33 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Data</th>
-                <th>Descrição</th>
-                <th>ID</th>
-                <th>Colaborador</th>
-
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Contrato</th>
+                <th>Cargo</th>
+                <th>Setor</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="solicitacao : ${solicitacoes}">
-                <td th:text="${solicitacao.id}"></td>
-                <td><strong th:text="${solicitacao.dataSolicitacao}"></strong></td>
-                <td th:text="${solicitacao.descricaoSolicitacao}"></td>
-                <td th:text="${solicitacao.collaborator != null ? solicitacao.collaborator.id : 'ID não disponível'}"></td>
-                <td th:text="${solicitacao.collaborator != null ? solicitacao.collaborator.nome : 'Colaborador não disponível'}"></td>
-                <td style="white-space: nowrap">
-                    <a class="btn btn-warning btn-sm">Aceitar</a>
-                    <a class="btn btn-danger btn-sm" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
-                </td>
+            <tr>
+                <td th:text="${collaborator.id}"></td>
+                <td><strong th:text="${collaborator.nome}"></strong></td>
+                <td th:text="${collaborator.email}"></td>
+                <td th:text="${collaborator.userType}"></td>
+                <td th:text="${collaborator.cpf}"></td>
+                <td th:text="${collaborator.telefone}"></td>
+                <!--<td th:text="${#dates.format(collaborator.dataNascimento, 'dd/MM/yyyy')}"></td>-->
+                <td th:text="${collaborator.contrato != null && collaborator.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
+                <td th:text="${collaborator.contrato?.cargos?.nomeCargo ?: 'Cargo não atribuído'}"></td>
+                <!--<td th:text="${collaborator.contrato?.cargos?.setores?.nomeSetor ?: 'Setor não atribuído'}"></td>-->
             </tr>
             </tbody>
         </table>
     </div>
+
 
 </div>
 
