@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -18,7 +19,7 @@ public class Solicitacoes {
     private int id;
 
     @NotNull
-    private Date dataSolicitacao;
+    private LocalDate dataSolicitacao;
 
     @NotBlank
     private String descricaoSolicitacao;
