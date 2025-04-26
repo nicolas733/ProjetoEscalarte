@@ -3,13 +3,16 @@ package br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Collaborator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CollaboratorRepository extends JpaRepository<Collaborator, String>{
     /*Procurando pelo id para validar o login*/
     Collaborator findById(long id);
+    List<Collaborator> findByUserType(Collaborator.UserType userType);
 
     public Collaborator findFirstByEmailAndSenha(String email, String senha);
 
@@ -20,4 +23,6 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Stri
 
 
     Optional<Collaborator> findByEmail(String email);
+
+    List<Collaborator> getByUserType(Collaborator.@NotNull UserType userType);
 }

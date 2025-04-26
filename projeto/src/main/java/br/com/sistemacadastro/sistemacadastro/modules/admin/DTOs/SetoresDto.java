@@ -10,6 +10,8 @@ public class SetoresDto {
     @NotBlank(message = "O nome é obrigatorio")
     private String nomeSetor;
 
+    private String gerenteId;
+
     @NotNull(message = "A quantidade é obrigatorio")
     private int quantidadeColaboradores;
 }

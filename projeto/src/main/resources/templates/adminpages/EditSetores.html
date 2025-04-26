@@ -10,7 +10,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8 mx-auto rounded border p-4 m-4">
-      <h2 class="text-center mb-5">Editar Colaborador</h2>
+      <h2 class="text-center mb-5">Editar Setor</h2>
 
       <form method="POST" th:action="@{/setores/editsetor}" enctype="multipart/form-data" th:object="${setoresDto}">
 
@@ -28,6 +28,21 @@
           <div class="col-sm-8">
             <input class="form-control" type="text" id="nome" th:field="*{nomeSetor}">
             <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeSetor')}" th:errors="*{nomeSetor}"></div>
+          </div>
+        </div>
+
+        <!-- Campo Gerente -->
+        <div class="row mb-3">
+          <label class="col-sm-4 col-form-label">Gerente do Setor</label>
+          <div class="col-sm-8">
+            <select class="form-control" th:field="*{gerenteId}">
+              <option value="" disabled selected>Selecione um gerente</option>
+              <option th:each="gerente : ${gerentes}"
+                      th:value="${gerente.id}"
+                      th:text="${gerente.nome}">
+              </option>
+            </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('gerenteId')}" th:errors="*{gerenteId}"></div>
           </div>
         </div>
 
