@@ -5,6 +5,7 @@ import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CargoRep
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CollaboratorRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.Entitys.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.repositorys.SolicitacaoRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,15 +32,25 @@ public class GerenteController {
 
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
+    public String dashboard(Model model, HttpSession session) {
         int countMembrosDaEquipe = 0;
         int countSolicitacoesPendentes = 0;
         int countTotalCargos = 0;
         int countEventosProximos = 0;
-        String nomeCompleto = "Admin User";
-        model.addAttribute("nome", nomeCompleto);
-        String iniciais = getIniciais(nomeCompleto);
-        model.addAttribute("iniciais", iniciais);
+
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            var colaborador = colaboradoresRepository.findCollaboratorById(colaboradorId);
+            if (colaborador != null) {
+                String nomeCompleto = colaborador.getNome();
+                model.addAttribute("nome", nomeCompleto);
+                String iniciais = getIniciais(nomeCompleto);
+                model.addAttribute("iniciais", iniciais);
+            }
+        }
+
         model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);
         model.addAttribute("countSolicitacoesPendentes", countSolicitacoesPendentes);
         model.addAttribute("countTotalCargos", countTotalCargos);
