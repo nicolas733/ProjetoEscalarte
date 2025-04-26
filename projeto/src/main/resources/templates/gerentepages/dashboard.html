@@ -27,9 +27,11 @@
   <div class="header">
     <div>
       <div class="title">Dashboard</div>
-      <div class="subtitle">Bem-vindo, Admin User - Administrador</div>
+      <div class="subtitle">
+        Bem-vindo,<span th:text="${nome} ?: 'Usuário'">Usuário</span>!
+      </div>
     </div>
-    <div class="user-initials">AU</div>
+    <div class="user-initials" th:text="${iniciais} ?: 'U'"></div>
   </div>
 
   <div class="cards">

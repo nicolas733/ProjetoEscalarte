@@ -37,17 +37,50 @@ public class OperadorController {
 
 
     @GetMapping("/dashboard")
-    public String mostrarDashboard(Model model) {
-        long total = collaboratorsRepository.count(); // Conta diretamente no banco
+    public String mostrarDashboard(Model model, HttpSession session) {
+        long total = collaboratorsRepository.count();
         model.addAttribute("totalColaboradores", total);
+
         long totalSetor = setoresRepository.count();
         model.addAttribute("totalSetores", totalSetor);
+
         long totalCargo = cargosRepository.count();
         model.addAttribute("totalCargos", totalCargo);
+
         long totalSolicitacao = solicitacoesRepository.count();
         model.addAttribute("totalSolicitacoes", totalSolicitacao);
+
+        // Pegar o nome do operador da sessão (igual já está no /minhaconta)
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            Collaborator colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            if (colaborador != null) {
+                String nomeCompleto = colaborador.getNome();
+                model.addAttribute("nome", nomeCompleto);
+                model.addAttribute("iniciais", getIniciais(nomeCompleto));
+            }
+        } else {
+            // Se não tiver colaborador logado, pode colocar padrão
+            model.addAttribute("nome", "Operador");
+            model.addAttribute("iniciais", "O");
+        }
+
         return "colaboradorpages/dashboard";
     }
+
+    private String getIniciais(String nome) {
+        String[] partes = nome.trim().split(" ");
+        if (partes.length >= 2) {
+            return partes[0].substring(0, 1).toUpperCase() + partes[1].substring(0, 1).toUpperCase();
+        } else if (partes.length == 1) {
+            return partes[0].substring(0, 1).toUpperCase();
+        }
+        return "";
+    }
+
+
 
     @GetMapping("/escala")
     public String mostrarEscala(Model model) {

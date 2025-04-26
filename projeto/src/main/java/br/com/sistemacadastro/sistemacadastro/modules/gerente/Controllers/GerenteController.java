@@ -33,14 +33,29 @@ public class GerenteController {
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         int countMembrosDaEquipe = 0;
-        model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);
         int countSolicitacoesPendentes = 0;
-        model.addAttribute("countSolicitacoesPendentes", countSolicitacoesPendentes);
         int countTotalCargos = 0;
-        model.addAttribute("countTotalCargos", countTotalCargos);
         int countEventosProximos = 0;
+        String nomeCompleto = "Admin User";
+        model.addAttribute("nome", nomeCompleto);
+        String iniciais = getIniciais(nomeCompleto);
+        model.addAttribute("iniciais", iniciais);
+        model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);
+        model.addAttribute("countSolicitacoesPendentes", countSolicitacoesPendentes);
+        model.addAttribute("countTotalCargos", countTotalCargos);
         model.addAttribute("countEventosProximos", countEventosProximos);
+
         return "gerentepages/dashboard";
+    }
+
+    private String getIniciais(String nome) {
+        String[] partes = nome.trim().split(" ");
+        if (partes.length >= 2) {
+            return partes[0].substring(0, 1).toUpperCase() + partes[1].substring(0, 1).toUpperCase();
+        } else if (partes.length == 1) {
+            return partes[0].substring(0, 1).toUpperCase();
+        }
+        return "";
     }
 
     @GetMapping("/solicitacoes")
@@ -57,7 +72,7 @@ public class GerenteController {
     }
 
     @GetMapping("/equipe")
-public String equipe (Model model) {
+    public String equipe (Model model) {
         return "gerentepages/equipe";
     }
 }

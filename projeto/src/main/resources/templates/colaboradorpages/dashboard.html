@@ -28,11 +28,14 @@
     <div class="header">
         <div>
             <div class="header-title">Dashboard</div>
-            <div class="header-subtitle">Bem-vindo, Operator User - Operador do setor IT</div>
+            <div class="header-subtitle">
+                Bem-vindo, <span th:text="${nome} ?: 'Usuário'">Usuário</span>!
+            </div>
+
         </div>
         <div>
             <ul>
-                <div class="user-initials" >OU</div>
+                <div class="user-initials" th:text="${iniciais} ?: 'U'"></div>
                 <li><a href="/operador/escala"> </a></li>
             </ul>
         </div>
