@@ -5,14 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.GrantedAuthority;
-
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -20,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@ToString(exclude = "contrato")  // Exclui o campo 'contrato' do método toString()
 @Entity(name="collaborator")
 public class Collaborator{
 
@@ -57,10 +53,9 @@ public class Collaborator{
     @NotEmpty
     private String telefone;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @NotNull
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
 
     //Um colaborador em uma escala
@@ -75,12 +70,10 @@ public class Collaborator{
 
     //Um contrato para um colaborador
     //o join esta relacionandp as duas tabelas e dizendo q nessa tabela vai receber uma fk de contrato
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contrato_id")
     private Contrato contrato;
 
-    @Column(name = "contrato_id", updatable = false, insertable = false)
-    private Integer contratoId;
 
     //Um colaborador possui um endereço e um endereço possui um colaborador
     //JoinCollumn esta relacionando com a table endereço e recebendo nessa table um FK
