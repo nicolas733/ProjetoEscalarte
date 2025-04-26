@@ -13,6 +13,11 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Stri
 
     public Collaborator findFirstByEmailAndSenha(String email, String senha);
 
+    Collaborator findCollaboratorById(Long id);
+
+    Collaborator findCollaboratorByEmail(String email);
+
+
 
     Optional<Collaborator> findByEmail(String email);
 }

@@ -1,140 +1,151 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.Controller;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs.ResponseDto;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs.EditDto;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Cargos;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Collaborator;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs.CollaboratorDto;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CollaboratorRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Contrato;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.ContratoRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Endereco;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.EnderecoRepository;
-import br.com.sistemacadastro.sistemacadastro.security.TokenService;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
-    @RequestMapping("/collaborator")
-    public class CollaboratorController {
-
-        @Autowired
-        private CollaboratorRepository repo;
-
-        @Autowired
-        private EnderecoRepository repository;
-
-        @Autowired
-        private ContratoRepository repoContrato;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+@RequestMapping("/collaborator")
+public class CollaboratorController {
 
     @Autowired
-    private  PasswordEncoder encoder;
-    @Autowired
-    private  TokenService tokenService;
+    private CollaboratorRepository repo;
 
+    @Autowired
+    private EnderecoRepository repository;
+
+    @Autowired
+    private ContratoRepository repoContrato;
+
+    @Autowired
+    private CargoRepository cargoRepository;
 
 
     @GetMapping("/cadastrar")
         public String showCadastrarPage(Model model) {
             CollaboratorDto collaboratorDto = new CollaboratorDto();
+            List<Cargos> cargos = cargoRepository.findAll();
+            model.addAttribute("cargos", cargos);
             model.addAttribute("collaboratorDto", collaboratorDto);
             return "adminpages/cadastroCo"; // Retorna o template correto diretamente
         }
 
-        @PostMapping("/cadastrar")
-        public String cadastrarColaborador(@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result) {
-            Optional<Collaborator> colaborador = this.repo.findByEmail(collaboratorDto.getEmail());
-            if(colaborador.isEmpty()){
-                Endereco endereco = repository.save(collaboratorDto.getEndereco());
+    @PostMapping("/cadastrar")
+    public String cadastrarColaborador(@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result) {
+        Optional<Collaborator> colaborador = this.repo.findByEmail(collaboratorDto.getEmail());
 
-                Collaborator collaborator = new Collaborator();
-                collaborator.setNome(collaboratorDto.getNome());
-                collaborator.setEmail(collaboratorDto.getEmail());
-                collaborator.setSenha(passwordEncoder.encode(collaboratorDto.getSenha()));
-                collaborator.setUserType(Collaborator.UserType.OPERADOR);
-                collaborator.setTelefone(collaboratorDto.getTelefone());
-                collaborator.setCpf(collaboratorDto.getCpf());
-                collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
-                collaborator.setEndereco(endereco);
+        if (colaborador.isEmpty()) {
+            // Salva o endereço primeiro
+            Endereco endereco = repository.save(collaboratorDto.getEndereco());
 
-                //salva os dados do collaborador cadastrados
-                Collaborator colaboradorSalvo = repo.save(collaborator);
-                String token = this.tokenService.generateToken(colaboradorSalvo);
-                ResponseEntity.ok(new ResponseDto(colaboradorSalvo.getNome(), token));
+            // Cria e preenche o colaborador
+            Collaborator collaborator = new Collaborator();
+            collaborator.setNome(collaboratorDto.getNome());
+            collaborator.setEmail(collaboratorDto.getEmail());
+            collaborator.setSenha(collaboratorDto.getSenha());
+            collaborator.setUserType(collaboratorDto.getUserType());
+            collaborator.setTelefone(collaboratorDto.getTelefone());
+            collaborator.setCpf(collaboratorDto.getCpf());
+            collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
+            collaborator.setEndereco(endereco);
 
-                //Associa o contrato com o colaborador salvo acima
-                Contrato contrato = collaboratorDto.getContrato();
-                contrato.setCollaborator(colaboradorSalvo);
-                contrato.setAtivo(true);
+            // Cria e associa o contrato
+            Contrato contrato = collaboratorDto.getContrato();
+            contrato.setCollaborator(collaborator); // opcional, mantém consistência bidirecional
+            collaborator.setContrato(contrato);     // // ESSENCIAL: lado proprietário
 
-                repoContrato.save(contrato);
+            Cargos cargo = cargoRepository.findById(collaboratorDto.getContrato().getCargos().getId());
 
-                return "redirect:/admin/main";
-            }else {
-                return "adminpages/cadastroCo";
-            }
 
+            contrato.setCargos(cargo);
+            // Salva o colaborador (salva também o contrato automaticamente se houver Cascade.PERSIST)
+            repo.save(collaborator);
+
+            return "redirect:/admin/main";
+        } else {
+            return "adminpages/cadastroCo";
         }
+    }
 
-        @GetMapping("/edit/{id}")
-        public String showEditPage(Model model, @PathVariable("id") int id) {
-            try {
-                Collaborator collaborator = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
-                model.addAttribute("collaborator", collaborator);
-
-                CollaboratorDto collaboratorDto = new CollaboratorDto();
-                collaboratorDto.setNome(collaborator.getNome());
-                collaboratorDto.setEmail(collaborator.getEmail());
-                collaboratorDto.setSenha(collaborator.getSenha());
-                collaboratorDto.setTelefone(collaborator.getTelefone());
-                collaboratorDto.setCpf(collaborator.getCpf());
-                collaboratorDto.setDataNascimento(collaborator.getDataNascimento());
-
-                model.addAttribute("collaboratorDto", collaboratorDto);
-
-            } catch (Exception ex) {
-                System.out.println("Erro: " + ex.getMessage());
-                return "redirect:/admin/main";
-            }
-
-            return "adminpages/EditCollaborator";
-        }
+    @GetMapping("/edit/{id}")
+    public String showEditPage(Model model, @PathVariable("id") int id) {
+        try {
+            Collaborator collaborator = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
+            model.addAttribute("collaborator", collaborator);
 
 
-        @PostMapping("/edit")
-        public String updateCollaborator(Model model, @RequestParam int id,@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result) {
-            try{
-                Collaborator collaborator = repo.findById(id);
-                System.out.println(collaborator);
-                model.addAttribute("collaborator", collaborator);
 
-                if (result.hasErrors()) {
-                    return "adminpages/EditCollaborator";
-                }
-                collaborator.setNome(collaboratorDto.getNome());
-                collaborator.setEmail(collaboratorDto.getEmail());
-                collaborator.setSenha(collaboratorDto.getSenha());
-                collaborator.setTelefone(collaboratorDto.getTelefone());
-                collaborator.setCpf(collaboratorDto.getCpf());
-                collaborator.setDataNascimento(collaboratorDto.getDataNascimento());
-                System.out.println(collaborator);
-                repo.save(collaborator);
+            EditDto editDto = new EditDto();
+            editDto.setId(collaborator.getId());
+            editDto.setNome(collaborator.getNome());
+            editDto.setEmail(collaborator.getEmail());
+            editDto.setTelefone(collaborator.getTelefone());
+            editDto.setCpf(collaborator.getCpf());
+            editDto.setUserType(collaborator.getUserType());
 
-            }catch (Exception ex) {
-                System.out.println("Erro: " + ex.getMessage());
-            }
+            editDto.setEndereco(collaborator.getEndereco());
+            editDto.setContrato(collaborator.getContrato());
+
+
+
+            model.addAttribute("editDto", editDto);
+
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
             return "redirect:/admin/main";
         }
 
-        @GetMapping("/delete")
+        return "adminpages/EditCollaborator";
+    }
+
+
+    @PostMapping("/edit")
+    public String updateCollaborator(Model model, @Valid @ModelAttribute EditDto editDto, BindingResult result) {
+        try {
+            Collaborator collaborator = repo.findById(editDto.getId());
+            System.out.println(collaborator);
+            model.addAttribute("collaborator", collaborator);
+            model.addAttribute("editDto", editDto);
+
+            if (result.hasErrors()) {
+                return "adminpages/EditCollaborator";
+            }
+            collaborator.setNome(editDto.getNome());
+            collaborator.setEmail(editDto.getEmail());
+            collaborator.setTelefone(editDto.getTelefone());
+            collaborator.setCpf(editDto.getCpf());
+            collaborator.setUserType(editDto.getUserType());  // Esta linha é essencial para garantir que o tipo de usuário seja atualizado
+            collaborator.getContrato().setAtivo(editDto.getContrato().isAtivo());
+
+            System.out.println(collaborator);
+            repo.save(collaborator);
+
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
+        }
+        return "redirect:/admin/main";
+    }
+
+
+    @GetMapping("/delete")
         public String deleteCollaborator(@RequestParam int id) {
             try{
                 Collaborator collaborator = repo.findById(id);

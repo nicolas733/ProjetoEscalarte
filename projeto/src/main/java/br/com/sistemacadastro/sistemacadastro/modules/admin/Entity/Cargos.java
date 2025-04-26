@@ -1,6 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,7 +14,7 @@ public class Cargos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty
+    @NotBlank
     private String nomeCargo;
 
     @NotNull
