@@ -1,8 +1,12 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.Controller;
 
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Cargos;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.CargosPorSetor;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Setores;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs.SetoresDto;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.ContratoRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.SetoresRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,12 +14,18 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/setores")
 public class SetoresController {
 
     @Autowired
     private SetoresRepository repo;
+
+    @Autowired
+    private ContratoRepository contratoRepository;
 
 
     @GetMapping("")
@@ -86,17 +96,27 @@ public class SetoresController {
         return "redirect:/admin/setorcargo";
     }
 
+    @Transactional
     @GetMapping("/deletesetor")
     public String deleteSetores(@RequestParam int id) {
-        try{
-            Setores setores = repo.findById(id);
-            repo.delete(setores);
-        }catch (Exception ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+        try {
+            Setores setor = repo.findById(id);
 
+            // Verificar se o setor tem cargos associados
+            if (!setor.getCargosPorSetor().isEmpty()) {
+                return "redirect:/admin/setorcargo?error=Não é possivel excluir pois esse setor tem cargos associados";
+            }
+
+            // Se não houver cargos associados, pode-se excluir o setor
+            repo.delete(setor);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return "redirect:/admin/setorcargo?error=Erro ao excluir o setor: " + ex.getMessage();
+        }
         return "redirect:/admin/setorcargo";
     }
+
+
 }
 
 

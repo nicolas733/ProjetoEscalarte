@@ -18,7 +18,7 @@
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">ID</label>
                     <div class="col-sm-8">
-                        <input type="hidden" class="form-control-plaintext" th:name="id" th:value="${id}">
+                        <input type="hidden" readonly class="form-control-plaintext" th:name="id" th:value="${id}">
                     </div>
                 </div>
 
@@ -37,6 +37,17 @@
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{cargoHorarioLimite}">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoHorarioLimite')}" th:errors="*{cargoHorarioLimite}"></div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Setor</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" th:field="*{setorId}" th:errorclass="is-invalid">
+                            <option value="" disabled selected>Selecione um setor</option>
+                            <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.nomesetor}"></option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('setorId')}" th:errors="*{setorId}"></div>
                     </div>
                 </div>
 

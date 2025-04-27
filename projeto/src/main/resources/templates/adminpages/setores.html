@@ -38,7 +38,7 @@
       <tr>
         <th>ID</th>
         <th>Nome do Setor</th>
-        <th>Qtd. Colaboradores</th>
+        <th>Qtd. Colaboradores Necessários</th>
         <th>Ações</th>
       </tr>
       </thead>
@@ -71,19 +71,22 @@
       <tr>
         <th>ID</th>
         <th>Nome do Cargo</th>
-        <th>Carga Horária Limite</th>
+        <th>Carga Horária Limite Diaria</th>
+        <th>Setor</th>
         <th>Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="cargo: ${cargos}">
-        <td th:text="${cargo.id}"></td>
-        <td th:text="${cargo.nomeCargo}"></td>
-        <td th:text="${cargo.cargaHorarioLimite}"></td>
+
+      <tr th:each="cargoPorSetor : ${cargosPorSetor}">
+        <td th:text="${cargoPorSetor.cargo.id}"></td>
+        <td th:text="${cargoPorSetor.cargo.nomeCargo}"></td>
+        <td th:text="${cargoPorSetor.cargo.cargaHorarioLimite}"></td>
+        <td th:text="${cargoPorSetor.setor.nomesetor}"></td>
         <td>
           <div class="actions">
-            <a class="btn btn-primary btn-sm" th:href="@{/cargo/editcargo/{id}(id=${cargo.id})}">Editar</a>
-            <a class="btn btn-danger btn-sm" th:href="@{/cargo/deletecargo(id=${cargo.id})}" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/cargo/editcargo/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
+            <a class="btn btn-danger btn-sm" th:href="@{/cargo/deletecargo(id=${cargoPorSetor.cargo.id})}" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
           </div>
         </td>
       </tr>
@@ -100,26 +103,7 @@
         <h5 class="modal-title">Cadastrar Setor</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <!--
-      <form method="POST" th:action="@{/setores/cadastrarSetor}" enctype="multipart/form-data" th:object="${setoresDto}">
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Nome</label>
-            <input class="form-control" th:field="*{nomeSetor}" th:errorclass="is-invalid">
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeSetor')}" th:errors="*{nomeSetor}"></div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Quantidade de Colaboradores</label>
-            <input class="form-control" th:field="*{quantidadeColaboradores}" th:errorclass="is-invalid">
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('quantidadeColaboradores')}" th:errors="*{quantidadeColaboradores}"></div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button class="btn btn-primary" type="submit">Cadastrar</button>
-        </div>
-      </form>
-      -->
+
     </div>
   </div>
 </div>
@@ -132,29 +116,18 @@
         <h5 class="modal-title">Cadastrar Cargo</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <!--
-      <form method="POST" th:action="@{/cargo/cadastrarCargo}" enctype="multipart/form-data" th:object="${cargosDto}">
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Nome</label>
-            <input class="form-control" th:field="*{nomeCargo}" th:errorclass="is-invalid">
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeCargo')}" th:errors="*{nomeCargo}"></div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Carga Horária Limite</label>
-            <input class="form-control" th:field="*{cargoHorarioLimite}" th:errorclass="is-invalid">
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoHorarioLimite')}" th:errors="*{cargoHorarioLimite}"></div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button class="btn btn-primary" type="submit">Cadastrar</button>
-        </div>
-      </form>
-      -->
+
     </div>
   </div>
 </div>
+<script>
+  window.onload = function() {
+    const errorParam = new URLSearchParams(window.location.search).get('error');
+    if (errorParam) {
+      alert(errorParam);
+    }
+  };
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>

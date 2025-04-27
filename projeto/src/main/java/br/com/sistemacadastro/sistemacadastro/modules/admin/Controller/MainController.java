@@ -1,7 +1,9 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.Controller;
 
 
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.CargosPorSetor;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Setores;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CargosPorSetorRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Cargos;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CargoRepository;
@@ -31,6 +33,9 @@ public class MainController {
 
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
+
+    @Autowired
+    private CargosPorSetorRepository cargosPorSetorRepository;
 
 
 
@@ -63,8 +68,8 @@ public class MainController {
         List<Setores> setores = reposito.findAll();
         model.addAttribute("setores", setores);
         model.addAttribute("novoSetor", new Setores());
-        List<Cargos> cargos = repository.findAll();
-        model.addAttribute("cargos", cargos);
+        List<CargosPorSetor> cargos = cargosPorSetorRepository.findAll();
+        model.addAttribute("cargosPorSetor", cargos);
         model.addAttribute("novoCargo", new Cargos());
 
         return "adminpages/setores";

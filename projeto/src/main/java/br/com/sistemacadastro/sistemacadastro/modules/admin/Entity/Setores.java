@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity(name ="setores")
 public class Setores {
@@ -26,5 +28,8 @@ public class Setores {
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "gerente_id", updatable = false, insertable = false)
     private Integer gerenteId;
+
+    @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CargosPorSetor> cargosPorSetor;
 
 }
