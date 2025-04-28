@@ -22,7 +22,6 @@ public class Endereco {
     @NotBlank
     private String cep;
 
-    @NotBlank
     private String complemento;
 
     @NotNull
