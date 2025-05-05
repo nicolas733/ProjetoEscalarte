@@ -49,7 +49,7 @@ public class CollaboratorController {
         }
 
     @PostMapping("/cadastrar")
-    public String cadastrarColaborador(@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result) {
+    public String cadastrarColaborador(@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result, Model model) {
         Optional<Collaborator> colaborador = this.repo.findByEmail(collaboratorDto.getEmail());
 
         if (colaborador.isEmpty()) {
@@ -81,6 +81,7 @@ public class CollaboratorController {
 
             return "redirect:/admin/main";
         } else {
+            model.addAttribute("emailJaCadastrado", true); // Adiciona uma variável para a view
             return "adminpages/cadastroCo";
         }
     }

@@ -45,25 +45,30 @@ public class CargoController{
     }
 
     @PostMapping("/cadastrarCargo")
-    public String cadastrarCargos(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result) {
-        if (result.hasErrors()) {
+    public String cadastrarCargos(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result, Model model) {
+        Optional<Cargos> cargoss = repository.findByNomeCargo(cargosDto.getNomeCargo());
+        if (cargoss.isEmpty()) {
+            Cargos cargos = new Cargos();
+            cargos.setNomeCargo(cargosDto.getNomeCargo());
+            cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
+            repository.save(cargos); // Salva o cargo primeiro
+
+            // Agora cria a associação Cargo-Setor
+            Setores setor = setoresRepository.findById(cargosDto.getSetorId());
+            CargosPorSetor cargosPorSetor = new CargosPorSetor();
+            cargosPorSetor.setCargo(cargos);
+            cargosPorSetor.setSetor(setor);
+            cargosPorSetorRepository.save(cargosPorSetor); // salva a associação
+
+            return "redirect:/admin/setorcargo";
+
+        } else {
+            model.addAttribute("nomeJaCadastrado", true);
             return "adminpages/cadastroCargo";
         }
+    }
 
-        Cargos cargos = new Cargos();
-        cargos.setNomeCargo(cargosDto.getNomeCargo());
-        cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
-        repository.save(cargos); // Salva o cargo primeiro
 
-        // Agora cria a associação Cargo-Setor
-        Setores setor = setoresRepository.findById(cargosDto.getSetorId());
-        CargosPorSetor cargosPorSetor = new CargosPorSetor();
-        cargosPorSetor.setCargo(cargos);
-        cargosPorSetor.setSetor(setor);
-        cargosPorSetorRepository.save(cargosPorSetor); // salva a associação
-
-        return "redirect:/admin/setorcargo";
-}
 
     @GetMapping("/editcargo/{id}")
     public String showEditPageCargos(Model model, @PathVariable("id") int id) {

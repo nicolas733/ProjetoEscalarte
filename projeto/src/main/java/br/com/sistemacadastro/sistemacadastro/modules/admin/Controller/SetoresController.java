@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -41,16 +42,20 @@ public class SetoresController {
     }
 
     @PostMapping("/cadastrarSetor")
-    public String cadastrarSetores(@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result) {
-        if (result.hasErrors()) {
-            return "adminpages/cadastroSe";
-        }
-        Setores setores = new Setores();
-        setores.setNomesetor(setoresDto.getNomeSetor());
-        setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
-        repo.save(setores);
+    public String cadastrarSetores(@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result, Model model) {
+        Optional<Setores> setoress = repo.findByNomesetor(setoresDto.getNomeSetor());
+        if (setoress.isEmpty()) {
+            Setores setores = new Setores();
+            setores.setNomesetor(setoresDto.getNomeSetor());
+            setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
+            repo.save(setores);
 
-        return "redirect:/admin/setorcargo";
+            return "redirect:/admin/setorcargo";
+        } else {
+            model.addAttribute("nomeJaCadastrado", true);
+            return "adminpages/cadastroSe";
+
+        }
     }
 
 
