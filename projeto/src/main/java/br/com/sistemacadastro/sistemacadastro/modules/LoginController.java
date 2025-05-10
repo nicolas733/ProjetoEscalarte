@@ -1,7 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.modules;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Collaborator;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.repositorys.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
