@@ -28,7 +28,7 @@
 <div class="main">
   <div class="header">
     <div class="header-title">Gerenciar Setores</div>
-    <a class="btn btn-primary" href="/setores/cadastrarSetor">Cadastrar Setores</a>
+    <a class="btn btn-primary" href="/setores/cadastrar">Cadastrar Setores</a>
   </div>
 
   <div class="card">
@@ -49,8 +49,8 @@
         <td th:text="${setor.quantidadeColaboradores}"></td>
         <td>
           <div class="actions">
-            <a class="btn btn-primary btn-sm" th:href="@{/setores/editsetor/{id}(id=${setor.id})}">Editar</a>
-            <a class="btn btn-danger btn-sm" th:href="@{/setores/deletesetor(id=${setor.id})}" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/setores/editar/{id}(id=${setor.id})}">Editar</a>
+            <a class="btn btn-danger btn-sm" th:href="@{/setores/deletar(id=${setor.id})}" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
           </div>
         </td>
       </tr>
@@ -61,7 +61,7 @@
 
   <div class="header" style="margin-top: 30px;">
     <div class="header-title">Gerenciar Cargos</div>
-    <a class="btn btn-primary" href="/cargo/cadastrarCargo">Cadastrar Cargos</a>
+    <a class="btn btn-primary" href="/cargo/cadastrar">Cadastrar Cargos</a>
   </div>
 
   <div class="card">
@@ -85,8 +85,8 @@
         <td th:text="${cargoPorSetor.setor.nomesetor}"></td>
         <td>
           <div class="actions">
-            <a class="btn btn-primary btn-sm" th:href="@{/cargo/editcargo/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
-            <a class="btn btn-danger btn-sm" th:href="@{/cargo/deletecargo(id=${cargoPorSetor.cargo.id})}" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/cargo/editar/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
+            <a class="btn btn-danger btn-sm" th:href="@{/cargo/deletar(id=${cargoPorSetor.cargo.id})}" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
           </div>
         </td>
       </tr>

@@ -86,7 +86,7 @@ public class CollaboratorController {
         }
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/editar/{id}")
     public String showEditPage(Model model, @PathVariable("id") int id) {
         try {
             Collaborator collaborator = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
@@ -118,7 +118,7 @@ public class CollaboratorController {
     }
 
 
-    @PostMapping("/edit")
+    @PostMapping("/editar")
     public String updateCollaborator(Model model, @Valid @ModelAttribute EditDto editDto, BindingResult result) {
         try {
             Collaborator collaborator = repo.findById(editDto.getId());
@@ -146,7 +146,7 @@ public class CollaboratorController {
     }
 
 
-    @GetMapping("/delete")
+    @GetMapping("/deletar")
         public String deleteCollaborator(@RequestParam int id) {
             try{
                 Collaborator collaborator = repo.findById(id);

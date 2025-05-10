@@ -34,14 +34,14 @@ public class SetoresController {
         return "setores";
     }
 
-    @GetMapping("/cadastrarSetor")
+    @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {
         SetoresDto setoresDto = new SetoresDto();
         model.addAttribute("setoresDto", setoresDto);
         return "adminpages/cadastroSe"; // Retorna o template correto diretamente
     }
 
-    @PostMapping("/cadastrarSetor")
+    @PostMapping("/cadastrar")
     public String cadastrarSetores(@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result, Model model) {
         Optional<Setores> setoress = repo.findByNomesetor(setoresDto.getNomeSetor());
         if (setoress.isEmpty()) {
@@ -60,7 +60,7 @@ public class SetoresController {
 
 
 
-    @GetMapping("/editsetor/{id}")
+    @GetMapping("/editar/{id}")
     public String showEditPage(Model model, @PathVariable("id") int id) {
         try {
             Setores setores = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
@@ -80,7 +80,7 @@ public class SetoresController {
     }
 
 
-    @PostMapping("/editsetor")
+    @PostMapping("/editar")
     public String updateCollaborator(Model model, @RequestParam int id,@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result) {
         try{
             Setores setores = repo.findById(id);
@@ -102,7 +102,7 @@ public class SetoresController {
     }
 
     @Transactional
-    @GetMapping("/deletesetor")
+    @GetMapping("/deletar")
     public String deleteSetores(@RequestParam int id) {
         try {
             Setores setor = repo.findById(id);

@@ -33,7 +33,7 @@ public class CargoController{
     private ContratoRepository contratoRepository;
 
 
-    @GetMapping("/cadastrarCargo")
+    @GetMapping("/cadastrar")
     public String showCadastrarPageCargo(Model model) {
         CargosDto cargosDto = new CargosDto();
         model.addAttribute("cargosDto", cargosDto);
@@ -44,7 +44,7 @@ public class CargoController{
         return "adminpages/cadastroCargo"; // Retorna o template correto diretamente
     }
 
-    @PostMapping("/cadastrarCargo")
+    @PostMapping("/cadastrar")
     public String cadastrarCargos(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result, Model model) {
         Optional<Cargos> cargoss = repository.findByNomeCargo(cargosDto.getNomeCargo());
         if (cargoss.isEmpty()) {
@@ -70,7 +70,7 @@ public class CargoController{
 
 
 
-    @GetMapping("/editcargo/{id}")
+    @GetMapping("/editar/{id}")
     public String showEditPageCargos(Model model, @PathVariable("id") int id) {
         try {
             // Busca o cargo
@@ -108,7 +108,7 @@ public class CargoController{
 
 
 
-    @PostMapping("/editcargo")
+    @PostMapping("/editar")
     public String updateCargo(Model model, @RequestParam int id, @Valid @ModelAttribute CargosDto cargosDto, BindingResult result) {
         try {
             if (result.hasErrors()) {
@@ -150,7 +150,7 @@ public class CargoController{
 
 
 
-    @GetMapping("/deletecargo")
+    @GetMapping("/deletar")
     public String deleteCargo(@RequestParam int id) {
         try {
             // Buscar o cargo a ser excluído
