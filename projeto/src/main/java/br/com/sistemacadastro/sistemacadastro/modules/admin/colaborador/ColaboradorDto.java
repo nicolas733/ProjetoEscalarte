@@ -10,7 +10,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class CollaboratorDto {
+public class ColaboradorDto {
 
     private int id;
 
@@ -27,7 +27,7 @@ public class CollaboratorDto {
     private String cpf;
 
     @NotNull
-    private Collaborator.UserType userType;
+    private Colaborador.UserType userType;
 
     @NotBlank(message = "O telefone é obrigatorio")
     private String telefone;

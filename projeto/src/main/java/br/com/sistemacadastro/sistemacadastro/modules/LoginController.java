@@ -1,7 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.modules;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.ColaboradorRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
     @Autowired
-    private CollaboratorRepository repo;
+    private ColaboradorRepository repo;
 
 
     @GetMapping("/login")
@@ -27,18 +27,18 @@ public class LoginController {
 
 
     @PostMapping("/logar")
-    public String logar(Collaborator collaborator, Model model, HttpServletResponse response, HttpSession session) {
-        Collaborator collaboratorLogado = this.repo.findFirstByEmailAndSenha(collaborator.getEmail(), collaborator.getSenha());
-        if (collaboratorLogado != null) {
-            session.setAttribute("colaboradorId", collaboratorLogado.getId());
-            session.setAttribute("colaboradorNome", collaboratorLogado.getNome());
+    public String logar(Colaborador colaborador, Model model, HttpServletResponse response, HttpSession session) {
+        Colaborador colaboradorLogado = this.repo.findFirstByEmailAndSenha(colaborador.getEmail(), colaborador.getSenha());
+        if (colaboradorLogado != null) {
+            session.setAttribute("colaboradorId", colaboradorLogado.getId());
+            session.setAttribute("colaboradorNome", colaboradorLogado.getNome());
 
-            Collaborator.UserType tipo = collaboratorLogado.getUserType();
-            if (tipo.equals(Collaborator.UserType.ADMIN)) {
+            Colaborador.UserType tipo = colaboradorLogado.getUserType();
+            if (tipo.equals(Colaborador.UserType.ADMIN)) {
                 return "redirect:/admin/dashboard";
-            } else if (tipo.equals(Collaborator.UserType.GERENTE)) {
+            } else if (tipo.equals(Colaborador.UserType.GERENTE)) {
                 return "redirect:/gerente/dashboard";
-            } else if (tipo.equals(Collaborator.UserType.OPERADOR)) {
+            } else if (tipo.equals(Colaborador.UserType.OPERADOR)) {
                 return "redirect:/operador/dashboard";
             }
         }

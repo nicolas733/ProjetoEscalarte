@@ -22,13 +22,14 @@
         <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
         <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
         <li><a href="/admin/solici"><i data-lucide="calendar"></i>Solicitações</a></li>
+        <li><a href="/admin/minhaconta"><i data-lucide="briefcase"></i> Minha Conta</a></li>
     </ul>
 </div>
 
 <div class="main">
     <div class="header">
         <div class="header-title">Gerenciar Usuários</div>
-            <a class="btn btn-primary" href="/collaborator/cadastrar">Cadastrar Colaboradores</a>
+            <a class="btn btn-primary" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
     </div>
 
 
@@ -49,21 +50,21 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="collaborator : ${collaborators}">
-                <td th:text="${collaborator.id}"></td>
-                <td><strong th:text="${collaborator.nome}"></strong></td>
-                <td th:text="${collaborator.email}"></td>
-                <td th:text="${collaborator.userType}"></td>
-                <td th:text="${collaborator.cpf}"></td>
-                <td th:text="${collaborator.telefone}"></td>
-                <td th:text="${collaborator.dataNascimento}"></td>
-                <td th:text="${collaborator.contrato != null && collaborator.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
-                <td th:text="${collaborator.contrato != null && collaborator.contrato.cargos != null ? collaborator.contrato.cargos.nomeCargo : 'Cargo não atribuído'}"></td>
+            <tr th:each="colaborador : ${colaboradores}">
+                <td th:text="${colaborador.id}"></td>
+                <td><strong th:text="${colaborador.nome}"></strong></td>
+                <td th:text="${colaborador.email}"></td>
+                <td th:text="${colaborador.userType}"></td>
+                <td th:text="${colaborador.cpf}"></td>
+                <td th:text="${colaborador.telefone}"></td>
+                <td th:text="${colaborador.dataNascimento}"></td>
+                <td th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
+                <td th:text="${colaborador.contrato != null && colaborador.contrato.cargos != null ? colaborador.contrato.cargos.nomeCargo : 'Cargo não atribuído'}"></td>
                 <td style="white-space: nowrap">
                     <a class="btn btn-warning btn-sm"
-                       th:href="@{/collaborator/editar/{id}(id=${collaborator.id})}">Editar</a>
+                       th:href="@{/colaborador/editar/{id}(id=${colaborador.id})}">Editar</a>
                     <a class="btn btn-danger btn-sm"
-                       th:href="@{/collaborator/deletar(id=${collaborator.id})}"
+                       th:href="@{/colaborador/deletar(id=${colaborador.id})}"
                        onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
                 </td>
             </tr>

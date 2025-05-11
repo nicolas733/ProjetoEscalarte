@@ -1,7 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.ColaboradorRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SolicitacaoController {
 
     @Autowired
-    private CollaboratorRepository repo;
+    private ColaboradorRepository repo;
 
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
@@ -47,14 +47,14 @@ public class SolicitacaoController {
             Integer colaboradorId = (Integer) colaboradorIdObj;
 
             // Busca o colaborador no banco de dados
-            Collaborator colaborador = repo.findById(colaboradorId);
+            Colaborador colaborador = repo.findById(colaboradorId);
 
             if (colaborador != null) {
                 // Cria a solicitação e associa o colaborador
                 Solicitacoes solicitacoes = new Solicitacoes();
                 solicitacoes.setDataSolicitacao(solicitacoesDto.getDataSolicitacao());
                 solicitacoes.setDescricaoSolicitacao(solicitacoesDto.getDescricaoSolicitacao());
-                solicitacoes.setCollaborator(colaborador);
+                solicitacoes.setColaborador(colaborador);
 
                 // Salva a solicitação no banco de dados
                 solicitacaoRepository.save(solicitacoes);

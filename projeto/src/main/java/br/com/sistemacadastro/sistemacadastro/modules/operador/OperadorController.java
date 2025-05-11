@@ -1,10 +1,10 @@
 package br.com.sistemacadastro.sistemacadastro.modules.operador;
 
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.setor.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.CargoRepository;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.meuUsuario.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.SolicitacaoRepository;
@@ -21,7 +21,7 @@ import java.util.List;
 public class OperadorController {
 
     @Autowired
-    private CollaboratorRepository collaboratorsRepository;
+    private ColaboradorRepository collaboratorsRepository;
 
     @Autowired
     private CargoRepository cargosRepository;
@@ -54,7 +54,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Collaborator colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
@@ -100,9 +100,9 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Collaborator colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
-                model.addAttribute("collaborator", colaborador);
+                model.addAttribute("colaborador", colaborador);
 
 
                 return "colaboradorpages/minhaconta";
@@ -118,7 +118,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Collaborator colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
                 PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
                 passwordChangeDto.setEmail(colaborador.getEmail());
@@ -133,7 +133,7 @@ public class OperadorController {
     @PostMapping("/alterarsenha")
     public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
         // Recupera o colaborador
-        Collaborator colaborador = collaboratorsRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
+        Colaborador colaborador = collaboratorsRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
 
         if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
             // Atualiza a senha

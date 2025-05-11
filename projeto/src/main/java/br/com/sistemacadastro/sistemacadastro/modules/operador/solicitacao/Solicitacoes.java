@@ -1,6 +1,6 @@
 package br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.escala.Escalas;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,12 +24,12 @@ public class Solicitacoes {
     private String descricaoSolicitacao;
 
     @ManyToOne
-    @JoinColumn(name = "collaborator_id")
-    private Collaborator collaborator;
+    @JoinColumn(name = "colaborador_id")
+    private Colaborador colaborador;
 
     //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
-    @Column(name = "collaborator_id", insertable = false, updatable = false)
+    @Column(name = "colaborador_id", insertable = false, updatable = false)
     private Integer collaboratorId;
 
     @OneToOne

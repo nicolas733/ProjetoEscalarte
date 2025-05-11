@@ -2,13 +2,13 @@ package br.com.sistemacadastro.sistemacadastro.modules.admin;
 
 
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargosPorSetor.CargosPorSetor;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.setor.Setores;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargosPorSetor.CargosPorSetorRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.setor.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.Cargos;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.meuUsuario.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.SolicitacaoRepository;
@@ -25,7 +25,7 @@ import java.util.List;
 public class MainController {
 
     @Autowired
-    private CollaboratorRepository repo;
+    private ColaboradorRepository repo;
 
     @Autowired
     private CargoRepository repository;
@@ -43,9 +43,9 @@ public class MainController {
 
     @GetMapping({"/main"})
     public String listarDados(Model model) {
-        List<Collaborator> collaborators = repo.findAll();
-        model.addAttribute("collaborators", collaborators);
-        model.addAttribute("collaborator", new Collaborator());
+        List<Colaborador> colaboradores = repo.findAll();
+        model.addAttribute("colaboradores", colaboradores);
+        model.addAttribute("colaborador", new Colaborador());
         return "adminpages/usuarios";
     }
 
@@ -97,12 +97,12 @@ public class MainController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Collaborator colaborador = repo.findById(colaboradorId);
+            Colaborador colaborador = repo.findById(colaboradorId);
             if (colaborador != null) {
-                model.addAttribute("collaborator", colaborador);
+                model.addAttribute("colaborador", colaborador);
 
 
-                return "colaboradorpages/minhaconta";
+                return "adminpages/minhaconta";
             }
         }
 
@@ -115,12 +115,12 @@ public class MainController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Collaborator colaborador = repo.findById(colaboradorId);
+            Colaborador colaborador = repo.findById(colaboradorId);
             if (colaborador != null) {
                 PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
                 passwordChangeDto.setEmail(colaborador.getEmail());
                 model.addAttribute("passwordChangeDto", passwordChangeDto);
-                return "colaboradorpages/alterarsenha";
+                return "adminpages/alterarsenha";
             }
         }
 
@@ -130,7 +130,7 @@ public class MainController {
     @PostMapping("/alterarsenha")
     public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
         // Recupera o colaborador
-        Collaborator colaborador = repo.findCollaboratorByEmail(passwordChangeDto.getEmail());
+        Colaborador colaborador = repo.findCollaboratorByEmail(passwordChangeDto.getEmail());
 
         if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
             // Atualiza a senha
@@ -143,7 +143,6 @@ public class MainController {
             model.addAttribute("passwordChangeDto", passwordChangeDto);
         }
 
-        return "colaboradorpages/alterarsenha";
+        return "adminpages/alterarsenha";
     }
 }
-

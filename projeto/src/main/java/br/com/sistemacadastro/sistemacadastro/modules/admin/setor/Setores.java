@@ -1,7 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.setor;
 
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargosPorSetor.CargosPorSetor;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class Setores {
 
     @OneToOne
     @JoinColumn(name = "gerente_id", referencedColumnName = "id", unique = true)
-    private Collaborator gerenteSetor;
+    private Colaborador gerenteSetor;
 
     //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura

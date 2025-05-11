@@ -21,13 +21,14 @@
         <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
         <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
         <li><a href="/gerente/solicitacoes"><i data-lucide="calendar"></i>Solicitações</a></li>
+        <li><a href="/gerente/minhaconta"><i data-lucide="briefcase"></i> Minha Conta</a></li>
     </ul>
 </div>
 
 <div class="main">
     <div class="header">
         <div class="header-title">Gerenciar Usuários</div>
-            <a class="btn btn-primary" href="/collaborator/cadastrar">Cadastrar Colaboradores</a>
+            <a class="btn btn-primary" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
     </div>
 
 
@@ -49,20 +50,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="collaborator : ${collaborators}">
-                <td th:text="${collaborator.id}"></td>
-                <td><strong th:text="${collaborator.nome}"></strong></td>
-                <td th:text="${collaborator.email}"></td>
-                <td th:text="${collaborator.senha}"></td>
-                <td th:text="${collaborator.userType}"></td>
-                <td th:text="${collaborator.cpf}"></td>
-                <td th:text="${collaborator.telefone}"></td>
-                <td th:text="${collaborator.dataNascimento}"></td>
+            <tr th:each="colaborador : ${colaboradors}">
+                <td th:text="${colaborador.id}"></td>
+                <td><strong th:text="${colaborador.nome}"></strong></td>
+                <td th:text="${colaborador.email}"></td>
+                <td th:text="${colaborador.senha}"></td>
+                <td th:text="${colaborador.userType}"></td>
+                <td th:text="${colaborador.cpf}"></td>
+                <td th:text="${colaborador.telefone}"></td>
+                <td th:text="${colaborador.dataNascimento}"></td>
                 <td style="white-space: nowrap">
                     <a class="btn btn-warning btn-sm"
-                       th:href="@{/collaborator/edit/{id}(id=${collaborator.id})}">Editar</a>
+                       th:href="@{/colaborador/edit/{id}(id=${colaborador.id})}">Editar</a>
                     <a class="btn btn-danger btn-sm"
-                       th:href="@{/collaborator/delete(id=${collaborator.id})}"
+                       th:href="@{/colaborador/delete(id=${colaborador.id})}"
                        onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
                 </td>
             </tr>
@@ -74,7 +75,7 @@
 <!--
 <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form method="POST" th:action="@{/collaborator/cadastrar}" enctype="multipart/form-data" th:object="${collaboratorDto}" class="modal-content">
+        <form method="POST" th:action="@{/colaborador/cadastrar}" enctype="multipart/form-data" th:object="${collaboratorDto}" class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="userModalLabel">Novo Usuário</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>

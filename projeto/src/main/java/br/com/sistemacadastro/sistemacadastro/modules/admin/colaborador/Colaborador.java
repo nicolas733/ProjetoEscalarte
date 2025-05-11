@@ -16,14 +16,14 @@ import java.time.LocalDate;
 
 @Data
 @ToString(exclude = "contrato")  // Exclui o campo 'contrato' do método toString()
-@Entity(name="collaborator")
-public class Collaborator{
+@Entity(name="colaborador")
+public class Colaborador {
 
     @NotEmpty
     public enum UserType {
         ADMIN,
         GERENTE,
-        OPERADOR;
+        OPERADOR,
     }
 
 

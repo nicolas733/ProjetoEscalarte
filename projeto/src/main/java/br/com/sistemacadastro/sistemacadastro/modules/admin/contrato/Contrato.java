@@ -1,6 +1,6 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.contrato;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.Cargos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-@ToString(exclude = "collaborator")
+@ToString(exclude = "colaborador")
 @Entity(name= "contrato")
 public class Contrato {
 
@@ -42,13 +42,13 @@ public class Contrato {
     private Date dataFimContrato;
 
     @OneToOne()
-    @JoinColumn(name = "collaborator_id")
-    private Collaborator collaborator;
+    @JoinColumn(name = "colaborador_id")
+    private Colaborador colaborador;
 
     //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
-    @Column(name = "collaborator_id", insertable = false, updatable = false)
-    private int collaboratorId;
+    @Column(name = "colaborador_id", insertable = false, updatable = false)
+    private int colaboradorId;
 
     @OneToOne()
     @JoinColumn(name = "cargos_id")

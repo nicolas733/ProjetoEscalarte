@@ -49,16 +49,16 @@
             </thead>
             <tbody>
             <tr>
-                <td th:text="${collaborator.id}"></td>
-                <td><strong th:text="${collaborator.nome}"></strong></td>
-                <td th:text="${collaborator.email}"></td>
-                <td th:text="${collaborator.userType}"></td>
-                <td th:text="${collaborator.cpf}"></td>
-                <td th:text="${collaborator.telefone}"></td>
-                <!--<td th:text="${#dates.format(collaborator.dataNascimento, 'dd/MM/yyyy')}"></td>-->
-                <td th:text="${collaborator.contrato != null && collaborator.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
-                <td th:text="${collaborator.contrato?.cargos?.nomeCargo ?: 'Cargo não atribuído'}"></td>
-                <!--<td th:text="${collaborator.contrato?.cargos?.setores?.nomeSetor ?: 'Setor não atribuído'}"></td>-->
+                <td th:text="${colaborador.id}"></td>
+                <td><strong th:text="${colaborador.nome}"></strong></td>
+                <td th:text="${colaborador.email}"></td>
+                <td th:text="${colaborador.userType}"></td>
+                <td th:text="${colaborador.cpf}"></td>
+                <td th:text="${colaborador.telefone}"></td>
+                <!--<td th:text="${#dates.format(colaborador.dataNascimento, 'dd/MM/yyyy')}"></td>-->
+                <td th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
+                <td th:text="${colaborador.contrato?.cargos?.nomeCargo ?: 'Cargo não atribuído'}"></td>
+                <!--<td th:text="${colaborador.contrato?.cargos?.setores?.nomeSetor ?: 'Setor não atribuído'}"></td>-->
             </tr>
             </tbody>
         </table>
