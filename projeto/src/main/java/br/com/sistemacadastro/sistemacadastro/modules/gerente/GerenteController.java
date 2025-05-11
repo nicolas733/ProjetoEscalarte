@@ -1,8 +1,10 @@
 package br.com.sistemacadastro.sistemacadastro.modules.gerente;
 
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Collaborator;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.setor.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.operador.meuUsuario.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.SolicitacaoRepository;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.List;
 public class GerenteController {
 
     @Autowired
-    private CollaboratorRepository colaboradoresRepository;
+    private CollaboratorRepository collaboratorsRepository;
 
     @Autowired
     private CargoRepository cargosRepository;
@@ -42,7 +46,7 @@ public class GerenteController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            var colaborador = colaboradoresRepository.findCollaboratorById(colaboradorId);
+            var colaborador = collaboratorsRepository.findById(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
@@ -85,5 +89,60 @@ public class GerenteController {
     @GetMapping("/equipe")
     public String equipe (Model model) {
         return "gerentepages/equipe";
+    }
+
+    @GetMapping("/minhaconta")
+    public String mostrarMinhaConta(HttpSession session, Model model) {
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            Collaborator colaborador = collaboratorsRepository.findById(colaboradorId);
+            if (colaborador != null) {
+                model.addAttribute("collaborator", colaborador);
+
+
+                return "colaboradorpages/minhaconta";
+            }
+        }
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/alterarsenha")
+    public String mostrarAlterarSenha(HttpSession session, Model model) {
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            Collaborator colaborador = collaboratorsRepository.findById(colaboradorId);
+            if (colaborador != null) {
+                PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
+                passwordChangeDto.setEmail(colaborador.getEmail());
+                model.addAttribute("passwordChangeDto", passwordChangeDto);
+                return "colaboradorpages/alterarsenha";
+            }
+        }
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/alterarsenha")
+    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
+        // Recupera o colaborador
+        Collaborator colaborador = collaboratorsRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
+
+        if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
+            // Atualiza a senha
+            colaborador.setSenha(passwordChangeDto.getNovaSenha());
+            collaboratorsRepository.save(colaborador);
+            model.addAttribute("message", "Senha alterada com sucesso!");
+            return "redirect:/gerente/minhaconta";
+        } else {
+            model.addAttribute("error", "A senha antiga está incorreta.");
+            model.addAttribute("passwordChangeDto", passwordChangeDto);
+        }
+
+        return "colaboradorpages/alterarsenha";
     }
 }

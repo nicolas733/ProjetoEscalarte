@@ -9,8 +9,10 @@ import br.com.sistemacadastro.sistemacadastro.modules.admin.cargosPorSetor.Cargo
 import br.com.sistemacadastro.sistemacadastro.modules.admin.setor.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.Cargos;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.CollaboratorRepository;
+import br.com.sistemacadastro.sistemacadastro.modules.operador.meuUsuario.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao.SolicitacaoRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -89,6 +91,59 @@ public class MainController {
         return "adminpages/Solici";
     }//teste
 
+    @GetMapping("/minhaconta")
+    public String mostrarMinhaConta(HttpSession session, Model model) {
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
+        if (colaboradorId != null) {
+            Collaborator colaborador = repo.findById(colaboradorId);
+            if (colaborador != null) {
+                model.addAttribute("collaborator", colaborador);
+
+
+                return "colaboradorpages/minhaconta";
+            }
+        }
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/alterarsenha")
+    public String mostrarAlterarSenha(HttpSession session, Model model) {
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            Collaborator colaborador = repo.findById(colaboradorId);
+            if (colaborador != null) {
+                PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
+                passwordChangeDto.setEmail(colaborador.getEmail());
+                model.addAttribute("passwordChangeDto", passwordChangeDto);
+                return "colaboradorpages/alterarsenha";
+            }
+        }
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/alterarsenha")
+    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
+        // Recupera o colaborador
+        Collaborator colaborador = repo.findCollaboratorByEmail(passwordChangeDto.getEmail());
+
+        if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
+            // Atualiza a senha
+            colaborador.setSenha(passwordChangeDto.getNovaSenha());
+            repo.save(colaborador);
+            model.addAttribute("message", "Senha alterada com sucesso!");
+            return "redirect:/admin/minhaconta";
+        } else {
+            model.addAttribute("error", "A senha antiga está incorreta.");
+            model.addAttribute("passwordChangeDto", passwordChangeDto);
+        }
+
+        return "colaboradorpages/alterarsenha";
+    }
 }
 
