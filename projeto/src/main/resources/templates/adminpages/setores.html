@@ -38,7 +38,8 @@
       <thead>
       <tr>
         <th>ID</th>
-        <th>Nome do Setor</th>
+        <th>Nome</th>
+        <th>Gerente</th>
         <th>Qtd. Colaboradores Necessários</th>
         <th>Ações</th>
       </tr>
@@ -47,6 +48,7 @@
       <tr th:each="setor: ${setores}">
         <td th:text="${setor.id}"></td>
         <td th:text="${setor.nomesetor}"></td>
+        <td th:text="${setor.gerenteSetor != null ? setor.gerenteSetor.nome : 'N/A'}"></td>
         <td th:text="${setor.quantidadeColaboradores}"></td>
         <td>
           <div class="actions">

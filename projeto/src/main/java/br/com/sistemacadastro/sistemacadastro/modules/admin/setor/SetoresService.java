@@ -31,6 +31,7 @@ public class SetoresService {
         Setores setores = repo.findById(id);
         SetoresDto setoresDto = new SetoresDto();
         setoresDto.setNomeSetor(setores.getNomesetor());
+        setoresDto.setGerenteSetor(setoresDto.getGerenteSetor());
         setoresDto.setQuantidadeColaboradores(setores.getQuantidadeColaboradores());
         return setoresDto;
     }
@@ -38,6 +39,7 @@ public class SetoresService {
     public void editarSetor(int id, SetoresDto setoresDto) {
         Setores setores = repo.findById(id);
         setores.setNomesetor(setoresDto.getNomeSetor());
+        setores.setGerenteSetor(setoresDto.getGerenteSetor());
         setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
         repo.save(setores);
     }
