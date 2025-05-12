@@ -41,7 +41,7 @@ public class ColaboradorController {
             List<Cargos> cargos = cargoRepository.findAll();
             model.addAttribute("cargos", cargos);
             model.addAttribute("colaboradorDto", colaboradorDto);
-            return "adminpages/cadastroCo"; // Retorna o template correto diretamente
+            return "adminpages/cadastroColaborador"; // Retorna o template correto diretamente
         }
 
     @PostMapping("/cadastrar")
@@ -78,7 +78,7 @@ public class ColaboradorController {
             return "redirect:/admin/main";
         } else {
             model.addAttribute("emailJaCadastrado", true); // Adiciona uma variável para a view
-            return "adminpages/cadastroCo";
+            return "adminpages/cadastroColaborador";
         }
     }
 

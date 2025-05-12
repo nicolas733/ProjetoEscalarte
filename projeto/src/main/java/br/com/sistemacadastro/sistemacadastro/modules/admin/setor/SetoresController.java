@@ -25,13 +25,13 @@ public class SetoresController {
     public String showCadastrarPage(Model model) {
         SetoresDto setoresDto = new SetoresDto();
         model.addAttribute("setoresDto", setoresDto);
-        return "adminpages/cadastroSe";
+        return "adminpages/cadastroSetor";
     }
 
     @PostMapping("/cadastrar")
     public String cadastrarSetores(@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "adminpages/cadastroSe";
+            return "adminpages/cadastroSetor";
         }
 
         setoresService.cadastrarSetor(setoresDto);
