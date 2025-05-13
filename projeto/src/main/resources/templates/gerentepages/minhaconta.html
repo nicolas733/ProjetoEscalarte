@@ -36,7 +36,6 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Tipo</th>
@@ -49,10 +48,10 @@
             </thead>
             <tbody>
             <tr>
-                <td th:text="${colaborador.id}"></td>
+                <td  th:hidden="${colaborador.id}"></td>
                 <td><strong th:text="${colaborador.nome}"></strong></td>
                 <td th:text="${colaborador.email}"></td>
-                <td th:text="${colaborador.userType}"></td>
+                <td th:text="${colaborador.tipoUsuario}"></td>
                 <td th:text="${colaborador.cpf}"></td>
                 <td th:text="${colaborador.telefone}"></td>
                 <!--<td th:text="${#dates.format(colaborador.dataNascimento, 'dd/MM/yyyy')}"></td>-->

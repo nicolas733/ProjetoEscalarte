@@ -57,7 +57,7 @@ public class ColaboradorController {
             colaborador.setNome(colaboradorDto.getNome());
             colaborador.setEmail(colaboradorDto.getEmail());
             colaborador.setSenha(colaboradorDto.getSenha());
-            colaborador.setUserType(colaboradorDto.getUserType());
+            colaborador.setTipoUsuario(colaboradorDto.getTipoUsuario());
             colaborador.setTelefone(colaboradorDto.getTelefone());
             colaborador.setCpf(colaboradorDto.getCpf());
             colaborador.setDataNascimento(colaboradorDto.getDataNascimento());
@@ -96,7 +96,7 @@ public class ColaboradorController {
             editDto.setEmail(colaborador.getEmail());
             editDto.setTelefone(colaborador.getTelefone());
             editDto.setCpf(colaborador.getCpf());
-            editDto.setUserType(colaborador.getUserType());
+            editDto.setTipoUsuario(colaborador.getTipoUsuario());
 
             editDto.setEndereco(colaborador.getEndereco());
             editDto.setContrato(colaborador.getContrato());
@@ -129,7 +129,7 @@ public class ColaboradorController {
             colaborador.setEmail(editDto.getEmail());
             colaborador.setTelefone(editDto.getTelefone());
             colaborador.setCpf(editDto.getCpf());
-            colaborador.setUserType(editDto.getUserType());  // Esta linha é essencial para garantir que o tipo de usuário seja atualizado
+            colaborador.setTipoUsuario(editDto.getTipoUsuario());  // Esta linha é essencial para garantir que o tipo de usuário seja atualizado
             colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
 
             System.out.println(colaborador);

@@ -62,12 +62,17 @@
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Tipo de Usuario</label>
-                <select th:field="*{userType}">
-                    <option value="ADMIN">Admin</option>
-                    <option value="OPERADOR">Operador</option>
-                </select>
+                <label class="col-sm-4 col-form-label">Tipo de Usuário</label>
+                <div class="col-sm-8">
+                    <select class="form-control" th:field="*{tipoUsuario}" th:errorclass="is-invalid">
+                        <option value="ADMIN">Admin</option>
+                        <option value="GERENTE">Gerente</option>
+                        <option value="OPERADOR">Operador</option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoUsuario')}" th:errors="*{tipoUsuario}"></div>
+                </div>
             </div>
+
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Telefone</label>

@@ -33,12 +33,12 @@ public class LoginController {
             session.setAttribute("colaboradorId", colaboradorLogado.getId());
             session.setAttribute("colaboradorNome", colaboradorLogado.getNome());
 
-            Colaborador.UserType tipo = colaboradorLogado.getUserType();
-            if (tipo.equals(Colaborador.UserType.ADMIN)) {
+            Colaborador.TipoUsuario tipo = colaboradorLogado.getTipoUsuario();
+            if (tipo.equals(Colaborador.TipoUsuario.ADMIN)) {
                 return "redirect:/admin/dashboard";
-            } else if (tipo.equals(Colaborador.UserType.GERENTE)) {
+            } else if (tipo.equals(Colaborador.TipoUsuario.GERENTE)) {
                 return "redirect:/gerente/dashboard";
-            } else if (tipo.equals(Colaborador.UserType.OPERADOR)) {
+            } else if (tipo.equals(Colaborador.TipoUsuario.OPERADOR)) {
                 return "redirect:/operador/dashboard";
             }
         }

@@ -22,7 +22,7 @@ public class EditDto {
     private String cpf;
 
     @NotNull
-    private Colaborador.UserType userType;
+    private Colaborador.TipoUsuario tipoUsuario;
 
     @NotBlank(message = "O telefone é obrigatorio")
     private String telefone;

@@ -1,8 +1,8 @@
-package br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs;
+package br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Collaborator;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Contrato;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Endereco;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.contrato.Contrato;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.endereco.Endereco;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class ColaboradorDto {
     private String cpf;
 
     @NotNull
-    private Colaborador.UserType userType;
+    private Colaborador.TipoUsuario tipoUsuario;
 
     @NotBlank(message = "O telefone é obrigatorio")
     private String telefone;

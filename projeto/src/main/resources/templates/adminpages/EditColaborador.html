@@ -70,11 +70,11 @@
 
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Tipo de Usuario</label>
-                            <select id="userType" name="userType" required>
+                            <select id="tipoUsuario" name="tipoUsuario" required>
                                 <option value="">Selecione</option>
-                                <option value="ADMIN" th:selected="${editDto.userType == 'ADMIN'}">Admin</option>
-                                <option value="GERENTE" th:selected="${editDto.userType == 'GERENTE'}">Gerente</option>
-                                <option value="OPERADOR" th:selected="${editDto.userType == 'OPERADOR'}">Operador</option>
+                                <option value="ADMIN" th:selected="${editDto.tipoUsuario == 'ADMIN'}">Admin</option>
+                                <option value="GERENTE" th:selected="${editDto.tipoUsuario == 'GERENTE'}">Gerente</option>
+                                <option value="OPERADOR" th:selected="${editDto.tipoUsuario == 'OPERADOR'}">Operador</option>
                             </select>
                         </div>
 

@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class Colaborador {
 
     @NotEmpty
-    public enum UserType {
+    public enum TipoUsuario {
         ADMIN,
         GERENTE,
         OPERADOR,
@@ -46,7 +46,7 @@ public class Colaborador {
     private LocalDate createdAt;
 
     @NotNull
-    private UserType userType;
+    private TipoUsuario tipoUsuario;
 
     @NotEmpty
     @CPF(message = "CPF invalido")
