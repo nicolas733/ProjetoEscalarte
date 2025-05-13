@@ -50,6 +50,12 @@ public class CollaboratorController {
 
     @PostMapping("/cadastrar")
     public String cadastrarColaborador(@Valid @ModelAttribute CollaboratorDto collaboratorDto, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            List<Cargos> cargos = cargoRepository.findAll();
+            model.addAttribute("cargos", cargos);
+            return "adminpages/cadastroCo";
+        }
+
         Optional<Collaborator> colaborador = this.repo.findByEmail(collaboratorDto.getEmail());
 
         if (colaborador.isEmpty()) {

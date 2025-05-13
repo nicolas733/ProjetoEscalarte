@@ -18,6 +18,6 @@ public class Cargos {
     private String nomeCargo;
 
     @NotNull
-    private int  cargaHorarioLimite;
+    private int cargaHorarioLimite;
 }
 

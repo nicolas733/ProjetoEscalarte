@@ -1,5 +1,6 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -12,7 +13,8 @@ public class CargosDto {
     @NotBlank(message = "O nome é obrigatório")
     private String nomeCargo;
 
-    @NotNull(message = "O email é obrigatório")
+    @NotNull(message = "O horario limite deve ser cadastrado")
+    @Min(value = 1, message = "A carga horária deve ser maior que zero.")
     private Integer cargoHorarioLimite;
 
     @NotNull(message = "O setor é obrigatório")

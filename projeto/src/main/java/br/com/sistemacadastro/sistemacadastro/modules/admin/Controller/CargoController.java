@@ -151,7 +151,7 @@ public class CargoController{
 
 
     @GetMapping("/deletecargo")
-    public String deleteCargo(@RequestParam int id) {
+    public String deleteCargo(@RequestParam int id, Model model) {
         try {
             // Buscar o cargo a ser excluído
             Cargos cargos = repository.findById(id);

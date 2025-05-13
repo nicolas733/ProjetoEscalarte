@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -109,7 +110,7 @@ public class SetoresController {
 
             // Verificar se o setor tem cargos associados
             if (!setor.getCargosPorSetor().isEmpty()) {
-                return "redirect:/admin/setorcargo?error=Não é possivel excluir pois esse setor tem cargos associados";
+                return "redirect:/admin/setorcargo?error=" + URLEncoder.encode("Não é possível excluir o cargo pois existe um colaborador com contrato ativo", "UTF-8");
             }
 
             // Se não houver cargos associados, pode-se excluir o setor
