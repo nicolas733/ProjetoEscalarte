@@ -15,7 +15,6 @@ public class EnderecoDto {
     @NotBlank(message = "O cep deve ser obrigatorio")
     private String cep;
 
-    @NotBlank(message = "O complemento deve ser obrigatorio")
     private String complemento;
 
     @NotNull(message = "É obrigatorio o numero")

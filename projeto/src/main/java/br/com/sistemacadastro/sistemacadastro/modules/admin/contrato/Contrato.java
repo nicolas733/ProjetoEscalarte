@@ -3,6 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.modules.admin.contrato;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.cargo.Cargos;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
@@ -24,14 +25,18 @@ public class Contrato {
 
     boolean ativo = true;
 
-    @NotNull
-    private int cargaHorariaDiaria;
+    @NotNull(message = "Deve ser cadastrado")
+    private Integer cargaHorariaDiaria;
 
-    @NotNull
-    private int diasTrabalhadosSemanal;
+    @NotNull(message = "Deve ser cadastrado")
+    private Integer diasTrabalhadosSemanal;
 
-    @NotNull
-    private int diasTrabalhadosMensal;
+    @NotNull(message = "Deve ser cadastrado")
+    private Integer diasTrabalhadosMensal;
+
+    @NotNull(message = "Deve ser cadastrado")
+    @Min(value = 11, message = "O tempo minimo de iterjornada é de 11 horas")
+    private Integer intervaloInterjornada;
 
     @CreationTimestamp
     private LocalDate createdAt;

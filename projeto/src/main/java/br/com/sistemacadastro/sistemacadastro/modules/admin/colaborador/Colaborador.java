@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class Colaborador {
     private String nome;
 
     @NotEmpty
-    @Email
+    @Email(message = "Email invalido")
     private String email;
 
     @NotEmpty
@@ -48,6 +49,7 @@ public class Colaborador {
     private UserType userType;
 
     @NotEmpty
+    @CPF(message = "CPF invalido")
     private String cpf;
 
     @NotEmpty

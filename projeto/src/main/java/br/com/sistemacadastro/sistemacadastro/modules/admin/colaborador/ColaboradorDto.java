@@ -1,11 +1,17 @@
-package br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador;
+package br.com.sistemacadastro.sistemacadastro.modules.admin.DTOs;
 
-import br.com.sistemacadastro.sistemacadastro.modules.admin.contrato.Contrato;
-import br.com.sistemacadastro.sistemacadastro.modules.admin.endereco.Endereco;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Collaborator;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Contrato;
+import br.com.sistemacadastro.sistemacadastro.modules.admin.Entity.Endereco;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
@@ -18,12 +24,14 @@ public class ColaboradorDto {
     private String nome;
 
     @NotBlank(message = "O email é obrigatório")
+    @Email(message = "Email invalido")
     private String email;
 
     @NotBlank(message = "A senha é obrigatório")
     private String senha;
 
     @NotBlank(message = "O cpf é obrigatorio")
+    @CPF(message = "CPF invalido")
     private String cpf;
 
     @NotNull
@@ -38,6 +46,7 @@ public class ColaboradorDto {
     @NotNull(message = "O endereço é obrigatorio")
     private Endereco endereco;
 
+    @Valid
     @NotNull
     private Contrato contrato;
 
