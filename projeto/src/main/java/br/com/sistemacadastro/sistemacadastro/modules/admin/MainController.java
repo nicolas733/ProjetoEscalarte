@@ -53,17 +53,46 @@ public class MainController {
 
 
     @GetMapping("/dashboard")
-    public String mostrarDashboard(Model model) {
-        long total = repo.count(); // Conta diretamente no banco
+    public <Collaborator> String mostrarDashboard(Model model, HttpSession session) {
+        long total = repo.count();
         model.addAttribute("totalColaboradores", total);
+
         long totalSetor = reposito.count();
         model.addAttribute("totalSetores", totalSetor);
+
         long totalCargo = repository.count();
         model.addAttribute("totalCargos", totalCargo);
+
         long totalSolicitacao = solicitacaoRepository.count();
         model.addAttribute("totalSolicitacoes", totalSolicitacao);
+
+        // Recuperar colaborador logado da sessão
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            Collaborator colaborador = (Collaborator) repo.findCollaboratorById(colaboradorId);
+            if (colaborador != null) {
+                String nomeCompleto = ((Colaborador) colaborador).getNome();
+                model.addAttribute("nome", nomeCompleto);
+                model.addAttribute("iniciais", getIniciais(nomeCompleto));
+            }
+        } else {
+            model.addAttribute("nome", "Admin");
+            model.addAttribute("iniciais", "A");
+        }
+
         return "adminpages/dashboard";
     }
+
+    private String getIniciais(String nomeCompleto) {
+        String[] partes = nomeCompleto.split(" ");
+        if (partes.length == 1) {
+            return partes[0].substring(0, 1).toUpperCase();
+        }
+        return (partes[0].substring(0, 1) + partes[partes.length - 1].substring(0, 1)).toUpperCase();
+    }
+
 
     @GetMapping("/setorcargo")
     public String mostrarSetoresCargos(Model model) {
