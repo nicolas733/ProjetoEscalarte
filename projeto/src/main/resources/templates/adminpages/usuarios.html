@@ -30,7 +30,7 @@
 <div class="main">
     <div class="header">
         <div class="header-title">Gerenciar Usuários</div>
-            <a class="btn btn-primary" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
+        <a class="btn btn-cadastrar" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
     </div>
 
 
@@ -92,6 +92,15 @@
         } else {
             li.classList.remove('active');
         }
+    });
+
+    document.querySelectorAll('.menu li').forEach(li => {
+        const link = li.querySelector('a');
+        li.addEventListener('click', () => {
+            if (link) {
+                window.location.href = link.getAttribute('href');
+            }
+        });
     });
 </script>
 </body>

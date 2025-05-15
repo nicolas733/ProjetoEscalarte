@@ -2,6 +2,7 @@
 
 * {
     text-decoration: none;
+    user-select: none;
 }
 
 body {
@@ -46,7 +47,7 @@ body {
 .menu li {
     display: flex;
     align-items: center;
-    padding: 10px 14px;
+    padding: 10px 20px;
     border-radius: 8px;
     font-size: 15px;
     color: #444;
@@ -92,6 +93,32 @@ body {
     border-color: #c62828;
 }
 
+.btn-cadastrar {
+    background-color: #ef5350  !important; /* Laranja escuro */
+    color: white !important;
+    border: none !important;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-cadastrar:hover {
+    background-color: #c62828 !important; /* Laranja queimado */
+    color: white !important;
+}
+
+.btn-cadastrar:focus {
+    background-color: #c62828 !important;
+    outline: none !important;
+}
+
+.btn-cadastrar:active {
+    background-color: #c62828 !important; /* Laranja mais escuro */
+    box-shadow: none !important;
+}
+
+
 .btn-primary:focus,
 .btn-primary:focus-visible {
     background-color: #c62828;
@@ -107,8 +134,31 @@ body {
 }
 
 .btn-primary.btn-sm {
-    background-color: orange;
+    background-color: #fb8c00 !important; /* Laranja escuro */
+    color: white !important;
+    border: none !important;
 }
+
+.btn-primary.btn-sm:hover {
+    background-color: #ef6c00 !important; /* Laranja queimado */
+    color: white !important;
+    border: none !important;
+}
+
+.btn-primary.btn-sm:focus,
+.btn-primary.btn-sm:focus-visible {
+    background-color: #ef6c00 !important;
+    box-shadow: 0 0 0 0.25rem rgba(239, 108, 0, 0.5) !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.btn-primary.btn-sm:active {
+    background-color: #e65100 !important; /* Laranja mais escuro */
+    box-shadow: none !important;
+    border: none !important;
+}
+
 
 .btn-danger {
     background-color: #d32f2f;
