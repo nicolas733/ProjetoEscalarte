@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.ColaboradorRepository;
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/setores")
@@ -74,11 +75,13 @@ public class SetoresController {
     }
 
     @GetMapping("/deletar")
-    public String deleteSetores(@RequestParam int id, Model model) {
+    public String deleteSetores(@RequestParam int id, RedirectAttributes redirectAttributes) {
         boolean sucesso = setoresService.excluirSetor(id);
 
         if (!sucesso) {
-            model.addAttribute("error", "Não é possível excluir o setor pois existem cargos associados.");
+            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir o setor pois existem cargos associados.");
+        } else {
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Setor excluído com sucesso.");
         }
 
         return "redirect:/admin/setorcargo";

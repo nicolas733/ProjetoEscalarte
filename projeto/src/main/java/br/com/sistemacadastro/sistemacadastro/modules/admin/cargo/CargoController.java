@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -64,17 +65,17 @@ public class CargoController {
     }
 
     @GetMapping("/deletar")
-    public String deleteCargo(@RequestParam int id) {
+    public String deleteCargo(@RequestParam int id, RedirectAttributes redirectAttributes) {
         try {
             cargoService.excluirCargo(id);
-            return "redirect:/admin/setorcargo";
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Cargo excluído com sucesso.");
         } catch (IllegalStateException e) {
-            String error = URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8);
-            return "redirect:/admin/setorcargo?error=" + error;
+            redirectAttributes.addFlashAttribute("mensagemErro", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/admin/setorcargo?error=" +
-                    URLEncoder.encode("Erro ao excluir cargo", StandardCharsets.UTF_8);
+            redirectAttributes.addFlashAttribute("mensagemErro", "Erro ao excluir cargo.");
         }
+        return "redirect:/admin/setorcargo";
     }
+
 }
