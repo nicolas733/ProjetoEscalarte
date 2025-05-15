@@ -115,5 +115,7 @@ body {
 }
 
 .btn-red:hover {
-  background-color: #e53935;
+    background-color: #c62828 !important;
+    border-color: #c62828 !important;
+    color: white !important;
 }

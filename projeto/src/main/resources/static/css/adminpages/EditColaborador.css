@@ -147,8 +147,12 @@ body {
 }
 
 .btn-outline-primary:hover {
-    background-color: rgb(224, 168, 64);
+    background-color: #ef6c00 !important;
+    border-color: #ef6c00 !important;
+    color: white !important;
 }
+
+
 
 .header {
     display: flex;

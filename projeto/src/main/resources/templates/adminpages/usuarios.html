@@ -62,7 +62,7 @@
                 <td th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
                 <td th:text="${colaborador.contrato != null && colaborador.contrato.cargos != null ? colaborador.contrato.cargos.nomeCargo : 'Cargo não atribuído'}"></td>
                 <td style="white-space: nowrap">
-                    <a class="btn btn-warning btn-sm"
+                    <a class="btn btn-primary btn-sm"
                        th:href="@{/colaborador/editar/{id}(id=${colaborador.id})}">Editar</a>
                     <a class="btn btn-danger btn-sm"
                        th:href="@{/colaborador/deletar(id=${colaborador.id})}"

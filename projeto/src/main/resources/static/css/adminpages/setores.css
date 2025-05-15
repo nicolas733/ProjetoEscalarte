@@ -131,6 +131,12 @@ th {
   background: orange;
 }
 
+.btn-primary.btn-sm:hover {
+    background-color: #ef6c00 !important;
+    border-color: #ef6c00 !important;
+    color: white !important;
+}
+
 .btn-danger {
   background: #d32f2f;
   color: white;
