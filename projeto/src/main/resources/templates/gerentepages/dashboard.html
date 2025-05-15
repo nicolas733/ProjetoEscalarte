@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/lucide@latest" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/gerentepages/dashboard.css}">
+  <link rel="shortcut icon" th:href="@{/img/logoEscalarte.ico}" type="image/x-icon">
 </head>
 
 <body>
@@ -16,11 +17,11 @@
     <span>Escalarte</span>
   </div>
   <ul class="menu">
-    <li><a href="/gerente/dashboard"><i data-lucide="users"></i>Dashboard</a></li>
+    <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
     <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
     <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-    <li><a href="/gerente/solicitacoes"><i data-lucide="calendar"></i>Solicitações</a></li>
-    <li><a href="/gerente/minhaconta"><i data-lucide="briefcase"></i> Minha Conta</a></li>
+    <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+    <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
   </ul>
 </div>
 
@@ -29,7 +30,7 @@
     <div>
       <div class="title">Dashboard</div>
       <div class="subtitle">
-        Bem-vindo,<span th:text="${nome} ?: 'Usuário'">Usuário</span>!
+        Bem-vindo, <span th:text="${nome} ?: 'Usuário'">Usuário</span>!
       </div>
     </div>
     <div class="user-initials" th:text="${iniciais} ?: 'U'"></div>
@@ -60,7 +61,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
-<script>lucide.createIcons();</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
 </body>
 </html>

@@ -45,6 +45,10 @@ body {
     padding: 0;
 }
 
+.btn-primary {
+    background-color: #ef5350;
+}
+
 .menu li a {
     display: flex;
     align-items: center;
