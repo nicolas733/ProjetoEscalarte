@@ -10,7 +10,7 @@
     <body>
         <div class="sidebar">
             <div class="logo">
-                <img src="/projeto/src/main/resources/static/img/logoEscalarte.png" alt="Logo" />
+                <img src="/img/logo.png" alt="Logo" />
                 <span>Escalarte</span>
             </div>
             <ul class="menu">
@@ -37,7 +37,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">ID</label>
                             <div class="col-sm-8">
-                                <input type="hidden" th:field="*{id}" />
+                                <input class="form-control" type="text" th:field="*{id}" readonly />
                             </div>
                         </div>
 
@@ -45,7 +45,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Nome</label>
                             <div class="col-sm-8">
-                                <input class="form-control" type="text" id="nome" th:field="*{nome}">
+                                <input class="form-control" type="text" id="nome" th:field="*{nome}" th:errorclass="is-invalid">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Email</label>
                             <div class="col-sm-8">
-                                <input class="form-control" th:field="*{email}">
+                                <input class="form-control" th:field="*{email}" th:errorclass="is-invalid" >
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                             </div>
                         </div>
@@ -69,13 +69,15 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Tipo de Usuario</label>
-                            <select id="tipoUsuario" name="tipoUsuario" required>
-                                <option value="">Selecione</option>
-                                <option value="ADMIN" th:selected="${editDto.tipoUsuario == 'ADMIN'}">Admin</option>
-                                <option value="GERENTE" th:selected="${editDto.tipoUsuario == 'GERENTE'}">Gerente</option>
-                                <option value="OPERADOR" th:selected="${editDto.tipoUsuario == 'OPERADOR'}">Operador</option>
-                            </select>
+                            <label class="col-sm-4 col-form-label">Tipo de Usuário</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" th:field="*{tipoUsuario}" th:errorclass="is-invalid">
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="GERENTE">Gerente</option>
+                                    <option value="OPERADOR">Operador</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoUsuario')}" th:errors="*{tipoUsuario}"></div>
+                            </div>
                         </div>
 
                         <div class="row mb-3">
@@ -129,22 +131,24 @@
                         </div>
 
 
-                        <!-- Campo Data de Edição (somente leitura) -->
-                        <div class="row mb-3">
-                            <label class="col-sm-4 col-form-label">Data de Edição</label>
-                            <div class="col-sm-8">
-                                <input readonly class="form-control" th:value="${createdAt}">
-                            </div>
-                        </div>
+<!--                        &lt;!&ndash; Campo Data de Edição (somente leitura) &ndash;&gt;-->
+<!--                        <div class="row mb-3">-->
+<!--                            <label class="col-sm-4 col-form-label">Data de Edição</label>-->
+<!--                            <div class="col-sm-8">-->
+<!--                                <input readonly class="form-control" th:value="${createdAt}">-->
+<!--                            </div>-->
+<!--                        </div>-->
 
                         <h2>Contrato</h2>
                         <div class="row mb-3">
                             <label class="col-sm-4 col-form-label">Contrato</label>
-                            <select class="form-control" th:field="*{contrato.ativo}">
-                                <option th:value="true" th:selected="${colaborador.contrato.ativo} == true">Ativo</option>
-                                <option th:value="false" th:selected="${colaborador.contrato.ativo} == false">Inativo</option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.ativo')}" th:errors="*{contrato.ativo}"></div>
+                            <div class="col-sm-8">
+                                <select class="form-control" th:field="*{contrato.ativo}">
+                                    <option th:value="true" th:selected="${colaborador.contrato.ativo} == true">Ativo</option>
+                                    <option th:value="false" th:selected="${colaborador.contrato.ativo} == false">Inativo</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.ativo')}" th:errors="*{contrato.ativo}"></div>
+                            </div>
                         </div>
 
                         <!-- Botões -->

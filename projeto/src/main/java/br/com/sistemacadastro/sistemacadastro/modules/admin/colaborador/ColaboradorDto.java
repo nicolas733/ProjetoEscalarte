@@ -43,6 +43,7 @@ public class ColaboradorDto {
     @NotNull(message = "A data de nascimento é obrigatorio")
     private LocalDate dataNascimento;
 
+    @Valid
     @NotNull(message = "O endereço é obrigatorio")
     private Endereco endereco;
 
@@ -50,7 +51,7 @@ public class ColaboradorDto {
     @NotNull
     private Contrato contrato;
 
-    @NotNull
+    @NotNull(message = "Selecione um cargo")
     private Integer cargoId;
 
 

@@ -136,12 +136,17 @@
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Cargo</label>
                 <div class="col-sm-8">
-                    <select class="form-control" th:field="*{contrato.cargos.id}" th:errorclass="is-invalid">
-                        <option th:each="cargo : ${cargos}" th:value="${cargo.id}" th:text="${cargo.nomeCargo}"></option>
+                    <select class="form-control" th:field="*{cargoId}" th:errorclass="is-invalid">
+                        <option value=""  selected>⬇Selecione um cargo⬇</option>
+                        <option th:each="cargo : ${cargos}"
+                                th:value="${cargo.id}"
+                                th:text="${cargo.nomeCargo}">
+                        </option>
                     </select>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.cargos.id')}" th:errors="*{contrato.cargos.id}"></div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoId')}" th:errors="*{cargoId}"></div>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Carga Horaria Diaria</label>
                 <div class="col-sm-8">
@@ -167,7 +172,7 @@
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Tempo de intevalo de Intrajornada</label>
+                <label class="col-sm-4 col-form-label">Tempo de intevalo de Interjornada</label>
                 <div class="col-sm-8">
                     <input class="form-control" th:field="*{contrato.intervaloInterjornada}" th:errorclass="is-invalid">
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.intervaloInterjornada')}" th:errors="*{contrato.intervaloInterjornada}"></div>

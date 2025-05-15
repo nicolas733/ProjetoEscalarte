@@ -41,7 +41,7 @@ public class Contrato {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @NotNull
+    @NotNull(message = "Deve ser cadastrado")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date dataFimContrato;

@@ -47,10 +47,13 @@ public class ColaboradorController {
     @PostMapping("/cadastrar")
     public String cadastrarColaborador(@Valid @ModelAttribute ColaboradorDto colaboradorDto, BindingResult result, Model model) {
         Optional<Colaborador> colaboradorExistente = this.repo.findByEmail(colaboradorDto.getEmail());
+        if (result.hasErrors()) {
+            List<Cargos> cargos = cargoRepository.findAll();
+            model.addAttribute("cargos", cargos);
+            return "adminpages/cadastroColaborador";
+        }
 
         if (colaboradorExistente.isEmpty()) {
-            // Salva o endereço primeiro
-            Endereco endereco = repository.save(colaboradorDto.getEndereco());
 
             // Cria e preenche o colaborador
             Colaborador colaborador = new Colaborador();
@@ -61,18 +64,21 @@ public class ColaboradorController {
             colaborador.setTelefone(colaboradorDto.getTelefone());
             colaborador.setCpf(colaboradorDto.getCpf());
             colaborador.setDataNascimento(colaboradorDto.getDataNascimento());
+
+            Endereco endereco = repository.save(colaboradorDto.getEndereco());
             colaborador.setEndereco(endereco);
+
 
             // Cria e associa o contrato
             Contrato contrato = colaboradorDto.getContrato();
-            contrato.setColaborador(colaborador); // opcional, mantém consistência bidirecional
-            colaborador.setContrato(contrato);     // // ESSENCIAL: lado proprietário
-
-            Cargos cargo = cargoRepository.findById(colaboradorDto.getContrato().getCargos().getId());
+            contrato.setColaborador(colaborador);
 
 
+            Cargos cargo = cargoRepository.findById(colaboradorDto.getCargoId()).orElseThrow(() -> new RuntimeException("Cargo não encontrado"));
             contrato.setCargos(cargo);
-            // Salva o colaborador (salva também o contrato automaticamente se houver Cascade.PERSIST)
+
+            colaborador.setContrato(contrato);
+            // Salva o colaborador
             repo.save(colaborador);
 
             return "redirect:/admin/main";
@@ -82,8 +88,10 @@ public class ColaboradorController {
         }
     }
 
+
+
     @GetMapping("/editar/{id}")
-    public String showEditPage(Model model, @PathVariable("id") int id) {
+    public String mostrarPagEdicao(Model model, @PathVariable("id") int id) {
         try {
             Colaborador colaborador = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
             model.addAttribute("colaborador", colaborador);
@@ -115,7 +123,7 @@ public class ColaboradorController {
 
 
     @PostMapping("/editar")
-    public String updateCollaborator(Model model, @Valid @ModelAttribute EditDto editDto, BindingResult result) {
+    public String atualizarColaborador(Model model, @Valid @ModelAttribute EditDto editDto, BindingResult result) {
         try {
             Colaborador colaborador = repo.findById(editDto.getId());
             System.out.println(colaborador);
@@ -129,7 +137,12 @@ public class ColaboradorController {
             colaborador.setEmail(editDto.getEmail());
             colaborador.setTelefone(editDto.getTelefone());
             colaborador.setCpf(editDto.getCpf());
-            colaborador.setTipoUsuario(editDto.getTipoUsuario());  // Esta linha é essencial para garantir que o tipo de usuário seja atualizado
+            colaborador.setTipoUsuario(editDto.getTipoUsuario());// Esta linha é essencial para garantir que o tipo de usuário seja atualizado
+            colaborador.getEndereco().setBairro(editDto.getEndereco().getBairro());
+            colaborador.getEndereco().setRua(editDto.getEndereco().getRua());
+            colaborador.getEndereco().setCep(editDto.getEndereco().getCep());
+
+            colaborador.getEndereco().setNumero(editDto.getEndereco().getNumero());
             colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
 
             System.out.println(colaborador);
@@ -143,7 +156,7 @@ public class ColaboradorController {
 
 
     @GetMapping("/deletar")
-        public String deleteCollaborator(@RequestParam int id) {
+        public String excluirColaborador(@RequestParam int id) {
             try{
                 Colaborador colaborador = repo.findById(id);
                 repo.delete(colaborador);

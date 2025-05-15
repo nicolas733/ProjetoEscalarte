@@ -8,4 +8,5 @@ public interface CargoRepository extends JpaRepository<Cargos, Integer> {
     Cargos findById(long id);
 
     Optional<Cargos> findByNomeCargo(String nomeCargo);
+
 }
