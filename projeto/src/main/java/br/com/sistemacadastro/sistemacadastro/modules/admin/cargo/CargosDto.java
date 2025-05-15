@@ -1,8 +1,6 @@
 package br.com.sistemacadastro.sistemacadastro.modules.admin.cargo;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -11,6 +9,8 @@ public class CargosDto {
     private Integer id;
 
     @NotBlank(message = "O nome é obrigatório")
+    @Pattern(regexp = "^[A-Za-zÀ-ú ]+$", message = "O nome deve conter apenas letras e espaços")
+    @Size(min = 4, message = "O nome deve ter no mínimo 4 letras")
     private String nomeCargo;
 
     @NotNull(message = "O horario limite deve ser cadastrado")

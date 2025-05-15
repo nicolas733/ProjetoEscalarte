@@ -30,6 +30,7 @@ public class SetoresService {
     public SetoresDto prepararEdicao(int id) {
         Setores setores = repo.findById(id);
         SetoresDto setoresDto = new SetoresDto();
+        setoresDto.setId(setores.getId());
         setoresDto.setNomeSetor(setores.getNomesetor());
         setoresDto.setGerenteSetor(setoresDto.getGerenteSetor());
         setoresDto.setQuantidadeColaboradores(setores.getQuantidadeColaboradores());

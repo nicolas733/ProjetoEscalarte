@@ -4,6 +4,8 @@ import br.com.sistemacadastro.sistemacadastro.modules.admin.cargosPorSetor.Cargo
 import br.com.sistemacadastro.sistemacadastro.modules.admin.colaborador.Colaborador;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -17,6 +19,8 @@ public class Setores {
     private int id;
 
     @NotNull
+    @Pattern(regexp = "^[A-Za-zÀ-ú ]+$", message = "O nome deve conter apenas letras e espaços")
+    @Size(min = 4, message = "O nome deve ter no mínimo 4 letras")
     private String nomesetor;
 
     @NotNull

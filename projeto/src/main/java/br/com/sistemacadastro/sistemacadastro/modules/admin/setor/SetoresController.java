@@ -57,16 +57,19 @@ public class SetoresController {
         List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
         model.addAttribute("setoresDto", setoresDto);
         model.addAttribute("colaboradores", colaboradoresList);
+        model.addAttribute("id", id);
         return "adminpages/EditSetores";
     }
 
     @PostMapping("/editar")
-    public String updateSetor(Model model, @RequestParam int id, @Valid @ModelAttribute SetoresDto setoresDto, BindingResult result) {
+    public String updateSetor(Model model, @Valid @ModelAttribute SetoresDto setoresDto, BindingResult result) {
         if (result.hasErrors()) {
+            List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
+            model.addAttribute("colaboradores", colaboradoresList);
             return "adminpages/EditSetores";
         }
 
-        setoresService.editarSetor(id, setoresDto);
+        setoresService.editarSetor(setoresDto.getId(), setoresDto);
         return "redirect:/admin/setorcargo";
     }
 

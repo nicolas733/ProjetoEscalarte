@@ -2,6 +2,7 @@ package br.com.sistemacadastro.sistemacadastro.modules.operador.solicitacao;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +16,7 @@ public class SolicitacoesDto {
     private LocalDate dataSolicitacao;
 
     @NotBlank(message = "Descrava o motivo da alteração")
+    @Size(min = 8, message = "A descrição deve ter no minimo 8 caracteres e no maximo 100", max = 100)
     private String descricaoSolicitacao;
 
 }

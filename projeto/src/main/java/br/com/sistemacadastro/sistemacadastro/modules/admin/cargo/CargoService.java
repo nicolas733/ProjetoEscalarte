@@ -52,6 +52,7 @@ public class CargoService {
         }
 
         CargosDto cargosDto = new CargosDto();
+        cargosDto.setId(cargos.getId());
         cargosDto.setNomeCargo(cargos.getNomeCargo());
         cargosDto.setCargoHorarioLimite(cargos.getCargaHorarioLimite());
 

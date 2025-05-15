@@ -6,10 +6,8 @@ import br.com.sistemacadastro.sistemacadastro.modules.admin.endereco.Endereco;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -21,6 +19,8 @@ public class ColaboradorDto {
     private int id;
 
     @NotBlank(message = "O nome é obrigatório")
+    @Pattern(regexp = "^[A-Za-zÀ-ú ]+$", message = "O nome deve conter apenas letras e espaços")
+    @Size(min = 4, message = "O nome deve ter no mínimo 4 letras")
     private String nome;
 
     @NotBlank(message = "O email é obrigatório")
@@ -28,6 +28,7 @@ public class ColaboradorDto {
     private String email;
 
     @NotBlank(message = "A senha é obrigatório")
+    @Size(min = 4, message = "A senha deve ter no mínimo 4 caracteres")
     private String senha;
 
     @NotBlank(message = "O cpf é obrigatorio")
@@ -38,6 +39,7 @@ public class ColaboradorDto {
     private Colaborador.TipoUsuario tipoUsuario;
 
     @NotBlank(message = "O telefone é obrigatorio")
+    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?\\d{4,5}[- ]?\\d{4}$",message = "Telefone inválido. Use formatos como (XX) XXXXX-XXXX ou XX XXXXX XXXX")
     private String telefone;
 
     @NotNull(message = "A data de nascimento é obrigatorio")

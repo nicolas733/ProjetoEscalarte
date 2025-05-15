@@ -53,16 +53,13 @@ public class CargoController {
     }
 
     @PostMapping("/editar")
-    public String updateCargo(@RequestParam int id,
-                              @Valid @ModelAttribute CargosDto cargosDto,
-                              BindingResult result,
-                              Model model) {
+    public String updateCargo(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("setores", setoresRepository.findAll());
             return "adminpages/EditCargo";
         }
 
-        cargoService.editarCargo(id, cargosDto);
+        cargoService.editarCargo(cargosDto.getId(), cargosDto);
         return "redirect:/admin/setorcargo";
     }
 
