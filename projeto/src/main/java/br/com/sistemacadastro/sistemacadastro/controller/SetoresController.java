@@ -44,17 +44,21 @@ public class SetoresController {
         model.addAttribute("colaboradores", colaboradoresList);
         return "adminpages/cadastroSetor";
     }
-    
+
     @PostMapping("/cadastrar")
-    public String cadastrarSetores(@Valid @ModelAttribute SetoresDTO setoresDto, BindingResult result, Model model) {
+    public String cadastrarSetores(@Valid @ModelAttribute("setoresDto") SetoresDTO setoresDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            // Repopula os colaboradores para o select
+            List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
+            model.addAttribute("colaboradores", colaboradoresList);
+            // setoresDto já está no model via @ModelAttribute
             return "adminpages/cadastroSetor";
         }
-        
+
         setoresService.cadastrarSetor(setoresDto);
         return "redirect:/admin/setorcargo";
     }
-    
+
     @GetMapping("/editar/{id}")
     public String showEditPage(Model model, @PathVariable("id") int id) {
         SetoresDTO setoresDto = setoresService.prepararEdicao(id);

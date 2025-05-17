@@ -42,7 +42,8 @@ public class CargoService {
         cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
         repository.save(cargos);
 
-        Setores setor = setoresRepository.findById(cargosDto.getSetorId());
+        Setores setor = setoresRepository.findById(cargosDto.getSetorId())
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado"));
         CargosPorSetor cps = new CargosPorSetor();
         cps.setCargo(cargos);
         cps.setSetor(setor);
@@ -88,7 +89,8 @@ public class CargoService {
             cps.setCargo(cargos);
         }
 
-        Setores setor = setoresRepository.findById(dto.getSetorId());
+        Setores setor = setoresRepository.findById(dto.getSetorId())
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado"));
         if (setor != null) {
             cps.setSetor(setor);
             cargosPorSetorRepository.save(cps);

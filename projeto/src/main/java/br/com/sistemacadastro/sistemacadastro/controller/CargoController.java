@@ -38,8 +38,10 @@ public class CargoController {
     public String cadastrarCargos(@Valid @ModelAttribute CargosDTO cargosDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("setores", setoresRepository.findAll());
+            model.addAttribute("cargosDto", cargosDto);
             return "adminpages/cadastroCargo";
         }
+
 
         try {
             cargoService.cadastrarCargo(cargosDto);
