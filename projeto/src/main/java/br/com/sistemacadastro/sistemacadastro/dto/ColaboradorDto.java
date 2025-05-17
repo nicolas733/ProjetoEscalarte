@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import java.time.LocalDate;
 
 @Data
-public class ColaboradorDto {
+public class ColaboradorDTO {
 
     private int id;
 

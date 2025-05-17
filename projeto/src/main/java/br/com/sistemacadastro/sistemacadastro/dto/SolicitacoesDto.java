@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 @Data
-public class SolicitacoesDto {
+public class SolicitacoesDTO {
 
     @NotNull(message = "Informe a data de solicitação desejada")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

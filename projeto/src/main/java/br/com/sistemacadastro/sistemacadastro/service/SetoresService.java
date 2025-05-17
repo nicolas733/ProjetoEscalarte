@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import br.com.sistemacadastro.sistemacadastro.dto.SetoresDto;
+import br.com.sistemacadastro.sistemacadastro.dto.SetoresDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.repository.ContratoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
@@ -21,7 +21,7 @@ public class SetoresService {
     @Autowired
     private ContratoRepository contratoRepository;
 
-    public void cadastrarSetor(SetoresDto setoresDto) {
+    public void cadastrarSetor(SetoresDTO setoresDto) {
         Optional<Setores> setoresExistentes = repo.findByNomesetor(setoresDto.getNomeSetor());
         if (setoresExistentes.isEmpty()) {
             Setores setores = new Setores();
@@ -31,9 +31,9 @@ public class SetoresService {
         }
     }
 
-    public SetoresDto prepararEdicao(int id) {
+    public SetoresDTO prepararEdicao(int id) {
         Setores setores = repo.findById(id);
-        SetoresDto setoresDto = new SetoresDto();
+        SetoresDTO setoresDto = new SetoresDTO();
         setoresDto.setId(setores.getId());
         setoresDto.setNomeSetor(setores.getNomesetor());
         setoresDto.setGerenteSetor(setoresDto.getGerenteSetor());
@@ -41,7 +41,7 @@ public class SetoresService {
         return setoresDto;
     }
 
-    public void editarSetor(int id, SetoresDto setoresDto) {
+    public void editarSetor(int id, SetoresDTO setoresDto) {
         Setores setores = repo.findById(id);
         setores.setNomesetor(setoresDto.getNomeSetor());
         setores.setGerenteSetor(setoresDto.getGerenteSetor());

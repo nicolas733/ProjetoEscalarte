@@ -1,6 +1,6 @@
 package br.com.sistemacadastro.sistemacadastro.service;
 
-import br.com.sistemacadastro.sistemacadastro.dto.CargosDto;
+import br.com.sistemacadastro.sistemacadastro.dto.CargosDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Cargos;
 import br.com.sistemacadastro.sistemacadastro.model.CargosPorSetor;
 import br.com.sistemacadastro.sistemacadastro.model.Setores;
@@ -31,7 +31,7 @@ public class CargoService {
     @Autowired
     private ContratoRepository contratoRepository;
 
-    public void cadastrarCargo(CargosDto cargosDto) {
+    public void cadastrarCargo(CargosDTO cargosDto) {
         Optional<Cargos> existente = repository.findByNomeCargo(cargosDto.getNomeCargo());
         if (existente.isPresent()) {
             throw new IllegalArgumentException("Cargo já existe");
@@ -55,7 +55,7 @@ public class CargoService {
             return "redirect:/admin/setorcargo";
         }
 
-        CargosDto cargosDto = new CargosDto();
+        CargosDTO cargosDto = new CargosDTO();
         cargosDto.setId(cargos.getId());
         cargosDto.setNomeCargo(cargos.getNomeCargo());
         cargosDto.setCargoHorarioLimite(cargos.getCargaHorarioLimite());
@@ -74,7 +74,7 @@ public class CargoService {
         return "adminpages/EditCargo";
     }
 
-    public void editarCargo(int id, CargosDto dto) {
+    public void editarCargo(int id, CargosDTO dto) {
         Cargos cargos = repository.findById(id);
         if (cargos == null) return;
 

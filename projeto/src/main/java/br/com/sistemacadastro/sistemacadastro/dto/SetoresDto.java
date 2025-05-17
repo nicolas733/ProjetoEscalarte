@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class SetoresDto {
+public class SetoresDTO {
 
     private Integer id;
 

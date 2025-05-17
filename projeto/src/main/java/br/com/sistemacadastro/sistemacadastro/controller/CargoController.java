@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.sistemacadastro.sistemacadastro.dto.CargosDto;
+import br.com.sistemacadastro.sistemacadastro.dto.CargosDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.service.CargoService;
@@ -29,13 +29,13 @@ public class CargoController {
 
     @GetMapping("/cadastrar")
     public String showCadastrarPageCargo(Model model) {
-        model.addAttribute("cargosDto", new CargosDto());
+        model.addAttribute("cargosDto", new CargosDTO());
         model.addAttribute("setores", setoresRepository.findAll());
         return "adminpages/cadastroCargo";
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrarCargos(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result, Model model) {
+    public String cadastrarCargos(@Valid @ModelAttribute CargosDTO cargosDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("setores", setoresRepository.findAll());
             return "adminpages/cadastroCargo";
@@ -57,7 +57,7 @@ public class CargoController {
     }
 
     @PostMapping("/editar")
-    public String updateCargo(@Valid @ModelAttribute CargosDto cargosDto, BindingResult result, Model model) {
+    public String updateCargo(@Valid @ModelAttribute CargosDTO cargosDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("setores", setoresRepository.findAll());
             return "adminpages/EditCargo";

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.sistemacadastro.sistemacadastro.dto.SolicitacoesDto;
+import br.com.sistemacadastro.sistemacadastro.dto.SolicitacoesDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
@@ -32,14 +32,14 @@ public class SolicitacaoController {
 
     @GetMapping("/alteracao")
     public String mostrarFormulario(Model model) {
-        SolicitacoesDto solicitacoesDto = new SolicitacoesDto();
+        SolicitacoesDTO solicitacoesDto = new SolicitacoesDTO();
         model.addAttribute("solicitacaoDto", solicitacoesDto);
         return "colaboradorpages/solicitacoes"; // HTML com o form
     }
 
 
     @PostMapping("/alteracao")
-    public String enviarSolicitacao(@Valid @ModelAttribute SolicitacoesDto solicitacoesDto, BindingResult result, Model model, HttpSession session) {
+    public String enviarSolicitacao(@Valid @ModelAttribute SolicitacoesDTO solicitacoesDto, BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
             model.addAttribute("solicitacaoDto", solicitacoesDto);
             return "colaboradorpages/solicitacoes";

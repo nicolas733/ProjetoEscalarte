@@ -9,7 +9,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Data
-public class EditDto {
+public class EditDTO {
 
     private int id;
 

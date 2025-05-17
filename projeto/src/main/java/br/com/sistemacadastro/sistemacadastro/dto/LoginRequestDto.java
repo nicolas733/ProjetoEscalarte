@@ -1,4 +1,4 @@
 package br.com.sistemacadastro.sistemacadastro.dto;
 
-public record LoginRequestDto (String email, String senha) {
+public record LoginRequestDTO (String email, String senha) {
 }

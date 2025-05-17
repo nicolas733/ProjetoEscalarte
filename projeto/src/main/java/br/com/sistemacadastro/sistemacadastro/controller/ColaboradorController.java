@@ -1,7 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
-import br.com.sistemacadastro.sistemacadastro.dto.ColaboradorDto;
-import br.com.sistemacadastro.sistemacadastro.dto.EditDto;
+import br.com.sistemacadastro.sistemacadastro.dto.ColaboradorDTO;
+import br.com.sistemacadastro.sistemacadastro.dto.EditDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Cargos;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Contrato;
@@ -40,7 +40,7 @@ public class ColaboradorController {
 
     @GetMapping("/cadastrar")
         public String showCadastrarPage(Model model) {
-            ColaboradorDto colaboradorDto = new ColaboradorDto();
+            ColaboradorDTO colaboradorDto = new ColaboradorDTO();
             List<Cargos> cargos = cargoRepository.findAll();
             model.addAttribute("cargos", cargos);
             model.addAttribute("colaboradorDto", colaboradorDto);
@@ -48,7 +48,7 @@ public class ColaboradorController {
         }
 
     @PostMapping("/cadastrar")
-    public String cadastrarColaborador(@Valid @ModelAttribute ColaboradorDto colaboradorDto, BindingResult result, Model model) {
+    public String cadastrarColaborador(@Valid @ModelAttribute ColaboradorDTO colaboradorDto, BindingResult result, Model model) {
         Optional<Colaborador> colaboradorExistente = this.repo.findByEmail(colaboradorDto.getEmail());
         if (result.hasErrors()) {
             List<Cargos> cargos = cargoRepository.findAll();
@@ -101,7 +101,7 @@ public class ColaboradorController {
 
 
 
-            EditDto editDto = new EditDto();
+            EditDTO editDto = new EditDTO();
             editDto.setId(colaborador.getId());
             editDto.setNome(colaborador.getNome());
             editDto.setEmail(colaborador.getEmail());
@@ -126,7 +126,7 @@ public class ColaboradorController {
 
 
     @PostMapping("/editar")
-    public String atualizarColaborador(Model model, @Valid @ModelAttribute EditDto editDto, BindingResult result) {
+    public String atualizarColaborador(Model model, @Valid @ModelAttribute EditDTO editDto, BindingResult result) {
         try {
             Colaborador colaborador = repo.findById(editDto.getId());
             System.out.println(colaborador);

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.sistemacadastro.sistemacadastro.dto.SetoresDto;
+import br.com.sistemacadastro.sistemacadastro.dto.SetoresDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.service.SetoresService;
@@ -38,7 +38,7 @@ public class SetoresController {
 
     @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {
-        SetoresDto setoresDto = new SetoresDto();
+        SetoresDTO setoresDto = new SetoresDTO();
         List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
         model.addAttribute("setoresDto", setoresDto);
         model.addAttribute("colaboradores", colaboradoresList);
@@ -46,7 +46,7 @@ public class SetoresController {
     }
     
     @PostMapping("/cadastrar")
-    public String cadastrarSetores(@Valid @ModelAttribute SetoresDto setoresDto, BindingResult result, Model model) {
+    public String cadastrarSetores(@Valid @ModelAttribute SetoresDTO setoresDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "adminpages/cadastroSetor";
         }
@@ -57,7 +57,7 @@ public class SetoresController {
     
     @GetMapping("/editar/{id}")
     public String showEditPage(Model model, @PathVariable("id") int id) {
-        SetoresDto setoresDto = setoresService.prepararEdicao(id);
+        SetoresDTO setoresDto = setoresService.prepararEdicao(id);
         List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
         model.addAttribute("setoresDto", setoresDto);
         model.addAttribute("colaboradores", colaboradoresList);
@@ -66,7 +66,7 @@ public class SetoresController {
     }
 
     @PostMapping("/editar")
-    public String updateSetor(Model model, @Valid @ModelAttribute SetoresDto setoresDto, BindingResult result) {
+    public String updateSetor(Model model, @Valid @ModelAttribute SetoresDTO setoresDto, BindingResult result) {
         if (result.hasErrors()) {
             List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
             model.addAttribute("colaboradores", colaboradoresList);
