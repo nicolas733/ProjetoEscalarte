@@ -1,7 +1,5 @@
-package br.com.sistemacadastro.sistemacadastro.escala;
+package br.com.sistemacadastro.sistemacadastro.model;
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.turno.turnos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

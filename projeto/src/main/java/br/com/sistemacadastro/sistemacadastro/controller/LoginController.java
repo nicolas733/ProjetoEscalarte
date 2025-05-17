@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 
 @Controller

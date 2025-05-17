@@ -1,7 +1,5 @@
-package br.com.sistemacadastro.sistemacadastro.cargosPorSetor;
+package br.com.sistemacadastro.sistemacadastro.model;
 
-import br.com.sistemacadastro.sistemacadastro.cargo.Cargos;
-import br.com.sistemacadastro.sistemacadastro.setor.Setores;
 import jakarta.persistence.*;
 import lombok.Data;
 

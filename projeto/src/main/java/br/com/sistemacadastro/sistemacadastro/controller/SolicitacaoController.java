@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.dto.SolicitacoesDto;
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
-import br.com.sistemacadastro.sistemacadastro.solicitacao.Solicitacoes;
-import br.com.sistemacadastro.sistemacadastro.solicitacao.SolicitacoesDto;
 
 
 @Controller

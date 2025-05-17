@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.dto.SetoresDto;
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.setor.SetoresDto;
-import br.com.sistemacadastro.sistemacadastro.setor.SetoresService;
+import br.com.sistemacadastro.sistemacadastro.service.SetoresService;
 
 @Controller
 @RequestMapping("/setores")

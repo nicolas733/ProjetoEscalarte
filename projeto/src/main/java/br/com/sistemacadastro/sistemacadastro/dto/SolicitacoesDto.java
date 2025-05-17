@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.solicitacao;
+package br.com.sistemacadastro.sistemacadastro.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

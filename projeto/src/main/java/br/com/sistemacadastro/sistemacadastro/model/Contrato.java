@@ -1,7 +1,5 @@
-package br.com.sistemacadastro.sistemacadastro.contrato;
+package br.com.sistemacadastro.sistemacadastro.model;
 
-import br.com.sistemacadastro.sistemacadastro.cargo.Cargos;
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

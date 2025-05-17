@@ -1,11 +1,11 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
-import br.com.sistemacadastro.sistemacadastro.cargo.Cargos;
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.colaborador.ColaboradorDto;
-import br.com.sistemacadastro.sistemacadastro.colaborador.EditDto;
-import br.com.sistemacadastro.sistemacadastro.contrato.Contrato;
-import br.com.sistemacadastro.sistemacadastro.endereco.Endereco;
+import br.com.sistemacadastro.sistemacadastro.dto.ColaboradorDto;
+import br.com.sistemacadastro.sistemacadastro.dto.EditDto;
+import br.com.sistemacadastro.sistemacadastro.model.Cargos;
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.model.Contrato;
+import br.com.sistemacadastro.sistemacadastro.model.Endereco;
 import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ContratoRepository;

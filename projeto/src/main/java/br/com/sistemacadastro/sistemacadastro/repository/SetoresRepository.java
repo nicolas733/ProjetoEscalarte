@@ -2,7 +2,7 @@ package br.com.sistemacadastro.sistemacadastro.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.sistemacadastro.sistemacadastro.setor.Setores;
+import br.com.sistemacadastro.sistemacadastro.model.Setores;
 
 import java.util.Optional;
 

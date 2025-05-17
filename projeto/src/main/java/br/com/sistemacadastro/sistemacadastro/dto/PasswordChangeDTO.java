@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.meuUsuario;
+package br.com.sistemacadastro.sistemacadastro.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

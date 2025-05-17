@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.turno;
+package br.com.sistemacadastro.sistemacadastro.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

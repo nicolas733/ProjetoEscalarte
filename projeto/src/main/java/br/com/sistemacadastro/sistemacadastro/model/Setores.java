@@ -1,7 +1,5 @@
-package br.com.sistemacadastro.sistemacadastro.setor;
+package br.com.sistemacadastro.sistemacadastro.model;
 
-import br.com.sistemacadastro.sistemacadastro.cargosPorSetor.CargosPorSetor;
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

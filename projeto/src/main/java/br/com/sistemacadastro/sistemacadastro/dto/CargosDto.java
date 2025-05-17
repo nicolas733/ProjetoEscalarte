@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.cargo;
+package br.com.sistemacadastro.sistemacadastro.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

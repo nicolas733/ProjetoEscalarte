@@ -1,7 +1,5 @@
-package br.com.sistemacadastro.sistemacadastro.solicitacao;
+package br.com.sistemacadastro.sistemacadastro.model;
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.escala.Escalas;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

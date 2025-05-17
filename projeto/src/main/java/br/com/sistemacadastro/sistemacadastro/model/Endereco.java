@@ -1,4 +1,4 @@
-package br.com.sistemacadastro.sistemacadastro.endereco;
+package br.com.sistemacadastro.sistemacadastro.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;

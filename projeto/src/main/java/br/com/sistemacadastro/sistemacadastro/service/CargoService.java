@@ -1,11 +1,13 @@
-package br.com.sistemacadastro.sistemacadastro.cargo;
+package br.com.sistemacadastro.sistemacadastro.service;
 
-import br.com.sistemacadastro.sistemacadastro.cargosPorSetor.CargosPorSetor;
+import br.com.sistemacadastro.sistemacadastro.dto.CargosDto;
+import br.com.sistemacadastro.sistemacadastro.model.Cargos;
+import br.com.sistemacadastro.sistemacadastro.model.CargosPorSetor;
+import br.com.sistemacadastro.sistemacadastro.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ContratoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.setor.Setores;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

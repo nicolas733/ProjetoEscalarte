@@ -1,8 +1,5 @@
-package br.com.sistemacadastro.sistemacadastro.colaborador;
+package br.com.sistemacadastro.sistemacadastro.model;
 
-import br.com.sistemacadastro.sistemacadastro.contrato.Contrato;
-import br.com.sistemacadastro.sistemacadastro.endereco.Endereco;
-import br.com.sistemacadastro.sistemacadastro.escala.Escalas;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

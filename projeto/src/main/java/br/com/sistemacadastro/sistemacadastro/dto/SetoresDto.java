@@ -1,6 +1,6 @@
-package br.com.sistemacadastro.sistemacadastro.setor;
+package br.com.sistemacadastro.sistemacadastro.dto;
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 

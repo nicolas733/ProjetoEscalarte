@@ -1,13 +1,13 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
 
-import br.com.sistemacadastro.sistemacadastro.colaborador.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.meuUsuario.PasswordChangeDTO;
+import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
-import br.com.sistemacadastro.sistemacadastro.solicitacao.Solicitacoes;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
