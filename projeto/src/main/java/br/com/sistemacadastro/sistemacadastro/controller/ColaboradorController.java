@@ -4,15 +4,9 @@ import br.com.sistemacadastro.sistemacadastro.dto.ColaboradorDTO;
 import br.com.sistemacadastro.sistemacadastro.dto.EditDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Cargos;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Contrato;
-import br.com.sistemacadastro.sistemacadastro.model.Endereco;
-import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.ContratoRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.EnderecoRepository;
+import br.com.sistemacadastro.sistemacadastro.service.ColaboradorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,80 +20,45 @@ import java.util.Optional;
 public class ColaboradorController {
 
     @Autowired
-    private ColaboradorRepository repo;
-
-    @Autowired
-    private EnderecoRepository repository;
-
-    @Autowired
-    private ContratoRepository repoContrato;
-
-    @Autowired
-    private CargoRepository cargoRepository;
-
+    private ColaboradorService service;
 
     @GetMapping("/cadastrar")
-        public String showCadastrarPage(Model model) {
-            ColaboradorDTO colaboradorDto = new ColaboradorDTO();
-            List<Cargos> cargos = cargoRepository.findAll();
-            model.addAttribute("cargos", cargos);
-            model.addAttribute("colaboradorDto", colaboradorDto);
-            return "adminpages/cadastroColaborador"; // Retorna o template correto diretamente
-        }
+    public String showCadastrarPage(Model model) {
+        ColaboradorDTO colaboradorDto = new ColaboradorDTO();
+        List<Cargos> cargos = service.listarCargos();
+        model.addAttribute("cargos", cargos);
+        model.addAttribute("colaboradorDto", colaboradorDto);
+        return "adminpages/cadastroColaborador";
+    }
 
     @PostMapping("/cadastrar")
     public String cadastrarColaborador(@Valid @ModelAttribute ColaboradorDTO colaboradorDto, BindingResult result, Model model) {
-        Optional<Colaborador> colaboradorExistente = this.repo.findByEmail(colaboradorDto.getEmail());
+        List<Cargos> cargos = service.listarCargos();
+        model.addAttribute("cargos", cargos);
+
         if (result.hasErrors()) {
-            List<Cargos> cargos = cargoRepository.findAll();
-            model.addAttribute("cargos", cargos);
+            System.out.println("Erro de validação!");
+            model.addAttribute("colaboradorDto", colaboradorDto);
             return "adminpages/cadastroColaborador";
         }
 
+        Optional<Colaborador> colaboradorExistente = service.buscarPorEmail(colaboradorDto.getEmail());
         if (colaboradorExistente.isEmpty()) {
-
-            // Cria e preenche o colaborador
-            Colaborador colaborador = new Colaborador();
-            colaborador.setNome(colaboradorDto.getNome());
-            colaborador.setEmail(colaboradorDto.getEmail());
-            colaborador.setSenha(colaboradorDto.getSenha());
-            colaborador.setTipoUsuario(colaboradorDto.getTipoUsuario());
-            colaborador.setTelefone(colaboradorDto.getTelefone());
-            colaborador.setCpf(colaboradorDto.getCpf());
-            colaborador.setDataNascimento(colaboradorDto.getDataNascimento());
-
-            Endereco endereco = repository.save(colaboradorDto.getEndereco());
-            colaborador.setEndereco(endereco);
-
-
-            // Cria e associa o contrato
-            Contrato contrato = colaboradorDto.getContrato();
-            contrato.setColaborador(colaborador);
-
-
-            Cargos cargo = cargoRepository.findById(colaboradorDto.getCargoId()).orElseThrow(() -> new RuntimeException("Cargo não encontrado"));
-            contrato.setCargos(cargo);
-
-            colaborador.setContrato(contrato);
-            // Salva o colaborador
-            repo.save(colaborador);
-
+            service.salvarColaborador(colaboradorDto);
             return "redirect:/admin/main";
         } else {
-            model.addAttribute("emailJaCadastrado", true); // Adiciona uma variável para a view
+            model.addAttribute("emailJaCadastrado", true);
+            model.addAttribute("colaboradorDto", colaboradorDto);
             return "adminpages/cadastroColaborador";
         }
     }
 
 
-
     @GetMapping("/editar/{id}")
     public String mostrarPagEdicao(Model model, @PathVariable("id") int id) {
         try {
-            Colaborador colaborador = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
+            Colaborador colaborador = service.buscarPorId(id);
             model.addAttribute("colaborador", colaborador);
-
-
 
             EditDTO editDto = new EditDTO();
             editDto.setId(colaborador.getId());
@@ -108,11 +67,8 @@ public class ColaboradorController {
             editDto.setTelefone(colaborador.getTelefone());
             editDto.setCpf(colaborador.getCpf());
             editDto.setTipoUsuario(colaborador.getTipoUsuario());
-
             editDto.setEndereco(colaborador.getEndereco());
             editDto.setContrato(colaborador.getContrato());
-
-
 
             model.addAttribute("editDto", editDto);
 
@@ -124,32 +80,18 @@ public class ColaboradorController {
         return "adminpages/EditColaborador";
     }
 
-
     @PostMapping("/editar")
     public String atualizarColaborador(Model model, @Valid @ModelAttribute EditDTO editDto, BindingResult result) {
         try {
-            Colaborador colaborador = repo.findById(editDto.getId());
-            System.out.println(colaborador);
+            Colaborador colaborador = service.buscarPorId(editDto.getId());
             model.addAttribute("colaborador", colaborador);
             model.addAttribute("editDto", editDto);
 
             if (result.hasErrors()) {
                 return "adminpages/EditColaborador";
             }
-            colaborador.setNome(editDto.getNome());
-            colaborador.setEmail(editDto.getEmail());
-            colaborador.setTelefone(editDto.getTelefone());
-            colaborador.setCpf(editDto.getCpf());
-            colaborador.setTipoUsuario(editDto.getTipoUsuario());// Esta linha é essencial para garantir que o tipo de usuário seja atualizado
-            colaborador.getEndereco().setBairro(editDto.getEndereco().getBairro());
-            colaborador.getEndereco().setRua(editDto.getEndereco().getRua());
-            colaborador.getEndereco().setCep(editDto.getEndereco().getCep());
 
-            colaborador.getEndereco().setNumero(editDto.getEndereco().getNumero());
-            colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
-
-            System.out.println(colaborador);
-            repo.save(colaborador);
+            service.atualizarColaborador(editDto);
 
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
@@ -157,18 +99,14 @@ public class ColaboradorController {
         return "redirect:/admin/main";
     }
 
-
     @GetMapping("/deletar")
-        public String excluirColaborador(@RequestParam int id) {
-            try{
-                Colaborador colaborador = repo.findById(id);
-                repo.delete(colaborador);
-            }catch (Exception ex) {
-                System.out.println("Erro: " + ex.getMessage());
-            }
-
-            return "redirect:/admin/main";
+    public String excluirColaborador(@RequestParam int id) {
+        try {
+            service.deletarColaborador(id);
+        } catch (Exception ex) {
+            System.out.println("Erro: " + ex.getMessage());
         }
 
+        return "redirect:/admin/main";
     }
-
+}
