@@ -13,164 +13,155 @@
 </head>
 
 <body>
-<div class="sidebar">
-  <div class="logo">
-    <img src="/img/logo.png" alt="Logo">
-    <span>Escalarte</span>
-  </div>
-  <ul class="menu">
-    <li><a href="/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-    <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
-    <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
-    <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-    <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
-    <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-  </ul>
-</div>
+  <div th:replace="~{layout/sidebarAdmin :: sidebarAdmin}"></div>
 
-<div class="main">
-  <div class="header">
-    <div class="header-title">Gerenciar Setores</div>
-    <a class="btn btn-primary" href="/setores/cadastrar">Cadastrar Setores</a>
-  </div>
+  <div class="main">
+    <div class="header">
+      <div class="header-title">Gerenciar Setores</div>
+      <a class="btn btn-primary" href="/setores/cadastrar">Cadastrar Setores</a>
+    </div>
 
-  <div class="card">
-    <h3>Setores</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Gerente</th>
-        <th>Qtd. Colaboradores Necessários</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="setor: ${setores}">
-        <td th:text="${setor.id}"></td>
-        <td th:text="${setor.nomesetor}"></td>
-        <td th:text="${setor.gerenteSetor != null ? setor.gerenteSetor.nome : 'N/A'}"></td>
-        <td th:text="${setor.quantidadeColaboradores}"></td>
-        <td>
-          <div class="actions">
-            <a class="btn btn-primary btn-sm" th:href="@{/setores/editar/{id}(id=${setor.id})}">Editar</a>
-            <a href="#" class="btn btn-danger btn-sm" th:onclick="'confirmarExclusao(\'/setores/deletar?id=' + ${setor.id} + '\')'">Excluir</a>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="card">
+      <h3>Setores</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Gerente</th>
+            <th>Qtd. Colaboradores Necessários</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="setor: ${setores}">
+            <td th:text="${setor.id}"></td>
+            <td th:text="${setor.nomesetor}"></td>
+            <td th:text="${setor.gerenteSetor != null ? setor.gerenteSetor.nome : 'N/A'}"></td>
+            <td th:text="${setor.quantidadeColaboradores}"></td>
+            <td>
+              <div class="actions">
+                <a class="btn btn-primary btn-sm" th:href="@{/setores/editar/{id}(id=${setor.id})}">Editar</a>
+                <a href="#" class="btn btn-danger btn-sm"
+                  th:onclick="'confirmarExclusao(\'/setores/deletar?id=' + ${setor.id} + '\')'">Excluir</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
 
-  <div class="header" style="margin-top: 30px;">
-    <div class="header-title">Gerenciar Cargos</div>
-    <a class="btn btn-primary" href="/cargo/cadastrar">Cadastrar Cargos</a>
-  </div>
+    <div class="header" style="margin-top: 30px;">
+      <div class="header-title">Gerenciar Cargos</div>
+      <a class="btn btn-primary" href="/cargo/cadastrar">Cadastrar Cargos</a>
+    </div>
 
-  <div class="card">
-    <h3>Cargos</h3>
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome do Cargo</th>
-        <th>Carga Horária Limite Diaria</th>
-        <th>Setor</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
+    <div class="card">
+      <h3>Cargos</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome do Cargo</th>
+            <th>Carga Horária Limite Diaria</th>
+            <th>Setor</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
 
-      <tr th:each="cargoPorSetor : ${cargosPorSetor}">
-        <td th:text="${cargoPorSetor.cargo.id}"></td>
-        <td th:text="${cargoPorSetor.cargo.nomeCargo}"></td>
-        <td th:text="${cargoPorSetor.cargo.cargaHorarioLimite}"></td>
-        <td th:text="${cargoPorSetor.setor.nomesetor}"></td>
-        <td>
-          <div class="actions">
-            <a class="btn btn-primary btn-sm" th:href="@{/cargo/editar/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
-            <a class="btn btn-danger btn-sm" th:onclick="'confirmarExclusao(\'/cargo/deletar?id=' + ${cargoPorSetor.cargo.id} + '\')'">Excluir</a>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Modal Setor -->
-<div class="modal fade" id="modalSetor" tabindex="-1" aria-labelledby="modalSetorLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content p-3">
-      <div class="modal-header">
-        <h5 class="modal-title">Cadastrar Setor</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-
+          <tr th:each="cargoPorSetor : ${cargosPorSetor}">
+            <td th:text="${cargoPorSetor.cargo.id}"></td>
+            <td th:text="${cargoPorSetor.cargo.nomeCargo}"></td>
+            <td th:text="${cargoPorSetor.cargo.cargaHorarioLimite}"></td>
+            <td th:text="${cargoPorSetor.setor.nomesetor}"></td>
+            <td>
+              <div class="actions">
+                <a class="btn btn-primary btn-sm"
+                  th:href="@{/cargo/editar/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
+                <a class="btn btn-danger btn-sm"
+                  th:onclick="'confirmarExclusao(\'/cargo/deletar?id=' + ${cargoPorSetor.cargo.id} + '\')'">Excluir</a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-</div>
 
-<!-- Modal Cargo -->
-<div class="modal fade" id="modalCargo" tabindex="-1" aria-labelledby="modalCargoLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content p-3">
-      <div class="modal-header">
-        <h5 class="modal-title">Cadastrar Cargo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <!-- Modal Setor -->
+  <div class="modal fade" id="modalSetor" tabindex="-1" aria-labelledby="modalSetorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title">Cadastrar Setor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
       </div>
-
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Modal Cargo -->
+  <div class="modal fade" id="modalCargo" tabindex="-1" aria-labelledby="modalCargoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title">Cadastrar Cargo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
 
-<script>lucide.createIcons();</script>
+      </div>
+    </div>
+  </div>
 
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  var mensagemSucesso = /*[[${mensagemSucesso}]]*/ null;
-  var mensagemErro = /*[[${mensagemErro}]]*/ null;
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  if (mensagemSucesso) {
-    Swal.fire({
-      icon: 'success',
-      title: 'Sucesso',
-      text: mensagemSucesso,
-      confirmButtonText: 'OK'
-    });
-  }
+  <script>lucide.createIcons();</script>
 
-  if (mensagemErro) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Erro',
-      text: mensagemErro,
-      confirmButtonText: 'OK'
-    });
-  }
-  /*]]>*/
-</script>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var mensagemSucesso = /*[[${mensagemSucesso}]]*/ null;
+    var mensagemErro = /*[[${mensagemErro}]]*/ null;
 
-<script>
-  function confirmarExclusao(url) {
-    Swal.fire({
-      title: 'Tem certeza?',
-      text: 'Essa ação não poderá ser desfeita!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sim, excluir',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.href = url;
-      }
-    });
-  }
-</script>
+    if (mensagemSucesso) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Sucesso',
+        text: mensagemSucesso,
+        confirmButtonText: 'OK'
+      });
+    }
+
+    if (mensagemErro) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: mensagemErro,
+        confirmButtonText: 'OK'
+      });
+    }
+    /*]]>*/
+  </script>
+
+  <script>
+    function confirmarExclusao(url) {
+      Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Essa ação não poderá ser desfeita!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, excluir',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = url;
+        }
+      });
+    }
+  </script>
 </body>
+
 </html>

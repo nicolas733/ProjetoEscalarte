@@ -11,6 +11,7 @@ import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepositor
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
+import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,17 +39,20 @@ public class AdminController {
     @Autowired
     private CargosPorSetorRepository cargosPorSetorRepository;
 
+    public static String rotaPrivada(String rota, HttpSession session) {
+        if (!SessionUtils.isAdmin(session)) {
+            return "redirect:/login";
+        }
+        return rota;
+    }
+
     @GetMapping({ "/main" })
 
     public String listarDados(HttpSession session, Model model) {
-        Object user = session.getAttribute("colaboradorId");
-        if (user == null) {
-            return "redirect:/login";
-        }
         List<Colaborador> colaboradores = repo.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
-        return "adminpages/usuarios";
+        return rotaPrivada("adminpages/usuarios", session);
     }
 
     @GetMapping("/dashboard")
@@ -81,7 +85,7 @@ public class AdminController {
             model.addAttribute("iniciais", "A");
         }
 
-        return "adminpages/dashboard";
+        return rotaPrivada("adminpages/dashboard", session);
     }
 
     private String getIniciais(String nomeCompleto) {
@@ -93,7 +97,7 @@ public class AdminController {
     }
 
     @GetMapping("/setorcargo")
-    public String mostrarSetoresCargos(Model model) {
+    public String mostrarSetoresCargos(Model model, HttpSession session) {
         List<Setores> setores = reposito.findAll();
         model.addAttribute("setores", setores);
         model.addAttribute("novoSetor", new Setores());
@@ -101,20 +105,20 @@ public class AdminController {
         model.addAttribute("cargosPorSetor", cargos);
         model.addAttribute("novoCargo", new Cargos());
 
-        return "adminpages/setores";
+        return rotaPrivada("adminpages/setores", session);
     }
 
     @GetMapping("/escala")
-    public String mostrarEscala(Model model) {
-        return "adminpages/escala";
+    public String mostrarEscala(Model model, HttpSession session) {
+        return rotaPrivada("adminpages/escala", session);
     }
 
     @GetMapping("/solici")
-    public String mostrarSolicitacao(Model model) {
+    public String mostrarSolicitacao(Model model, HttpSession session) {
         List<Solicitacoes> solicitacoes = solicitacaoRepository.findAll();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
-        return "adminpages/Solici";
+        return rotaPrivada("adminpages/Solici", session);
     }// teste
 
     @GetMapping("/minhaconta")
