@@ -29,45 +29,33 @@
 <div class="main">
     <div class="header">
         <div class="header-title">Gerenciar Usuários</div>
-            <a class="btn btn-primary" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
+
     </div>
 
 
     <div class="card">
+
         <table>
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Email</th>
-                <th>Senha</th>
                 <th>Tipo</th>
                 <th>CPF</th>
                 <th>Telefone</th>
                 <th>Nascimento</th>
                 <th>Setor</th>
                 <th>Cargo</th>
-                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="colaborador : ${colaboradors}">
-                <td th:text="${colaborador.id}"></td>
                 <td><strong th:text="${colaborador.nome}"></strong></td>
                 <td th:text="${colaborador.email}"></td>
-                <td th:text="${colaborador.senha}"></td>
                 <td th:text="${colaborador.userType}"></td>
                 <td th:text="${colaborador.cpf}"></td>
                 <td th:text="${colaborador.telefone}"></td>
                 <td th:text="${colaborador.dataNascimento}"></td>
-                <td style="white-space: nowrap">
-                    <a class="btn btn-warning btn-sm"
-                       th:href="@{/colaborador/edit/{id}(id=${colaborador.id})}">Editar</a>
-                    <a class="btn btn-danger btn-sm"
-                       th:href="@{/colaborador/delete(id=${colaborador.id})}"
-                       onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
-                </td>
-            </tr>
             </tbody>
         </table>
     </div>

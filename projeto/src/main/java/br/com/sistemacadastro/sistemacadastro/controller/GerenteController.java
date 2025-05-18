@@ -87,9 +87,12 @@ public class GerenteController {
     }
 
     @GetMapping("/equipe")
-    public String equipe (Model model) {
+    public String equipe(Model model) {
+        List<Colaborador> colaboradors = collaboratorsRepository.findAll();
+        model.addAttribute("colaboradors", colaboradors);
         return "gerentepages/equipe";
     }
+
 
     @GetMapping("/minhaconta")
     public String mostrarMinhaConta(HttpSession session, Model model) {
