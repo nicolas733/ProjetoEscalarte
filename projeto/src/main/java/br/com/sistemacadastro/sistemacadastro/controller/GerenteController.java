@@ -1,20 +1,15 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
+import br.com.sistemacadastro.sistemacadastro.dto.EquipeDTO;
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
-import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
+import br.com.sistemacadastro.sistemacadastro.service.GerenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,17 +18,7 @@ import java.util.List;
 public class GerenteController {
 
     @Autowired
-    private ColaboradorRepository collaboratorsRepository;
-
-    @Autowired
-    private CargoRepository cargosRepository;
-
-    @Autowired
-    private SetoresRepository setoresRepository;
-
-    @Autowired
-    private SolicitacaoRepository solicitacoesRepository;
-
+    private GerenteService gerenteService;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
@@ -46,12 +31,11 @@ public class GerenteController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            var colaborador = collaboratorsRepository.findById(colaboradorId);
+            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
-                String iniciais = getIniciais(nomeCompleto);
-                model.addAttribute("iniciais", iniciais);
+                model.addAttribute("iniciais", gerenteService.obterIniciais(nomeCompleto));
             }
         }
 
@@ -63,33 +47,60 @@ public class GerenteController {
         return "gerentepages/dashboard";
     }
 
-    private String getIniciais(String nome) {
-        String[] partes = nome.trim().split(" ");
-        if (partes.length >= 2) {
-            return partes[0].substring(0, 1).toUpperCase() + partes[1].substring(0, 1).toUpperCase();
-        } else if (partes.length == 1) {
-            return partes[0].substring(0, 1).toUpperCase();
-        }
-        return "";
-    }
-
     @GetMapping("/solicitacoes")
-    public String solicitacoes (Model model) {
-        List<Solicitacoes> solicitacoes = solicitacoesRepository.findAll();
+    public String solicitacoes(Model model) {
+        List<Solicitacoes> solicitacoes = gerenteService.listarSolicitacoes();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
         return "gerentepages/solicitacoes";
     }
 
     @GetMapping("/escala")
-    public String escala (Model model) {
+    public String escala(Model model) {
         return "gerentepages/escala";
     }
 
     @GetMapping("/equipe")
-    public String equipe(Model model) {
-        List<Colaborador> colaboradors = collaboratorsRepository.findAll();
-        model.addAttribute("colaboradors", colaboradors);
+    public String equipe(Model model, HttpSession session) {
+        Integer gerenteId = null;
+
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        if (colaboradorIdObj instanceof Integer) {
+            gerenteId = (Integer) colaboradorIdObj;
+        } else if (colaboradorIdObj instanceof Long) {
+            gerenteId = ((Long) colaboradorIdObj).intValue();
+        }
+
+        List<Colaborador> colaboradores = gerenteService.listarColaboradoresPorSetorGerente(gerenteId);
+
+        List<EquipeDTO> equipeDTOList = colaboradores.stream()
+                .map(colaborador -> {
+                    EquipeDTO dto = new EquipeDTO();
+                    dto.setId(colaborador.getId());
+                    dto.setNome(colaborador.getNome());
+                    dto.setEmail(colaborador.getEmail());
+                    dto.setCpf(colaborador.getCpf());
+
+                    if (colaborador.getContrato() != null && colaborador.getContrato().getCargos() != null) {
+                        dto.setNomeCargo(colaborador.getContrato().getCargos().getNomeCargo());
+
+                        var cargo = colaborador.getContrato().getCargos();
+                        var cargoPorSetor = gerenteService.buscarCargoPorSetor(cargo.getId());
+
+                        if (cargoPorSetor != null && cargoPorSetor.getSetor() != null) {
+                            dto.setNomeSetor(cargoPorSetor.getSetor().getNomesetor());
+                        } else {
+                            dto.setNomeSetor("Setor não atribuído");
+                        }
+                    } else {
+                        dto.setNomeCargo("Cargo não atribuído");
+                        dto.setNomeSetor("Setor não atribuído");
+                    }
+                    dto.setTipoUsuario(colaborador.getTipoUsuario().name());
+                    return dto;
+                }).toList();
+
+        model.addAttribute("equipe", equipeDTOList);
         return "gerentepages/equipe";
     }
 
@@ -100,17 +111,15 @@ public class GerenteController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = collaboratorsRepository.findById(colaboradorId);
+            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
             if (colaborador != null) {
                 model.addAttribute("colaborador", colaborador);
-
-
                 return "gerentepages/minhaconta";
             }
         }
-
         return "redirect:/login";
     }
+
 
     @GetMapping("/alterarsenha")
     public String mostrarAlterarSenha(HttpSession session, Model model) {
@@ -118,7 +127,7 @@ public class GerenteController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = collaboratorsRepository.findById(colaboradorId);
+            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
             if (colaborador != null) {
                 PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
                 passwordChangeDto.setEmail(colaborador.getEmail());
@@ -126,26 +135,21 @@ public class GerenteController {
                 return "gerentepages/alterarsenha";
             }
         }
-
         return "redirect:/login";
     }
 
+
     @PostMapping("/alterarsenha")
     public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
-        // Recupera o colaborador
-        Colaborador colaborador = collaboratorsRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
+        boolean sucesso = gerenteService.alterarSenha(passwordChangeDto);
 
-        if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
-            // Atualiza a senha
-            colaborador.setSenha(passwordChangeDto.getNovaSenha());
-            collaboratorsRepository.save(colaborador);
+        if (sucesso) {
             model.addAttribute("message", "Senha alterada com sucesso!");
             return "redirect:/gerente/minhaconta";
         } else {
             model.addAttribute("error", "A senha antiga está incorreta.");
             model.addAttribute("passwordChangeDto", passwordChangeDto);
+            return "gerentepages/alterarsenha";
         }
-
-        return "gerentepages/alterarsenha";
     }
 }

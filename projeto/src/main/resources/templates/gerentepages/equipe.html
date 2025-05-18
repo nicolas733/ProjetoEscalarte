@@ -35,27 +35,27 @@
 
     <div class="card">
 
-        <table>
+        <table class="table table-striped">
             <thead>
             <tr>
                 <th>Nome</th>
                 <th>Email</th>
-                <th>Tipo</th>
                 <th>CPF</th>
-                <th>Telefone</th>
-                <th>Nascimento</th>
-                <th>Setor</th>
                 <th>Cargo</th>
+                <th>Setor</th>
+                <th>Tipo de Usuário</th>
+                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="colaborador : ${colaboradors}">
-                <td><strong th:text="${colaborador.nome}"></strong></td>
+            <tr th:each="colaborador : ${equipe}">
+                <td th:text="${colaborador.nome}"></td>
                 <td th:text="${colaborador.email}"></td>
-                <td th:text="${colaborador.userType}"></td>
                 <td th:text="${colaborador.cpf}"></td>
-                <td th:text="${colaborador.telefone}"></td>
-                <td th:text="${colaborador.dataNascimento}"></td>
+                <td th:text="${colaborador.nomeCargo}"></td>
+                <td th:text="${colaborador.nomeSetor}"></td>
+                <td th:text="${colaborador.tipoUsuario}"></td>
+            </tr>
             </tbody>
         </table>
     </div>
