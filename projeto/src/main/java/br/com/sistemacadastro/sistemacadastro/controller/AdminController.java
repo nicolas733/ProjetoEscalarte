@@ -25,13 +25,13 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private ColaboradorRepository repo;
+    private ColaboradorRepository colaboradorRepository;
 
     @Autowired
-    private CargoRepository repository;
+    private CargoRepository cargoRepository;
 
     @Autowired
-    private SetoresRepository reposito;
+    private SetoresRepository setoresRepository;
 
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
@@ -39,31 +39,36 @@ public class AdminController {
     @Autowired
     private CargosPorSetorRepository cargosPorSetorRepository;
 
-    public static String rotaPrivada(String rota, HttpSession session) {
-        if (!SessionUtils.isAdmin(session)) {
-            return "redirect:/login";
+    private String rotaPrivada(String rota, HttpSession session) {
+        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        if (colaboradorId != null) {
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+            if (colaborador != null && colaborador.getTipoUsuario() == Colaborador.TipoUsuario.ADMIN) {
+                return rota;
+            }
         }
-        return rota;
+
+        return "redirect:/login";
     }
 
     @GetMapping({ "/main" })
 
     public String listarDados(HttpSession session, Model model) {
-        List<Colaborador> colaboradores = repo.findAll();
+        List<Colaborador> colaboradores = colaboradorRepository.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
         return rotaPrivada("adminpages/usuarios", session);
     }
 
     @GetMapping("/dashboard")
-    public <Collaborator> String mostrarDashboard(Model model, HttpSession session) {
-        long total = repo.count();
+    public String mostrarDashboard(Model model, HttpSession session) {
+        long total = colaboradorRepository.count();
         model.addAttribute("totalColaboradores", total);
 
-        long totalSetor = reposito.count();
+        long totalSetor = setoresRepository.count();
         model.addAttribute("totalSetores", totalSetor);
 
-        long totalCargo = repository.count();
+        long totalCargo = cargoRepository.count();
         model.addAttribute("totalCargos", totalCargo);
 
         long totalSolicitacao = solicitacaoRepository.count();
@@ -74,7 +79,7 @@ public class AdminController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Collaborator colaborador = (Collaborator) repo.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = ((Colaborador) colaborador).getNome();
                 model.addAttribute("nome", nomeCompleto);
@@ -98,7 +103,7 @@ public class AdminController {
 
     @GetMapping("/setorcargo")
     public String mostrarSetoresCargos(Model model, HttpSession session) {
-        List<Setores> setores = reposito.findAll();
+        List<Setores> setores = setoresRepository.findAll();
         model.addAttribute("setores", setores);
         model.addAttribute("novoSetor", new Setores());
         List<CargosPorSetor> cargos = cargosPorSetorRepository.findAll();
@@ -118,60 +123,46 @@ public class AdminController {
         List<Solicitacoes> solicitacoes = solicitacaoRepository.findAll();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
+
         return rotaPrivada("adminpages/Solici", session);
     }// teste
 
     @GetMapping("/minhaconta")
     public String mostrarMinhaConta(HttpSession session, Model model) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+        model.addAttribute("colaborador", colaborador);
 
-        if (colaboradorId != null) {
-            Colaborador colaborador = repo.findById(colaboradorId);
-            if (colaborador != null) {
-                model.addAttribute("colaborador", colaborador);
-
-                return "adminpages/minhaconta";
-            }
-        }
-
-        return "redirect:/login";
+        return rotaPrivada("adminpages/minhaconta", session);
     }
 
     @GetMapping("/alterarsenha")
     public String mostrarAlterarSenha(HttpSession session, Model model) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+        PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
+        passwordChangeDto.setEmail(colaborador.getEmail());
+        model.addAttribute("passwordChangeDto", passwordChangeDto);
 
-        if (colaboradorId != null) {
-            Colaborador colaborador = repo.findById(colaboradorId);
-            if (colaborador != null) {
-                PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
-                passwordChangeDto.setEmail(colaborador.getEmail());
-                model.addAttribute("passwordChangeDto", passwordChangeDto);
-                return "adminpages/alterarsenha";
-            }
-        }
-
-        return "redirect:/login";
+        return rotaPrivada("adminpages/alterarsenha", session);
     }
 
     @PostMapping("/alterarsenha")
-    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
+    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model, HttpSession session) {
         // Recupera o colaborador
-        Colaborador colaborador = repo.findCollaboratorByEmail(passwordChangeDto.getEmail());
+        Colaborador colaborador = colaboradorRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
 
         if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
             // Atualiza a senha
             colaborador.setSenha(passwordChangeDto.getNovaSenha());
-            repo.save(colaborador);
+            colaboradorRepository.save(colaborador);
             model.addAttribute("message", "Senha alterada com sucesso!");
             return "redirect:/admin/minhaconta";
         } else {
             model.addAttribute("error", "A senha antiga está incorreta.");
             model.addAttribute("passwordChangeDto", passwordChangeDto);
         }
-
-        return "adminpages/alterarsenha";
+        
+        return rotaPrivada("adminpages/alterarsenha", session);
     }
 }

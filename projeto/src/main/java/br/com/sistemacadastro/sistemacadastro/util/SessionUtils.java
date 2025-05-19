@@ -9,11 +9,12 @@ public class SessionUtils {
         return session != null && session.getAttribute("colaboradorId") != null;
     }
 
-    public static String getIdUsuario(HttpSession session) {
+    public static Long getIdUsuario(HttpSession session) {
         if (!isLogged(session))
             return null;
-        Object usuarioId = session.getAttribute("colaboradorId");
-        return usuarioId != null ? usuarioId.toString() : null;
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = ((Number) colaboradorIdObj).longValue();
+        return colaboradorId;
     }
 
     public static String getNomeUsuario(HttpSession session) {
@@ -25,7 +26,7 @@ public class SessionUtils {
 
     public static TipoUsuario getTipoUsuario(HttpSession session) {
         if (!isLogged(session))
-        return null;
+            return null;
         Object usuarioTipo = session.getAttribute("colaboradorTipoUsuario");
         return usuarioTipo != null ? TipoUsuario.valueOf(usuarioTipo.toString()) : null;
     }
