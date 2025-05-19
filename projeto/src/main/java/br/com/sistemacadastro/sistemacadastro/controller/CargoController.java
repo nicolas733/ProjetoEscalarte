@@ -1,5 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
+import br.com.sistemacadastro.sistemacadastro.model.Cargos;
+import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import br.com.sistemacadastro.sistemacadastro.service.CargoService;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cargo")
@@ -27,9 +30,12 @@ public class CargoController {
     @Autowired
     private SetoresRepository setoresRepository;
 
+    @Autowired
+    private CargoRepository repository;
+
     @GetMapping("/cadastrar")
     public String showCadastrarPageCargo(Model model) {
-        model.addAttribute("cargosDto", new CargosDTO());
+        model.addAttribute("cargosDTO", new CargosDTO());
         model.addAttribute("setores", setoresRepository.findAll());
         return "adminpages/cadastroCargo";
     }
@@ -38,14 +44,18 @@ public class CargoController {
     public String cadastrarCargos(@Valid @ModelAttribute CargosDTO cargosDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("setores", setoresRepository.findAll());
-            model.addAttribute("cargosDto", cargosDto);
+            model.addAttribute("cargosDTO", cargosDto);
+            return "adminpages/cadastroCargo";
+        }
+        Optional<Cargos> existente = repository.findByNomeCargo(cargosDto.getNomeCargo());
+        if (existente.isPresent()) {
+            model.addAttribute("cargoJaCadastrado", true);
             return "adminpages/cadastroCargo";
         }
 
-
         try {
             cargoService.cadastrarCargo(cargosDto);
-            return "redirect:/admin/setorcargo";
+            return "redirect:/admin/setorcargo?sucesso=true";
         } catch (IllegalArgumentException e) {
             model.addAttribute("nomeJaCadastrado", true);
             model.addAttribute("setores", setoresRepository.findAll());
@@ -66,7 +76,7 @@ public class CargoController {
         }
 
         cargoService.editarCargo(cargosDto.getId(), cargosDto);
-        return "redirect:/admin/setorcargo";
+        return "redirect:/admin/setorcargo?editado=true";
     }
 
     @GetMapping("/deletar")

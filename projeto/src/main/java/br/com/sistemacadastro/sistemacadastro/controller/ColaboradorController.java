@@ -84,6 +84,8 @@ public class ColaboradorController {
             return "redirect:/admin/main?sucesso=true";
         } else {
             model.addAttribute("emailJaCadastrado", true);
+            List<Cargos> cargos = cargoRepository.findAll();
+            model.addAttribute("cargos", cargos);
             return "adminpages/cadastroColaborador";
         }
     }

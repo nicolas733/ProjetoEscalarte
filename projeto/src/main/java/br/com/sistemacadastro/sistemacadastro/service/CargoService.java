@@ -32,10 +32,6 @@ public class CargoService {
     private ContratoRepository contratoRepository;
 
     public void cadastrarCargo(CargosDTO cargosDto) {
-        Optional<Cargos> existente = repository.findByNomeCargo(cargosDto.getNomeCargo());
-        if (existente.isPresent()) {
-            throw new IllegalArgumentException("Cargo já existe");
-        }
 
         Cargos cargos = new Cargos();
         cargos.setNomeCargo(cargosDto.getNomeCargo());

@@ -1,7 +1,10 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import br.com.sistemacadastro.sistemacadastro.model.Setores;
+import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +34,9 @@ public class SetoresController {
     @Autowired
     private ColaboradorRepository colaboradorRepository;
 
+    @Autowired
+    private SetoresRepository repo;
+
     @GetMapping("")
     public String home() {
         return "setores";
@@ -55,8 +61,17 @@ public class SetoresController {
             return "adminpages/cadastroSetor";
         }
 
-        setoresService.cadastrarSetor(setoresDto);
-        return "redirect:/admin/setorcargo";
+        Optional<Setores> setoresExistentes = repo.findByNomesetor(setoresDto.getNomeSetor());
+        if (setoresExistentes.isEmpty()) {
+            Setores setores = new Setores();
+            setores.setNomesetor(setoresDto.getNomeSetor());
+            setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
+            repo.save(setores);
+        }else {
+            model.addAttribute("setorJaCadastrado", true);
+            return "adminpages/cadastroSetor";
+        }
+        return "redirect:/admin/setorcargo?sucesso=true";
     }
 
     @GetMapping("/editar/{id}")
@@ -78,7 +93,7 @@ public class SetoresController {
         }
 
         setoresService.editarSetor(setoresDto.getId(), setoresDto);
-        return "redirect:/admin/setorcargo";
+        return "redirect:/admin/setorcargo?editado=true";
     }
 
     @GetMapping("/deletar")

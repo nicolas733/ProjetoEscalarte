@@ -162,6 +162,32 @@
       });
     }
   </script>
+
+  <script th:inline="javascript">
+    let urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.get('sucesso') === 'true') {
+      Swal.fire({
+        icon: 'success',
+        title: 'Sucesso!',
+        text: 'Setor/Cargo cadastrado com sucesso.',
+        confirmButtonColor: '#3085d6'
+      }).then(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      });
+    }
+
+    if (urlParams.get('editado') === 'true') {
+      Swal.fire({
+        icon: 'success',
+        title: 'Sucesso!',
+        text: 'Setor/Cargo editado com sucesso.',
+        confirmButtonColor: '#3085d6'
+      }).then(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      });
+    }
+  </script>
 </body>
 
 </html>
