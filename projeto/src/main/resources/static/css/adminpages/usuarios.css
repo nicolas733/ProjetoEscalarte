@@ -2,7 +2,6 @@
 
 * {
     text-decoration: none;
-    user-select: none;
 }
 
 body {
@@ -11,6 +10,21 @@ body {
     display: flex;
     background-color: #f9fbfc;
     text-decoration: none;
+}
+
+.menu li.logout {
+    background-color: #ef5350;
+    color: white;
+}
+
+.menu li.logout a {
+    color: white;
+}
+
+
+.menu li.logout:hover {
+    background-color: #c62828;
+    color: white;
 }
 
 .sidebar {
@@ -248,3 +262,12 @@ td strong {
         display: none;
     }
 }
+
+
+
+
+
+
+
+
+

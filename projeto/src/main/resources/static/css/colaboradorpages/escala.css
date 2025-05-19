@@ -22,6 +22,21 @@ body {
     z-index: 1000;
     transition: transform 0.3s ease;
 }
+.menu li.logout {
+    background-color: #ef5350;
+    color: white;
+    border-radius: 8px;
+}
+
+.menu li.logout a {
+    color: white;
+}
+
+
+.menu li.logout:hover {
+    background-color: #c62828;
+    color: white;
+}
 
 .logo {
     display: flex;

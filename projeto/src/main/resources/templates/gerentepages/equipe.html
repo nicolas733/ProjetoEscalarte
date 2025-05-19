@@ -23,6 +23,7 @@
         <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
         <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
         <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
     </ul>
 </div>
 
@@ -40,18 +41,17 @@
             <tr>
                 <th>Nome</th>
                 <th>Email</th>
-                <th>CPF</th>
+                <th>Telefone</th>
                 <th>Cargo</th>
                 <th>Setor</th>
                 <th>Tipo de Usuário</th>
-                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="colaborador : ${equipe}">
                 <td th:text="${colaborador.nome}"></td>
                 <td th:text="${colaborador.email}"></td>
-                <td th:text="${colaborador.cpf}"></td>
+                <td th:text="${colaborador.telefone}"></td>
                 <td th:text="${colaborador.nomeCargo}"></td>
                 <td th:text="${colaborador.nomeSetor}"></td>
                 <td th:text="${colaborador.tipoUsuario}"></td>

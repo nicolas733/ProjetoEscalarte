@@ -32,6 +32,21 @@ a {
   margin-right: 10px;
 }
 
+.menu li.logout {
+  background-color: #ef5350;
+  color: white;
+}
+
+.menu li.logout a {
+  color: white;
+}
+
+
+.menu li.logout:hover {
+  background-color: #c62828;
+  color: white;
+}
+
 .logo span {
   font-weight: 700;
   font-size: 22px;

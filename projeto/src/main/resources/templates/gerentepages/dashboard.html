@@ -22,6 +22,7 @@
     <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
     <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
     <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+    <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
   </ul>
 </div>
 
@@ -38,6 +39,11 @@
 
   <div class="cards">
     <div class="card">
+      <div class="card-title">Próximo Turno</div>
+      <div class="card-value">Amanhã, 08:00 - 17:00</div>
+      <div class="card-icon"><i data-lucide="clock"></i></div>
+    </div>
+    <div class="card">
       <div class="card-title">Membros da Equipe</div>
       <div class="card-value" th:text="${countMembrosDaEquipe}"></div>
       <div class="card-icon"><i data-lucide="briefcase"></i></div>
@@ -46,16 +52,6 @@
       <div class="card-title">Solicitações Pendentes</div>
       <div class="card-value" th:text="${countSolicitacoesPendentes}"></div>
       <div class="card-icon"><i data-lucide="users"></i></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Turnos não cobertos</div>
-      <div class="card-value" th:text="${countTotalCargos}"></div>
-      <div class="card-icon"><i data-lucide="briefcase"></i></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Eventos Próximos</div>
-      <div class="card-value" th:text="${countEventosProximos}"></div>
-      <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
     </div>
   </div>
 </div>

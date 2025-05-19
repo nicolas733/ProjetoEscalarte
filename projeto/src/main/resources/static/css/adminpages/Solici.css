@@ -12,6 +12,21 @@ body {
     text-decoration: none;
 }
 
+.menu li.logout {
+    background-color: #ef5350;
+    color: white;
+}
+
+.menu li.logout a {
+    color: white;
+}
+
+
+.menu li.logout:hover {
+    background-color: #c62828;
+    color: white;
+}
+
 .sidebar {
     width: 240px;
     background: white;

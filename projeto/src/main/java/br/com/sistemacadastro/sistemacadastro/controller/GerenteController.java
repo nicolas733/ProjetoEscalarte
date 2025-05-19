@@ -23,12 +23,27 @@ public class GerenteController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         int countMembrosDaEquipe = 0;
-        int countSolicitacoesPendentes = 0;
-        int countTotalCargos = 0;
-        int countEventosProximos = 0;
 
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
+            if (colaborador != null) {
+                String nomeCompleto = colaborador.getNome();
+                model.addAttribute("nome", nomeCompleto);
+                model.addAttribute("iniciais", gerenteService.obterIniciais(nomeCompleto));
+
+                // Recupera ID do gerente como Integer
+                Integer gerenteId = colaboradorId.intValue();
+                List<Colaborador> equipe = gerenteService.listarColaboradoresPorSetorGerente(gerenteId);
+                countMembrosDaEquipe = equipe.size();
+            }
+        }
+
+        int countSolicitacoesPendentes = 0;
+        int countTotalCargos = 0;
+        int countEventosProximos = 0;
 
         if (colaboradorId != null) {
             Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
@@ -79,7 +94,7 @@ public class GerenteController {
                     dto.setId(colaborador.getId());
                     dto.setNome(colaborador.getNome());
                     dto.setEmail(colaborador.getEmail());
-                    dto.setCpf(colaborador.getCpf());
+                    dto.setTelefone(colaborador.getTelefone());
 
                     if (colaborador.getContrato() != null && colaborador.getContrato().getCargos() != null) {
                         dto.setNomeCargo(colaborador.getContrato().getCargos().getNomeCargo());
