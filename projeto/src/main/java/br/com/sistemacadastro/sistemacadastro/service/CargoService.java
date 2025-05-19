@@ -7,8 +7,8 @@ import br.com.sistemacadastro.sistemacadastro.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ContratoRepository;
-
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -42,7 +42,8 @@ public class CargoService {
         cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
         repository.save(cargos);
 
-        Setores setor = setoresRepository.findById(cargosDto.getSetorId());
+        Setores setor = setoresRepository.findById(cargosDto.getSetorId())
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado"));
         CargosPorSetor cps = new CargosPorSetor();
         cps.setCargo(cargos);
         cps.setSetor(setor);
@@ -88,7 +89,8 @@ public class CargoService {
             cps.setCargo(cargos);
         }
 
-        Setores setor = setoresRepository.findById(dto.getSetorId());
+        Setores setor = setoresRepository.findById(dto.getSetorId())
+                .orElseThrow(() -> new RuntimeException("Setor não encontrado"));
         if (setor != null) {
             cps.setSetor(setor);
             cargosPorSetorRepository.save(cps);

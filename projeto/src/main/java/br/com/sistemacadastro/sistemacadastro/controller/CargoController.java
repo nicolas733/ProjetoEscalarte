@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.sistemacadastro.sistemacadastro.dto.CargosDTO;
+import br.com.sistemacadastro.sistemacadastro.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.service.CargoService;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Controller
 @RequestMapping("/cargo")

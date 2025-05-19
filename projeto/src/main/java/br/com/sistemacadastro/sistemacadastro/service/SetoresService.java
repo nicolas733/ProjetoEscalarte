@@ -1,13 +1,14 @@
 package br.com.sistemacadastro.sistemacadastro.service;
 
-import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import br.com.sistemacadastro.sistemacadastro.dto.SetoresDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Setores;
 import br.com.sistemacadastro.sistemacadastro.repository.ContratoRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 
 import java.util.Optional;
 

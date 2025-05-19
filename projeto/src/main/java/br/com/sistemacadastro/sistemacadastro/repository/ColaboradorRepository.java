@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 
-public interface ColaboradorRepository extends JpaRepository<Colaborador, String>{
+public interface ColaboradorRepository extends JpaRepository<Colaborador, Integer>{
     /*Procurando pelo id para validar o login*/
     Colaborador findById(long id);
     List<Colaborador> findAll();
