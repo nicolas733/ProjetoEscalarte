@@ -31,7 +31,7 @@
     </div>
 
     <div class="card">
-        <form method="POST" th:action="@{/colaborador/cadastrar}" enctype="multipart/form-data" th:object="${colaboradorDto}">
+        <form method="POST" th:action="@{/colaborador/cadastrar}" enctype="multipart/form-data" th:object="${colaboradorDTO}">
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Nome</label>
                 <div class="col-sm-8">
@@ -206,6 +206,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    // Sucesso
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('sucesso') === 'true') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Colaborador cadastrado com sucesso.',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            // Limpa o parâmetro da URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+</script>
+
+
 <script>
     lucide.createIcons();
 </script>
