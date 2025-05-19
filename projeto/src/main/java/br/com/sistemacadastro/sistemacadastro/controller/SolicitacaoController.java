@@ -51,8 +51,7 @@ public class SolicitacaoController {
             Integer colaboradorId = (Integer) colaboradorIdObj;
 
             // Busca o colaborador no banco de dados
-            Colaborador colaborador = repo.findById(colaboradorId)
-                    .orElseThrow(() -> new RuntimeException("Colaborador não encontrado"));
+            Colaborador colaborador = repo.findById(colaboradorId);
 
             if (colaborador != null) {
                 // Cria a solicitação e associa o colaborador
