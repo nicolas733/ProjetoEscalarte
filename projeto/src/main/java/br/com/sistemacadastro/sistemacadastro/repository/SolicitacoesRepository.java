@@ -30,4 +30,6 @@ public interface SolicitacoesRepository extends JpaRepository<Solicitacoes, Inte
     )
 """)
     List<Solicitacoes> findSolicitacoesPorSetorDoGerente(@Param("gerenteId") Integer gerenteId);
+
+    List<Solicitacoes> findByColaboradorId(Integer colaboradorId);
 }

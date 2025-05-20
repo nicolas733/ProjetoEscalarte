@@ -11,74 +11,133 @@
     </style>
 </head>
 
-<body>
-<div class="sidebar">
-    <div class="logo">
-        <img src="/img/logo.png" alt="Logo" />
-        <span>Escalarte</span>
-    </div>
-    <ul class="menu">
-        <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-        <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
-        <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-        <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
-        <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
-    </ul>
-</div>
+    <body>
+        <div class="sidebar">
+            <div class="logo">
+                <img src="/img/logo.png" alt="Logo" />
+                <span>Escalarte</span>
+            </div>
+            <ul class="menu">
+                <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+                <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
+                <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+                <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+                <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+                <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+            </ul>
+        </div>
 
-<div class="main">
-    <div class="header">
-        <div class="header-title">Gerenciar Solicitações</div>
-    </div>
-
-
-    <div class="card">
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Data</th>
-                <th>Descrição</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="solicitacao : ${solicitacoes}">
-                <td th:text="${solicitacao.id}"></td>
-                <td><strong th:text="${solicitacao.dataSolicitacao}"></strong></td>
-                <td th:text="${solicitacao.descricaoSolicitacao}"></td>
-
-                <td style="white-space: nowrap">
-                    <a class="btn btn-warning btn-sm">Aceitar</a>
-                    <a class="btn btn-danger btn-sm" onclick="return confirm('Deseja realmente excluir?')">Excluir</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-</div>
+        <div class="main">
+            <div class="header">
+                <div class="header-title">Gerenciar Solicitações</div>
+            </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    lucide.createIcons();
+            <div class="card">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Cargo</th> <!-- NOVO -->
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="solicitacao : ${solicitacoes}">
+                            <td th:text="${solicitacao.id}"></td>
+                            <td th:text="${solicitacao.colaborador.nome}"></td>
 
-    const currentPath = window.location.pathname.split("/").pop();
+                            <!-- Aqui está o cargo vindo do map -->
+                            <td th:text="${cargos[solicitacao.colaborador.id]} ?: 'Sem cargo'"></td>
 
-    document.querySelectorAll('.menu li').forEach(li => {
-        const link = li.querySelector('a');
-        const href = link.getAttribute('href');
+                            <td th:text="${#temporals.format(solicitacao.dataSolicitacao, 'dd/MM/yyyy')}"></td>
+                            <td class="descricao" th:text="${solicitacao.descricaoSolicitacao}"></td>
+                            <td>
+                                <div th:switch="${solicitacao.status}">
+                                    <div th:case="'Pendente'">
+                                        <a href="#"
+                                           th:attr="data-url=@{'/gerente/solicitacoes/aprovar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
+                                           onclick="confirmarAcao(this, 'aprovar')"
+                                           class="btn btn-success btn-sm">
+                                            Aprovar
+                                        </a>
 
-        if (href === currentPath) {
-            li.classList.add('active');
-        } else {
-            li.classList.remove('active');
-        }
-    });
-</script>
-</body>
+                                        <a href="#"
+                                           th:attr="data-url=@{'/gerente/solicitacoes/recusar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
+                                           onclick="confirmarAcao(this, 'recusar')"
+                                           class="btn btn-danger btn-sm">
+                                            Recusar
+                                        </a>
+                                    </div>
+
+                                    <span th:case="'Aprovado'" class="text-success fw-bold">Aprovado</span>
+                                    <span th:case="'Reprovado'" class="text-danger fw-bold">Reprovado</span>
+                                </div>
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            lucide.createIcons();
+        </script>
+        <script>
+            function confirmarAcao(elemento, acao) {
+                event.preventDefault();
+
+                const url = elemento.getAttribute("data-url");
+                const solicitacaoId = elemento.getAttribute("data-id");
+                const linha = elemento.closest("tr");
+
+                const mensagem = acao === 'aprovar'
+                    ? 'Você está prestes a aprovar esta solicitação.'
+                    : 'Você está prestes a recusar esta solicitação.';
+
+                const label = acao === 'aprovar' ? 'Aprovado' : 'Reprovado';
+
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: mensagem,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: `Sim, ${acao}`,
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(url, { method: 'POST' }) // ou PUT/DELETE dependendo do seu back-end
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erro ao processar solicitação.');
+                                }
+
+                                // Substituir a célula de ações por texto
+                                const acoesTd = linha.querySelector("td:last-child");
+                                acoesTd.innerHTML = `<span class="${acao === 'aprovar' ? 'text-success' : 'text-danger'} fw-bold">${label}</span>`;
+
+                                Swal.fire(`${label}!`, `A solicitação foi ${label.toLowerCase()}.`, 'success');
+                            })
+                            .catch(error => {
+                                console.error(error);
+                                Swal.fire('Erro', 'Não foi possível processar a solicitação.', 'error');
+                            });
+                    }
+                });
+            }
+        </script>
+
+
+    </body>
 
 </html>

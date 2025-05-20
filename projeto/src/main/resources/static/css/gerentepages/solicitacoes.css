@@ -97,6 +97,21 @@ body {
   padding: 30px;
 }
 
+table {
+  width: 100%;
+}
+
+th, td {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+td.descricao {
+  max-width: 200px; /* Ajuste conforme seu layout */
+}
+
+
 .btn-primary {
   background-color: #ef5350;
   color: white;
