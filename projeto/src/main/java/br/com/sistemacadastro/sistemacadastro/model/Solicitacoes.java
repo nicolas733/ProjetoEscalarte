@@ -34,6 +34,9 @@ public class Solicitacoes {
     @JoinColumn(name = "escalas_id")
     private Escalas escalas;
 
+    @Column(nullable = false)
+    private String status = "Pendente"; // Pode ser "Pendente", "Aprovado", "Reprovado"
+
 
     //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura

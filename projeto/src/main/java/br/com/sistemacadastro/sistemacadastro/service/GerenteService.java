@@ -102,4 +102,23 @@ public class GerenteService {
     public CargosPorSetor buscarCargoPorSetor(int cargoId) {
         return cargosPorSetorRepository.findByCargoId(cargoId);
     }
+
+    public void aprovarSolicitacao(Integer id) {
+        Solicitacoes solicitacao = solicitacoesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitação não encontrada"));
+
+        solicitacao.setStatus("Aprovado"); // ou use um enum se preferir
+        solicitacoesRepository.save(solicitacao);
+    }
+
+    public void recusarSolicitacao(Integer id) {
+        Solicitacoes solicitacao = solicitacoesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitação não encontrada"));
+
+        solicitacao.setStatus("Reprovado"); // ou use um enum se preferir
+        solicitacoesRepository.save(solicitacao);
+    }
+
+
+
 }

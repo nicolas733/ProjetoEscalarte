@@ -7,11 +7,14 @@ import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.service.GerenteService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/gerente")
@@ -75,10 +78,26 @@ public class GerenteController {
 
         List<Solicitacoes> solicitacoes = gerenteService.listarSolicitacoesPorSetorDoGerente(gerenteId);
 
+        // Mapeia colaboradorId -> cargo
+        Map<Integer, String> cargosPorColaborador = new HashMap<>();
+
+        for (Solicitacoes sol : solicitacoes) {
+            Colaborador colaborador = sol.getColaborador();
+            if (colaborador != null && colaborador.getContrato() != null && colaborador.getContrato().getCargos() != null) {
+                String nomeCargo = colaborador.getContrato().getCargos().getNomeCargo();
+                cargosPorColaborador.put(colaborador.getId(), nomeCargo);
+            } else {
+                cargosPorColaborador.put(colaborador.getId(), "Cargo não atribuído");
+            }
+        }
+
         model.addAttribute("solicitacoes", solicitacoes);
+        model.addAttribute("cargos", cargosPorColaborador);
         model.addAttribute("solicitacao", new Solicitacoes());
+
         return "gerentepages/solicitacoes";
     }
+
 
 
 
@@ -179,4 +198,20 @@ public class GerenteController {
             return "gerentepages/alterarsenha";
         }
     }
+
+    @PostMapping("/solicitacoes/aprovar/{id}")
+    @ResponseBody
+    public ResponseEntity<String> aprovarSolicitacao(@PathVariable Integer id) {
+        gerenteService.aprovarSolicitacao(id);
+        return ResponseEntity.ok("Aprovado");
+    }
+
+    @PostMapping("/solicitacoes/recusar/{id}")
+    @ResponseBody
+    public ResponseEntity<String> recusarSolicitacao(@PathVariable Integer id) {
+        gerenteService.recusarSolicitacao(id);
+        return ResponseEntity.ok("Reprovado");
+    }
+
+
 }

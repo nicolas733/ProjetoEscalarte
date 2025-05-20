@@ -8,12 +8,14 @@ import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
+import br.com.sistemacadastro.sistemacadastro.service.ColaboradorService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,6 +24,9 @@ public class OperadorController {
 
     @Autowired
     private ColaboradorRepository colaboradorRepository;
+
+    @Autowired
+    private ColaboradorService colaboradorService;
 
     @Autowired
     private CargoRepository cargoRepository;
@@ -148,6 +153,23 @@ public class OperadorController {
 
         return "colaboradorpages/alterarsenha";
     }
+
+    @GetMapping("/solicita")
+    public String visualizarMinhasSolicitacoes(Model model, HttpSession session) {
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+
+        if (colaboradorId != null) {
+            List<Solicitacoes> solicitacoes = solicitacoesRepository.findByColaboradorId(colaboradorId.intValue());
+            model.addAttribute("solicitacoes", solicitacoes);
+            return "colaboradorpages/solicita";
+        }
+
+        return "redirect:/login";
+    }
+
+
+
 }
 
 

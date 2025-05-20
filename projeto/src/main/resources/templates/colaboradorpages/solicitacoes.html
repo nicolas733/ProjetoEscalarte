@@ -17,6 +17,7 @@
         <ul class="menu">
             <li><a href="/operador/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
             <li><a href="/operador/escala"><i data-lucide="calendar"></i>Minha Escala</a></li>
+            <li><a href="/operador/solicita"><i data-lucide="clipboard-list"></i>Minhas Solicitações</a></li>
             <li><a href="/operador/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
             <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
 
@@ -58,10 +59,30 @@
         </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    lucide.createIcons();
-</script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            if (urlParams.get('sucesso') === 'true') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Solicitação enviada!',
+                    text: 'Sua solicitação foi registrada com sucesso.',
+                    confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    // Remove o parâmetro da URL sem recarregar
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                });
+            }
+        });
+    </script>
+
+    </body>
 </html>
