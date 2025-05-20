@@ -18,14 +18,14 @@ import java.util.Optional;
 public class SetoresService {
 
     @Autowired
-    private SetoresRepository repo;
+    private SetoresRepository setoresRepository;
 
     @Autowired
     private ContratoRepository contratoRepository;
 
 
     public SetoresDTO prepararEdicao(int id) {
-        Setores setores = repo.findById(id);
+        Setores setores = setoresRepository.findById(id);
         SetoresDTO setoresDto = new SetoresDTO();
         setoresDto.setId(setores.getId());
         setoresDto.setNomeSetor(setores.getNomesetor());
@@ -35,22 +35,22 @@ public class SetoresService {
     }
 
     public void editarSetor(int id, SetoresDTO setoresDto) {
-        Setores setores = repo.findById(id);
+        Setores setores = setoresRepository.findById(id);
         setores.setNomesetor(setoresDto.getNomeSetor());
         setores.setGerenteSetor(setoresDto.getGerenteSetor());
         setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
-        repo.save(setores);
+        setoresRepository.save(setores);
     }
 
     @Transactional
     public boolean excluirSetor(int id) {
-        Setores setor = repo.findById(id);
+        Setores setor = setoresRepository.findById(id);
 
         if (!setor.getCargosPorSetor().isEmpty()) {
             return false;
         }
 
-        repo.delete(setor);
+        setoresRepository.delete(setor);
         return true;
     }
 }

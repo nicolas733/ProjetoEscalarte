@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ColaboradorService {
 
     @Autowired
-    private ColaboradorRepository repo;
+    private ColaboradorRepository colaboradorRepository;
 
     @Autowired
     private EnderecoRepository enderecoRepository;
@@ -36,7 +36,7 @@ public class ColaboradorService {
     }
 
     public Optional<Colaborador> buscarPorEmail(String email) {
-        return repo.findByEmail(email);
+        return colaboradorRepository.findByEmail(email);
     }
 
     public void salvarColaborador(ColaboradorDTO colaboradorDto) {
@@ -61,11 +61,11 @@ public class ColaboradorService {
 
         colaborador.setContrato(contrato);
 
-        repo.save(colaborador);
+        colaboradorRepository.save(colaborador);
     }
 
     public Colaborador buscarPorId(int id) {
-        Colaborador colaborador = repo.findById(id);
+        Colaborador colaborador = colaboradorRepository.findById(id);
         if (colaborador == null) {
             throw new RuntimeException("Colaborador não encontrado");
         }
@@ -74,7 +74,7 @@ public class ColaboradorService {
 
 
     public void atualizarColaborador(EditDTO editDto) {
-        Colaborador colaborador = repo.findById(editDto.getId());
+        Colaborador colaborador = colaboradorRepository.findById(editDto.getId());
 
         colaborador.setNome(editDto.getNome());
         colaborador.setEmail(editDto.getEmail());
@@ -89,11 +89,11 @@ public class ColaboradorService {
 
         colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
 
-        repo.save(colaborador);
+        colaboradorRepository.save(colaborador);
     }
 
     public void deletarColaborador(int id) {
-        Colaborador colaborador = repo.findById(id);
-        repo.delete(colaborador);
+        Colaborador colaborador = colaboradorRepository.findById(id);
+        colaboradorRepository.delete(colaborador);
     }
 }

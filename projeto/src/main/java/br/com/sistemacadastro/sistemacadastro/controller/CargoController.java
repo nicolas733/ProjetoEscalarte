@@ -31,7 +31,7 @@ public class CargoController {
     private SetoresRepository setoresRepository;
 
     @Autowired
-    private CargoRepository repository;
+    private CargoRepository cargoRepository;
 
     @GetMapping("/cadastrar")
     public String showCadastrarPageCargo(Model model) {
@@ -47,7 +47,7 @@ public class CargoController {
             model.addAttribute("cargosDTO", cargosDto);
             return "adminpages/cadastroCargo";
         }
-        Optional<Cargos> existente = repository.findByNomeCargo(cargosDto.getNomeCargo());
+        Optional<Cargos> existente = cargoRepository.findByNomeCargo(cargosDto.getNomeCargo());
         if (existente.isPresent()) {
             model.addAttribute("cargoJaCadastrado", true);
             return "adminpages/cadastroCargo";

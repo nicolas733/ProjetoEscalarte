@@ -20,7 +20,7 @@ import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
 public class LoginController {
 
     @Autowired
-    private ColaboradorRepository repositorioColaborador;
+    private ColaboradorRepository colaboradorRepository;
 
     private static String redirecionarParaDashboard(TipoUsuario tipoUsuario) {
         if (tipoUsuario.equals(Colaborador.TipoUsuario.ADMIN)) {
@@ -43,7 +43,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String logar(Colaborador colaborador, Model model, HttpServletResponse response, HttpSession session) {
-        Colaborador colaboradorLogado = this.repositorioColaborador.findFirstByEmailAndSenha(colaborador.getEmail(),
+        Colaborador colaboradorLogado = this.colaboradorRepository.findFirstByEmailAndSenha(colaborador.getEmail(),
                 colaborador.getSenha());
         if (colaboradorLogado != null) {
             SessionUtils.setUsuario(session, colaboradorLogado);

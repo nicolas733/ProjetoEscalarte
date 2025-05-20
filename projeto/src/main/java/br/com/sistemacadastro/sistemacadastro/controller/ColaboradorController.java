@@ -23,19 +23,19 @@ import java.util.Optional;
 public class ColaboradorController {
 
     @Autowired
-    private ColaboradorRepository repo;
+    private ColaboradorRepository colaboradorRepository;
 
     @Autowired
-    private EnderecoRepository repository;
+    private EnderecoRepository enderecoRepository;
 
     @Autowired
-    private ContratoRepository repoContrato;
+    private ContratoRepository contratoRepository;
 
     @Autowired
     private CargoRepository cargoRepository;
 
     @Autowired
-    private SolicitacoesRepository solicitacaoRepo;
+    private SolicitacoesRepository solicitacoesRepository;
 
     @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {
@@ -48,7 +48,7 @@ public class ColaboradorController {
 
     @PostMapping("/cadastrar")
     public String cadastrarColaborador(@Valid @ModelAttribute ColaboradorDTO colaboradorDto, BindingResult result, Model model) {
-        Optional<Colaborador> colaboradorExistente = this.repo.findByEmail(colaboradorDto.getEmail());
+        Optional<Colaborador> colaboradorExistente = this.colaboradorRepository.findByEmail(colaboradorDto.getEmail());
         if (result.hasErrors()) {
             List<Cargos> cargos = cargoRepository.findAll();
             model.addAttribute("cargos", cargos);
@@ -66,7 +66,7 @@ public class ColaboradorController {
             colaborador.setCpf(colaboradorDto.getCpf());
             colaborador.setDataNascimento(colaboradorDto.getDataNascimento());
 
-            Endereco endereco = repository.save(colaboradorDto.getEndereco());
+            Endereco endereco = enderecoRepository.save(colaboradorDto.getEndereco());
             colaborador.setEndereco(endereco);
 
 
@@ -80,7 +80,7 @@ public class ColaboradorController {
 
             colaborador.setContrato(contrato);
             // Salva o colaborador
-            repo.save(colaborador);
+            colaboradorRepository.save(colaborador);
             return "redirect:/admin/main?sucesso=true";
         } else {
             model.addAttribute("emailJaCadastrado", true);
@@ -94,7 +94,7 @@ public class ColaboradorController {
     @GetMapping("/editar/{id}")
     public String mostrarPagEdicao(Model model, @PathVariable("id") int id) {
         try {
-            Colaborador colaborador = repo.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
+            Colaborador colaborador = colaboradorRepository.findById(id);  // Verifique se 'repo.findById(id)' retorna um colaborador válido.
             model.addAttribute("colaborador", colaborador);
 
 
@@ -123,7 +123,7 @@ public class ColaboradorController {
     @PostMapping("/editar")
     public String atualizarColaborador (Model model, @Valid @ModelAttribute EditDTO editDto, BindingResult result){
         try {
-            Colaborador colaborador = repo.findById(editDto.getId());
+            Colaborador colaborador = colaboradorRepository.findById(editDto.getId());
             System.out.println(colaborador);
             model.addAttribute("colaborador", colaborador);
             model.addAttribute("editDto", editDto);
@@ -144,7 +144,7 @@ public class ColaboradorController {
             colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
 
             System.out.println(colaborador);
-            repo.save(colaborador);
+            colaboradorRepository.save(colaborador);
         } catch (Exception ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
@@ -156,10 +156,10 @@ public class ColaboradorController {
     @Transactional
     public String excluirColaborador(@RequestParam int id) {
         try {
-            Colaborador colaborador = repo.findById(id);
+            Colaborador colaborador = colaboradorRepository.findById(id);
             if (colaborador != null) {
-                solicitacaoRepo.deleteByColaborador(colaborador); // <- delete solicitações primeiro
-                repo.delete(colaborador);
+                solicitacoesRepository.deleteByColaborador(colaborador); // <- delete solicitações primeiro
+                colaboradorRepository.delete(colaborador);
                 System.out.println("Colaborador excluído com sucesso.");
             }
         } catch (Exception ex) {

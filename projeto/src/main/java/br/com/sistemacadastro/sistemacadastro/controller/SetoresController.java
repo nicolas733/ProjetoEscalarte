@@ -35,7 +35,7 @@ public class SetoresController {
     private ColaboradorRepository colaboradorRepository;
 
     @Autowired
-    private SetoresRepository repo;
+    private SetoresRepository setoresRepository;
 
     @GetMapping("")
     public String home() {
@@ -61,12 +61,12 @@ public class SetoresController {
             return "adminpages/cadastroSetor";
         }
 
-        Optional<Setores> setoresExistentes = repo.findByNomesetor(setoresDto.getNomeSetor());
+        Optional<Setores> setoresExistentes = setoresRepository.findByNomesetor(setoresDto.getNomeSetor());
         if (setoresExistentes.isEmpty()) {
             Setores setores = new Setores();
             setores.setNomesetor(setoresDto.getNomeSetor());
             setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
-            repo.save(setores);
+            setoresRepository.save(setores);
         }else {
             model.addAttribute("setorJaCadastrado", true);
             return "adminpages/cadastroSetor";

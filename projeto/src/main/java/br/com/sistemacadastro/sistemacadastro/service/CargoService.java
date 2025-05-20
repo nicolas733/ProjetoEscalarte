@@ -20,7 +20,7 @@ import java.util.Optional;
 public class CargoService {
 
     @Autowired
-    private CargoRepository repository;
+    private CargoRepository cargoRepository;
 
     @Autowired
     private SetoresRepository setoresRepository;
@@ -36,7 +36,7 @@ public class CargoService {
         Cargos cargos = new Cargos();
         cargos.setNomeCargo(cargosDto.getNomeCargo());
         cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
-        repository.save(cargos);
+        cargoRepository.save(cargos);
 
         Setores setor = setoresRepository.findById(cargosDto.getSetorId())
                 .orElseThrow(() -> new RuntimeException("Setor não encontrado"));
@@ -47,7 +47,7 @@ public class CargoService {
     }
 
     public String prepararEdicao(int id, Model model) {
-        Cargos cargos = repository.findById(id);
+        Cargos cargos = cargoRepository.findById(id);
         if (cargos == null) {
             return "redirect:/admin/setorcargo";
         }
@@ -72,12 +72,12 @@ public class CargoService {
     }
 
     public void editarCargo(int id, CargosDTO dto) {
-        Cargos cargos = repository.findById(id);
+        Cargos cargos = cargoRepository.findById(id);
         if (cargos == null) return;
 
         cargos.setNomeCargo(dto.getNomeCargo());
         cargos.setCargaHorarioLimite(dto.getCargoHorarioLimite());
-        repository.save(cargos);
+        cargoRepository.save(cargos);
 
         CargosPorSetor cps = cargosPorSetorRepository.findByCargo(cargos);
         if (cps == null) {
@@ -94,7 +94,7 @@ public class CargoService {
     }
 
     public void excluirCargo(int id) {
-        Cargos cargos = repository.findById(id);
+        Cargos cargos = cargoRepository.findById(id);
         if (cargos == null) return;
 
         boolean hasContracts = contratoRepository.existsByCargosAndAtivo(cargos, true);
@@ -107,6 +107,6 @@ public class CargoService {
             cargosPorSetorRepository.delete(cps);
         }
 
-        repository.delete(cargos);
+        cargoRepository.delete(cargos);
     }
 }

@@ -21,10 +21,10 @@ import java.util.List;
 public class OperadorController {
 
     @Autowired
-    private ColaboradorRepository collaboratorsRepository;
+    private ColaboradorRepository colaboradorRepository;
 
     @Autowired
-    private CargoRepository cargosRepository;
+    private CargoRepository cargoRepository;
 
     @Autowired
     private SetoresRepository setoresRepository;
@@ -37,13 +37,13 @@ public class OperadorController {
 
     @GetMapping("/dashboard")
     public String mostrarDashboard(Model model, HttpSession session) {
-        long total = collaboratorsRepository.count();
+        long total = colaboradorRepository.count();
         model.addAttribute("totalColaboradores", total);
 
         long totalSetor = setoresRepository.count();
         model.addAttribute("totalSetores", totalSetor);
 
-        long totalCargo = cargosRepository.count();
+        long totalCargo = cargoRepository.count();
         model.addAttribute("totalCargos", totalCargo);
 
         long totalSolicitacao = solicitacoesRepository.count();
@@ -54,7 +54,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
@@ -100,7 +100,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
                 model.addAttribute("colaborador", colaborador);
 
@@ -118,7 +118,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = collaboratorsRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
             if (colaborador != null) {
                 PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
                 passwordChangeDto.setEmail(colaborador.getEmail());
@@ -133,12 +133,12 @@ public class OperadorController {
     @PostMapping("/alterarsenha")
     public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
         // Recupera o colaborador
-        Colaborador colaborador = collaboratorsRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
+        Colaborador colaborador = colaboradorRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
 
         if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
             // Atualiza a senha
             colaborador.setSenha(passwordChangeDto.getNovaSenha());
-            collaboratorsRepository.save(colaborador);
+            colaboradorRepository.save(colaborador);
             model.addAttribute("message", "Senha alterada com sucesso!");
             return "redirect:/operador/minhaconta";
         } else {

@@ -23,7 +23,7 @@ import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
 public class SolicitacaoController {
 
     @Autowired
-    private ColaboradorRepository repo;
+    private ColaboradorRepository colaboradorRepository;
 
     @Autowired
     private SolicitacoesRepository solicitacoesRepository;
@@ -51,7 +51,7 @@ public class SolicitacaoController {
             Integer colaboradorId = (Integer) colaboradorIdObj;
 
             // Busca o colaborador no banco de dados
-            Colaborador colaborador = repo.findById(colaboradorId)
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId)
                     .orElseThrow(() -> new RuntimeException("Colaborador não encontrado"));
 
             if (colaborador != null) {
