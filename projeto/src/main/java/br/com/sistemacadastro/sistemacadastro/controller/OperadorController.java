@@ -7,7 +7,7 @@ import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +30,7 @@ public class OperadorController {
     private SetoresRepository setoresRepository;
 
     @Autowired
-    private SolicitacaoRepository solicitacoesRepository;
+    private SolicitacoesRepository solicitacoesRepository;
 
 
 

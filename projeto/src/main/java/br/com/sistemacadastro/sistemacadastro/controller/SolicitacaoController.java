@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,7 @@ import br.com.sistemacadastro.sistemacadastro.dto.SolicitacoesDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
 
 
 @Controller
@@ -27,7 +26,7 @@ public class SolicitacaoController {
     private ColaboradorRepository repo;
 
     @Autowired
-    private SolicitacaoRepository solicitacaoRepository;
+    private SolicitacoesRepository solicitacoesRepository;
 
 
 
@@ -63,7 +62,7 @@ public class SolicitacaoController {
                 solicitacoes.setColaborador(colaborador);
 
                 // Salva a solicitação no banco de dados
-                solicitacaoRepository.save(solicitacoes);
+                solicitacoesRepository.save(solicitacoes);
 
                 return "redirect:/operador/escala";
             }

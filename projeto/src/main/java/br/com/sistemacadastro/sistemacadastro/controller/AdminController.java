@@ -10,7 +10,7 @@ import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
 import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class AdminController {
     private SetoresRepository setoresRepository;
 
     @Autowired
-    private SolicitacaoRepository solicitacaoRepository;
+    private SolicitacoesRepository solicitacoesRepository;
 
     @Autowired
     private CargosPorSetorRepository cargosPorSetorRepository;
@@ -71,7 +71,7 @@ public class AdminController {
         long totalCargo = cargoRepository.count();
         model.addAttribute("totalCargos", totalCargo);
 
-        long totalSolicitacao = solicitacaoRepository.count();
+        long totalSolicitacao = solicitacoesRepository.count();
         model.addAttribute("totalSolicitacoes", totalSolicitacao);
 
         // Recuperar colaborador logado da sessão
@@ -120,7 +120,7 @@ public class AdminController {
 
     @GetMapping("/solici")
     public String mostrarSolicitacao(Model model, HttpSession session) {
-        List<Solicitacoes> solicitacoes = solicitacaoRepository.findAll();
+        List<Solicitacoes> solicitacoes = solicitacoesRepository.findAll();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
 

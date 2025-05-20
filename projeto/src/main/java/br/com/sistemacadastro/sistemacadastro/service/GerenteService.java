@@ -9,7 +9,7 @@ import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.GerenteRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacaoRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +28,15 @@ public class GerenteService {
     private GerenteRepository gerenteRepository;
 
     @Autowired
-    private SolicitacaoRepository solicitacaoRepository;
+    private SolicitacoesRepository solicitacoesRepository;
 
     public List<Colaborador> listarColaboradoresPorSetorGerente(Integer gerenteId) {
         return gerenteRepository.findColaboradoresPorSetorDoGerente(gerenteId);
     }
 
+    public List<Solicitacoes> listarSolicitacoesPorSetorDoGerente(Integer gerenteId) {
+        return solicitacoesRepository.findSolicitacoesPorSetorDoGerente(gerenteId);
+    }
 
     public Colaborador buscarColaboradorPorId(Long id) {
         return colaboradorRepository.findById(id);
@@ -44,7 +47,7 @@ public class GerenteService {
     }
 
     public List<Solicitacoes> listarSolicitacoes() {
-        return solicitacaoRepository.findAll();
+        return solicitacoesRepository.findAll();
     }
 
     public Colaborador buscarPorEmail(String email) {

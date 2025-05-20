@@ -8,5 +8,4 @@ public class SistemaCadastroApplication {
     public static void main(String[] args) {
         SpringApplication.run(SistemaCadastroApplication.class, args);
     }
-
 }

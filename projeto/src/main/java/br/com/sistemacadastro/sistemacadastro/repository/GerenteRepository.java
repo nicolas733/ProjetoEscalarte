@@ -22,5 +22,4 @@ public interface GerenteRepository extends JpaRepository<Colaborador, Long> {
     )
 """)
     List<Colaborador> findColaboradoresPorSetorDoGerente(@Param("gerenteId") Integer gerenteId);
-
 }

@@ -35,7 +35,7 @@ public class ColaboradorController {
     private CargoRepository cargoRepository;
 
     @Autowired
-    private SolicitacaoRepository solicitacaoRepo;
+    private SolicitacoesRepository solicitacaoRepo;
 
     @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {

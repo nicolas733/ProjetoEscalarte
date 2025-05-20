@@ -63,12 +63,24 @@ public class GerenteController {
     }
 
     @GetMapping("/solicitacoes")
-    public String solicitacoes(Model model) {
-        List<Solicitacoes> solicitacoes = gerenteService.listarSolicitacoes();
+    public String solicitacoes(Model model, HttpSession session) {
+        Integer gerenteId = null;
+
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        if (colaboradorIdObj instanceof Integer) {
+            gerenteId = (Integer) colaboradorIdObj;
+        } else if (colaboradorIdObj instanceof Long) {
+            gerenteId = ((Long) colaboradorIdObj).intValue();
+        }
+
+        List<Solicitacoes> solicitacoes = gerenteService.listarSolicitacoesPorSetorDoGerente(gerenteId);
+
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
         return "gerentepages/solicitacoes";
     }
+
+
 
     @GetMapping("/escala")
     public String escala(Model model) {
