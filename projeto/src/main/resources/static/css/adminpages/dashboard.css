@@ -18,8 +18,8 @@ body {
 }
 
 .menu li.logout {
-  background-color: #ef5350;
-  color: white;
+  background-color: #000000;
+  color: #000000;
 }
 
 .menu li.logout a {
@@ -29,7 +29,7 @@ body {
 
 .menu li.logout:hover {
   background-color: #c62828;
-  color: white;
+  color: #000000;
 }
 
 a {
@@ -52,6 +52,47 @@ a {
   font-weight: 700;
   font-size: 22px;
   color: #e53935;
+}
+
+.sidebar {
+  width: 240px;
+  height: 100vh;
+
+}
+
+.sidebar .logo {
+
+}
+
+.sidebar .menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .menu li {
+  margin: 10px 0;
+}
+
+
+
+.sidebar .menu a i {
+  font-size: 1.2rem;
+}
+
+.sidebar .menu a:hover,
+.sidebar .menu a:focus {
+  color: #fff;
+}
+
+.sidebar .menu li.active > a,
+.sidebar .menu a.active {
+
+  font-weight: bold;
+}
+
+.sidebar .menu .logout a {
+  color: #fff;
 }
 
 .menu {
