@@ -58,7 +58,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
@@ -109,7 +109,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
                 model.addAttribute("colaborador", colaborador);
 
@@ -127,7 +127,7 @@ public class OperadorController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
                 PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
                 passwordChangeDto.setEmail(colaborador.getEmail());

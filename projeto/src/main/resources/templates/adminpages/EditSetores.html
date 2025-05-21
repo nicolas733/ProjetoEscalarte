@@ -59,7 +59,9 @@
             <div class="col-sm-8">
               <select class="form-control" th:field="*{gerenteSetor}" th:errorclass="is-invalid">
                 <option value="" disabled selected>Selecione um colaborador</option>
-                <option th:each="colaborador : ${colaboradores}" th:value="${colaborador.id}" th:text="${colaborador.nome}"></option>
+                <option th:each="colaborador : ${colaboradores}"
+                        th:value="${colaborador.id}"
+                        th:text="${colaborador.nome}"></option>
               </select>
               <div class="invalid-feedback" th:if="${#fields.hasErrors('gerenteSetor')}" th:errors="*{gerenteSetor}"></div>
             </div>

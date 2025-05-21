@@ -81,7 +81,7 @@ public class AdminController {
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
                 String nomeCompleto = ((Colaborador) colaborador).getNome();
                 model.addAttribute("nome", nomeCompleto);

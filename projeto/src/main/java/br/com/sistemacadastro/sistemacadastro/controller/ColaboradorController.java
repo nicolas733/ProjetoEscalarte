@@ -48,6 +48,10 @@ public class ColaboradorController {
 
     @PostMapping("/cadastrar")
     public String cadastrarColaborador(@Valid @ModelAttribute ColaboradorDTO colaboradorDto, BindingResult result, Model model) {
+        if (colaboradorDto.getTipoUsuario() == Colaborador.TipoUsuario.GERENTE) {
+            result.rejectValue("tipoUsuario", "tipoUsuario.invalido", "Tipo de usuário 'GERENTE' não pode ser cadastrado.");
+        }
+
         Optional<Colaborador> colaboradorExistente = this.colaboradorRepository.findByEmail(colaboradorDto.getEmail());
         if (result.hasErrors()) {
             List<Cargos> cargos = cargoRepository.findAll();

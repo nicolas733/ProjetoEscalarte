@@ -77,9 +77,9 @@ public class SetoresController {
     @GetMapping("/editar/{id}")
     public String showEditPage(Model model, @PathVariable("id") int id) {
         SetoresDTO setoresDto = setoresService.prepararEdicao(id);
-        List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
+        List<Colaborador> operadoresList = colaboradorRepository.findByTipoUsuario(Colaborador.TipoUsuario.OPERADOR);
         model.addAttribute("setoresDto", setoresDto);
-        model.addAttribute("colaboradores", colaboradoresList);
+        model.addAttribute("colaboradores", operadoresList);
         model.addAttribute("id", id);
         return "adminpages/EditSetores";
     }
