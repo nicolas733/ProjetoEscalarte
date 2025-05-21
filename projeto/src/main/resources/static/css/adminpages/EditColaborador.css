@@ -73,7 +73,7 @@ body {
 
 .menu li.logout:hover {
     background-color: #c62828;
-    color: white;
+    color: #000000;
 }
 
 .logo {

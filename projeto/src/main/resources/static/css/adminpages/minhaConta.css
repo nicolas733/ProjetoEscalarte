@@ -13,17 +13,18 @@ body {
 }
 
 .menu li.logout {
-    background-color: #ef5350;
-    color: white;
+    background-color: #000000;
+    color: #000000;
 }
 
 .menu li.logout a {
     color: white;
 }
 
+
 .menu li.logout:hover {
     background-color: #c62828;
-    color: white;
+    color: #000000;
 }
 
 .sidebar {
@@ -166,19 +167,30 @@ body {
     font-weight: 700;
 }
 
-
-
 .card {
     background-color: white;
     border-radius: 12px;
     padding: 50px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     justify-items: center;
-    width: 30%;
+    width: 50%;
 
 }
 
+.nome-titulo{
+    font-size: 50px;
+    font-weight: bold;
+    color: #2c3e50;
+    padding: 10px;
+    text-transform: uppercase;
+    text-align: left;
+}
 
+.nome-card{
+    font-size: 50px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
 
 table {
     width: 100%;

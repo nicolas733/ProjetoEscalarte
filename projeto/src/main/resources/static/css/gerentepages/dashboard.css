@@ -33,8 +33,8 @@ a {
 }
 
 .menu li.logout {
-  background-color: #ef5350;
-  color: white;
+  background-color: #000000;
+  color: #000000;
 }
 
 .menu li.logout a {
@@ -44,7 +44,7 @@ a {
 
 .menu li.logout:hover {
   background-color: #c62828;
-  color: white;
+  color: #000000;
 }
 
 .logo span {

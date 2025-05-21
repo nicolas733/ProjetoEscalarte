@@ -29,9 +29,8 @@ body {
 }
 
 .menu li.logout {
-    background-color: #ef5350;
-    color: white;
-    border-radius: 8px;
+    background-color: #000000;
+    color: #000000;
 }
 
 .menu li.logout a {
@@ -41,7 +40,7 @@ body {
 
 .menu li.logout:hover {
     background-color: #c62828;
-    color: white;
+    color: #000000;
 }
 
 .logo img {
