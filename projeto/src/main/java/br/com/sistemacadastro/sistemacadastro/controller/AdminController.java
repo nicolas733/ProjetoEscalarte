@@ -73,17 +73,17 @@ public class AdminController {
         long totalCargo = cargoRepository.count();
         model.addAttribute("totalCargos", totalCargo);
 
-        long totalSolicitacao = solicitacoesRepository.count();
-        model.addAttribute("totalSolicitacoes", totalSolicitacao);
+        // Conta apenas solicitações com status "Pendente"
+        long totalSolicitacoesPendentes = solicitacoesRepository.countByStatus("Pendente");
+        model.addAttribute("totalSolicitacoesPendentes", totalSolicitacoesPendentes);
 
-        // Recuperar colaborador logado da sessão
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
-                String nomeCompleto = ((Colaborador) colaborador).getNome();
+                String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
                 model.addAttribute("iniciais", getIniciais(nomeCompleto));
             }
@@ -94,6 +94,7 @@ public class AdminController {
 
         return rotaPrivada("adminpages/dashboard", session);
     }
+
 
     private String getIniciais(String nomeCompleto) {
         String[] partes = nomeCompleto.split(" ");

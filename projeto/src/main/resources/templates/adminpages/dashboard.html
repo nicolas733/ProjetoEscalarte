@@ -26,14 +26,14 @@
 
   <div class="cards">
     <div class="card">
-      <div class="card-title">Setores</div>
-      <div class="card-value" th:text="${totalSetores}"></div>
-      <div class="card-icon"><i data-lucide="briefcase"></i></div>
-    </div>
-    <div class="card">
       <div class="card-title">Usuários</div>
       <div class="card-value" th:text="${totalColaboradores}"></div>
       <div class="card-icon"><i data-lucide="users"></i></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Setores</div>
+      <div class="card-value" th:text="${totalSetores}"></div>
+      <div class="card-icon"><i data-lucide="briefcase"></i></div>
     </div>
     <div class="card">
       <div class="card-title">Cargos</div>
@@ -41,8 +41,8 @@
       <div class="card-icon"><i data-lucide="briefcase"></i></div>
     </div>
     <div class="card">
-      <div class="card-title">Solicitações</div>
-      <div class="card-value" th:text="${totalSolicitacoes}"></div>
+      <div class="card-title">Solicitações Pendentes</div>
+      <div class="card-value" th:text="${totalSolicitacoesPendentes}"></div>
       <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
     </div>
   </div>
