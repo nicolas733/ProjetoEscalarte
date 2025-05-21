@@ -18,6 +18,33 @@ body {
 
 }
 
+/* Aumentar espaçamento entre linhas */
+tbody tr {
+    vertical-align: middle;
+}
+
+/* Aumentar padding das células */
+table td,
+table th {
+    padding: 16px 12px;
+}
+
+/* Melhorar espaçamento e alinhamento dos botões */
+td .btn {
+    white-space: nowrap;
+}
+
+/* Descrição quebrando texto longo */
+/* Aplicar estilo específico para a célula de descrição */
+td.descricao {
+    max-height: 100px;         /* altura máxima antes de ativar a rolagem */
+    overflow-y: auto;          /* rolagem vertical quando necessário */
+    word-break: break-word;    /* quebra palavras muito grandes */
+    max-width: 300px;          /* largura máxima da célula */
+}
+
+
+
 .sidebar .logo {
 
 }

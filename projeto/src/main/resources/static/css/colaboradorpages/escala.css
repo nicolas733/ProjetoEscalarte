@@ -25,6 +25,7 @@ body {
 .menu li.logout {
     background-color: #000000;
     color: #000000;
+    border-radius: 8px;
 }
 
 .menu li.logout a {

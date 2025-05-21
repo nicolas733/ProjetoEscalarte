@@ -42,4 +42,6 @@ public class Solicitacoes {
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "escalas_id", insertable = false, updatable = false)
     private Integer escalasId;
+
+
 }

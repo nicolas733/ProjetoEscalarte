@@ -18,5 +18,7 @@ public class Cargos {
 
     @NotNull
     private int cargaHorarioLimite;
+
+
 }
 

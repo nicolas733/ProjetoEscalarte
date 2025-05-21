@@ -80,6 +80,11 @@ public class Colaborador {
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
+    @ManyToOne
+    @JoinColumn(name = "cargo_por_setor_id")
+    private CargosPorSetor cargoPorSetor;
+
+
     @Column(name = "endereco_id", updatable = false, insertable = false)
     private Integer enderecoId;
 

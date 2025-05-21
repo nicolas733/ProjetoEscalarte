@@ -119,6 +119,11 @@ public class GerenteService {
         solicitacoesRepository.save(solicitacao);
     }
 
-
+    public int contarSolicitacoesPendentesPorSetorDoGerente(Integer gerenteId) {
+        List<Solicitacoes> solicitacoes = listarSolicitacoesPorSetorDoGerente(gerenteId);
+        return (int) solicitacoes.stream()
+                .filter(s -> "Pendente".equalsIgnoreCase(s.getStatus()))
+                .count();
+    }
 
 }

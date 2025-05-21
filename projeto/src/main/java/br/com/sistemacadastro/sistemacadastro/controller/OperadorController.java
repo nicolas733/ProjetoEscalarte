@@ -54,7 +54,6 @@ public class OperadorController {
         long totalSolicitacao = solicitacoesRepository.count();
         model.addAttribute("totalSolicitacoes", totalSolicitacao);
 
-        // Pegar o nome do operador da sessão (igual já está no /minhaconta)
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
@@ -64,15 +63,20 @@ public class OperadorController {
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
                 model.addAttribute("iniciais", getIniciais(nomeCompleto));
+
+
+                int solicitacoesPendentes = solicitacoesRepository.countByColaboradorIdAndStatus(colaboradorId.intValue(), "Pendente");
+                model.addAttribute("countSolicitacoesPendentes", solicitacoesPendentes);
             }
         } else {
-            // Se não tiver colaborador logado, pode colocar padrão
             model.addAttribute("nome", "Operador");
             model.addAttribute("iniciais", "O");
+            model.addAttribute("countSolicitacoesPendentes", 0);
         }
 
         return "colaboradorpages/dashboard";
     }
+
 
     private String getIniciais(String nome) {
         String[] partes = nome.trim().split(" ");

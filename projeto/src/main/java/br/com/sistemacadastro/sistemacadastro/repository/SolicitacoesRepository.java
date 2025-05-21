@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SolicitacoesRepository extends JpaRepository<Solicitacoes, Integer> {
-    Solicitacoes findById(long id);
 
     void deleteByColaborador(Colaborador colaborador);
 
@@ -32,4 +31,7 @@ public interface SolicitacoesRepository extends JpaRepository<Solicitacoes, Inte
     List<Solicitacoes> findSolicitacoesPorSetorDoGerente(@Param("gerenteId") Integer gerenteId);
 
     List<Solicitacoes> findByColaboradorId(Integer colaboradorId);
+
+    int countByColaboradorIdAndStatus(Integer colaboradorId, String status);
+
 }

@@ -18,7 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -124,8 +126,29 @@ public class AdminController {
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
 
+        // Mapa de cargos
+        Map<Integer, String> cargosMap = new HashMap<>();
+        // Mapa de setores
+        Map<Integer, String> setoresMap = new HashMap<>();
+
+        List<Colaborador> colaboradores = colaboradorRepository.findAll();
+        for (Colaborador c : colaboradores) {
+            if (c.getCargoPorSetor() != null) {
+                if (c.getCargoPorSetor().getCargo() != null) {
+                    cargosMap.put(c.getId(), c.getCargoPorSetor().getCargo().getNomeCargo());
+                }
+                if (c.getCargoPorSetor().getSetor() != null) {
+                    setoresMap.put(c.getId(), c.getCargoPorSetor().getSetor().getNomesetor());
+                }
+            }
+        }
+
+        model.addAttribute("cargos", cargosMap);
+        model.addAttribute("setores", setoresMap);
+
         return rotaPrivada("adminpages/Solici", session);
-    }// teste
+    }
+
 
     @GetMapping("/minhaconta")
     public String mostrarMinhaConta(HttpSession session, Model model) {
@@ -165,4 +188,29 @@ public class AdminController {
         
         return rotaPrivada("adminpages/alterarsenha", session);
     }
+
+    @PostMapping("/solicitacoes/aprovar/{id}")
+    @ResponseBody
+    public String aprovarSolicitacao(@PathVariable int id) {
+        Solicitacoes solicitacao = solicitacoesRepository.findById(id).orElse(null);
+        if (solicitacao != null && solicitacao.getStatus().equals("Pendente")) {
+            solicitacao.setStatus("Aprovado");
+            solicitacoesRepository.save(solicitacao);
+            return "OK";
+        }
+        return "Erro";
+    }
+
+    @PostMapping("/solicitacoes/recusar/{id}")
+    @ResponseBody
+    public String recusarSolicitacao(@PathVariable int id) {
+        Solicitacoes solicitacao = solicitacoesRepository.findById(id).orElse(null);
+        if (solicitacao != null && solicitacao.getStatus().equals("Pendente")) {
+            solicitacao.setStatus("Reprovado");
+            solicitacoesRepository.save(solicitacao);
+            return "OK";
+        }
+        return "Erro";
+    }
+
 }

@@ -26,37 +26,37 @@ public class GerenteController {
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         int countMembrosDaEquipe = 0;
+        int countSolicitacoesPendentes = 0;
+        int countTotalCargos = 0; // Pode implementar se quiser no futuro
+        int countEventosProximos = 0; // Pode implementar se quiser no futuro
 
+        // Recupera o ID do colaborador da sessão
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
             Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
             if (colaborador != null) {
+                // Nome e iniciais
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
                 model.addAttribute("iniciais", gerenteService.obterIniciais(nomeCompleto));
 
-                // Recupera ID do gerente como Integer
+                // Conversão para Integer (id do gerente)
                 Integer gerenteId = colaboradorId.intValue();
+
+                // Contagem de membros da equipe
                 List<Colaborador> equipe = gerenteService.listarColaboradoresPorSetorGerente(gerenteId);
                 countMembrosDaEquipe = equipe.size();
+
+                // Contagem de solicitações pendentes
+                countSolicitacoesPendentes = gerenteService.contarSolicitacoesPendentesPorSetorDoGerente(gerenteId);
+
+                // Se quiser, aqui também poderia buscar cargos, eventos etc.
             }
         }
 
-        int countSolicitacoesPendentes = 0;
-        int countTotalCargos = 0;
-        int countEventosProximos = 0;
-
-        if (colaboradorId != null) {
-            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
-            if (colaborador != null) {
-                String nomeCompleto = colaborador.getNome();
-                model.addAttribute("nome", nomeCompleto);
-                model.addAttribute("iniciais", gerenteService.obterIniciais(nomeCompleto));
-            }
-        }
-
+        // Adiciona os valores ao modelo para uso no HTML
         model.addAttribute("countMembrosDaEquipe", countMembrosDaEquipe);
         model.addAttribute("countSolicitacoesPendentes", countSolicitacoesPendentes);
         model.addAttribute("countTotalCargos", countTotalCargos);
@@ -64,6 +64,7 @@ public class GerenteController {
 
         return "gerentepages/dashboard";
     }
+
 
     @GetMapping("/solicitacoes")
     public String solicitacoes(Model model, HttpSession session) {
@@ -212,6 +213,7 @@ public class GerenteController {
         gerenteService.recusarSolicitacao(id);
         return ResponseEntity.ok("Reprovado");
     }
+
 
 
 }

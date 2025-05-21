@@ -35,4 +35,5 @@ public class Setores {
 
     @OneToMany(mappedBy = "setor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CargosPorSetor> cargosPorSetor;
+
 }
