@@ -73,7 +73,7 @@ public class AdminController {
         long totalCargo = cargoRepository.count();
         model.addAttribute("totalCargos", totalCargo);
 
-        // Conta apenas solicitações com status "Pendente"
+
         long totalSolicitacoesPendentes = solicitacoesRepository.countByStatus("Pendente");
         model.addAttribute("totalSolicitacoesPendentes", totalSolicitacoesPendentes);
 
@@ -133,16 +133,34 @@ public class AdminController {
         Map<Integer, String> setoresMap = new HashMap<>();
 
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
+
         for (Colaborador c : colaboradores) {
+            String nomeCargo = "Sem cargo";
+            String nomeSetor = "Sem setor";
+
             if (c.getCargoPorSetor() != null) {
                 if (c.getCargoPorSetor().getCargo() != null) {
-                    cargosMap.put(c.getId(), c.getCargoPorSetor().getCargo().getNomeCargo());
+                    nomeCargo = c.getCargoPorSetor().getCargo().getNomeCargo();
                 }
                 if (c.getCargoPorSetor().getSetor() != null) {
-                    setoresMap.put(c.getId(), c.getCargoPorSetor().getSetor().getNomesetor());
+                    nomeSetor = c.getCargoPorSetor().getSetor().getNomesetor();
                 }
             }
+
+            else if (c.getContrato() != null && c.getContrato().getCargos() != null) {
+                Cargos cargo = c.getContrato().getCargos();
+                nomeCargo = cargo.getNomeCargo();
+
+                CargosPorSetor cps = cargosPorSetorRepository.findByCargo(cargo);
+                if (cps != null && cps.getSetor() != null) {
+                    nomeSetor = cps.getSetor().getNomesetor();
+                }
+            }
+
+            cargosMap.put(c.getId(), nomeCargo);
+            setoresMap.put(c.getId(), nomeSetor);
         }
+
 
         model.addAttribute("cargos", cargosMap);
         model.addAttribute("setores", setoresMap);
