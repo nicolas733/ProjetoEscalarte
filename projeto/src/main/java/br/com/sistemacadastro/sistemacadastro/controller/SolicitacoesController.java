@@ -19,8 +19,8 @@ import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
 
 
 @Controller
-@RequestMapping("/solicitacao")
-public class SolicitacaoController {
+@RequestMapping("/solicitacoes")
+public class SolicitacoesController {
 
     @Autowired
     private ColaboradorRepository colaboradorRepository;
@@ -33,15 +33,15 @@ public class SolicitacaoController {
     @GetMapping("/alteracao")
     public String mostrarFormulario(Model model) {
         SolicitacoesDTO solicitacoesDto = new SolicitacoesDTO();
-        model.addAttribute("solicitacaoDto", solicitacoesDto);
+        model.addAttribute("solicitacoesDto", solicitacoesDto);
         return "colaboradorpages/solicitacoes"; // HTML com o form
     }
 
 
     @PostMapping("/alteracao")
-    public String enviarSolicitacao(@Valid @ModelAttribute SolicitacoesDTO solicitacoesDto, BindingResult result, Model model, HttpSession session) {
+    public String enviarSolicitacao(@Valid @ModelAttribute("solicitacoesDto") SolicitacoesDTO solicitacoesDto, BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
-            model.addAttribute("solicitacaoDto", solicitacoesDto);
+            model.addAttribute("solicitacoesDto", solicitacoesDto);
             return "colaboradorpages/solicitacoes";
         }
 
@@ -68,7 +68,7 @@ public class SolicitacaoController {
             }
         }
 
-        return "redirect:/login"; // Caso o colaborador não esteja na sessão ou não seja encontrado
+        return "redirect:/login";
     }
 }
 

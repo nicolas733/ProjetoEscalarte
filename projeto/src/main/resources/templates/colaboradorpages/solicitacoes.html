@@ -1,5 +1,5 @@
     <!doctype html>
-    <html lang="pt-br">
+    <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,11 +28,14 @@
             <div class="col-md-8 mx-auto rounded border p-4 m-4">
                 <h2 class="text-center mb-5">Solicitar Alteração</h2>
 
-                <form method="POST" th:action="@{/solicitacao/alteracao}"  th:object="${solicitacaoDto}">
+                <form method="POST" th:action="@{/solicitacoes/alteracao}"  th:object="${solicitacoesDto}">
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label">Data da Solicitação</label>
                         <div class="col-sm-8">
-                            <input class="form-control" type="date" th:field="*{dataSolicitacao}" th:errorclass="is-invalid">
+                            <input class="form-control" type="date"
+                                   th:field="*{dataSolicitacao}"
+                                   th:attr="min=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}, max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+                                   th:errorclass="is-invalid">
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('dataSolicitacao')}" th:errors="*{dataSolicitacao}"></div>
                         </div>
                     </div>
