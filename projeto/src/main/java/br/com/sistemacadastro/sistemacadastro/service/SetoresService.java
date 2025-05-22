@@ -26,6 +26,32 @@ public class SetoresService {
     @Autowired
     private ColaboradorRepository colaboradorRepository;
 
+    @Transactional
+    public void cadastrarSetor(SetoresDTO setoresDto) {
+        if (setoresRepository.findByNomesetor(setoresDto.getNomeSetor()).isPresent()) {
+            throw new RuntimeException("Setor com este nome já existe.");
+        }
+
+        Setores setores = new Setores();
+        setores.setNomesetor(setoresDto.getNomeSetor());
+        setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
+
+        Colaborador gerente = setoresDto.getGerenteSetor();
+        setores.setGerenteSetor(gerente);
+
+        setoresRepository.save(setores);
+
+        if (gerente != null) {
+            Colaborador colaborador = colaboradorRepository.findById(gerente.getId());
+            if (colaborador == null) {
+                throw new RuntimeException("Colaborador para gerente não encontrado");
+            }
+            colaborador.setTipoUsuario(Colaborador.TipoUsuario.GERENTE);
+            colaboradorRepository.save(colaborador);
+        }
+    }
+
+
     public SetoresDTO prepararEdicao(int id) {
         Setores setores = setoresRepository.findById(id);
         SetoresDTO setoresDto = new SetoresDTO();
@@ -72,18 +98,28 @@ public class SetoresService {
         }
     }
 
-
-
-
     @Transactional
-    public boolean excluirSetor(int id) {
+    public void excluirSetor(int id) {
         Setores setor = setoresRepository.findById(id);
+        if (setor == null) {
+            throw new RuntimeException("Setor não encontrado.");
+        }
 
         if (!setor.getCargosPorSetor().isEmpty()) {
-            return false;
+            throw new RuntimeException("Não é possível excluir o setor pois existem cargos associados.");
+        }
+
+        Colaborador gerente = setor.getGerenteSetor();
+        if (gerente != null) {
+            Colaborador colaboradorGerente = colaboradorRepository.findById(gerente.getId());
+            if (colaboradorGerente != null) {
+                colaboradorGerente.setTipoUsuario(Colaborador.TipoUsuario.OPERADOR);
+                colaboradorRepository.save(colaboradorGerente);
+            }
         }
 
         setoresRepository.delete(setor);
-        return true;
     }
+
+
 }

@@ -43,11 +43,13 @@
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Selecionar Colaborador</label>
+                <label class="col-sm-4 col-form-label">Gerente</label>
                 <div class="col-sm-8">
-                    <select class="form-select" th:field="*{gerenteSetor}" th:errorclass="is-invalid">
-                        <option value=""  selected>Selecione</option>
-                        <option th:each="colaborador : ${colaboradores}" th:value="${colaborador.id}" th:text="${colaborador.nome}"></option>
+                    <select class="form-control" th:field="*{gerenteSetor}" th:errorclass="is-invalid">
+                        <option value="" disabled selected>Selecione um colaborador</option>
+                        <option th:each="colaborador : ${colaboradores}"
+                                th:value="${colaborador.id}"
+                                th:text="${colaborador.nome}"></option>
                     </select>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('gerenteSetor')}" th:errors="*{gerenteSetor}"></div>
                 </div>
