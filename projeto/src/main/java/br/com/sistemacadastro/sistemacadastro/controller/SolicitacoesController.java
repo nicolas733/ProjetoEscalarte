@@ -64,7 +64,7 @@ public class SolicitacoesController {
                 // Salva a solicitação no banco de dados
                 solicitacoesRepository.save(solicitacoes);
 
-                return "redirect:/operador/escala";
+                return "redirect:/solicitacoes/alteracao?sucesso=true";
             }
         }
 

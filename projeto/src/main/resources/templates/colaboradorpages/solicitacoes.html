@@ -79,13 +79,13 @@
                     title: 'Solicitação enviada!',
                     text: 'Sua solicitação foi registrada com sucesso.',
                     confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    // Remove o parâmetro da URL sem recarregar
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/operador/escala';
+                    }
                 });
             }
         });
     </script>
-
     </body>
 </html>
