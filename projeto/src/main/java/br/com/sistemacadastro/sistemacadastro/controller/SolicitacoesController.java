@@ -6,16 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.sistemacadastro.sistemacadastro.dto.SolicitacoesDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
+
+import java.util.Objects;
 
 
 @Controller
@@ -70,6 +69,29 @@ public class SolicitacoesController {
 
         return "redirect:/login";
     }
+
+    @PostMapping("/excluir/{id}")
+    public String excluirSolicitacao(@PathVariable Integer id, HttpSession session) {
+
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+
+        if (colaboradorIdObj != null) {
+            Integer colaboradorId = (Integer) colaboradorIdObj;
+
+            Solicitacoes solicitacao = solicitacoesRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+
+            if (Objects.equals(solicitacao.getColaborador().getId(), colaboradorId)
+                    && "Pendente".equalsIgnoreCase(solicitacao.getStatus())) {
+                solicitacoesRepository.delete(solicitacao);
+            }
+
+        }
+
+        return "redirect:/operador/solicita";
+    }
+
 }
 
 

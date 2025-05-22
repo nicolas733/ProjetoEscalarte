@@ -60,6 +60,20 @@ body {
     color: white;
 }
 
+
+th.col-status,
+td.col-status {
+    width: 100px;
+    text-align: center;
+}
+
+th.col-acoes,
+td.col-acoes {
+    width: 80px;
+    text-align: center;
+}
+
+
 svg.lucide {
     margin-right: 10px;
 }
