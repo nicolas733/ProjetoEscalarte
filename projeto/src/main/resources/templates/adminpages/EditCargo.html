@@ -1,73 +1,101 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Escarlarte</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/adminpages/EditColaborador.css}">
+    <link rel="shortcut icon" th:href="@{/img/logoEscalarte.ico}" type="image/x-icon">
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 mx-auto rounded border p-4 m-4">
-            <h2 class="text-center mb-5">Editar Cargo</h2>
+<div class="sidebar">
+    <div class="logo">
+        <img src="/img/logo.png" alt="Logo" />
+        <span>Escalarte</span>
+    </div>
+    <ul class="menu">
+        <li><a href="/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+        <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
+        <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
+        <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+        <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+        <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+    </ul>
+</div>
 
-            <form method="POST" th:action="@{/cargo/editcargo}" enctype="multipart/form-data" th:object="${cargosDto}">
+<div class="main">
+    <div class="header">
+        <div class="header-title">Editar Cargo</div>
+    </div>
 
-                <!-- Campo ID (somente leitura) -->
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">ID</label>
-                    <div class="col-sm-8">
-                        <input type="hidden" readonly class="form-control-plaintext" th:name="id" th:value="${id}">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto rounded border p-4 m-4">
+                <form method="POST" th:action="@{/cargo/editar}" enctype="multipart/form-data" th:object="${cargosDto}">
+
+                    <!-- Campo ID (somente leitura) -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">ID</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" readonly class="form-control-plaintext" th:field="*{id}">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Campo Nome -->
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Nome do Cargo</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" type="text" id="nome" th:field="*{nomeCargo}">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeCargo')}" th:errors="*{nomeCargo}"></div>
+                    <!-- Campo Nome -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Nome do Cargo</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" type="text" th:field="*{nomeCargo}" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeCargo')}" th:errors="*{nomeCargo}"></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Campo quantidade Colaboradores -->
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Carga Horaria Limite</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" th:field="*{cargoHorarioLimite}">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoHorarioLimite')}" th:errors="*{cargoHorarioLimite}"></div>
+                    <!-- Campo Carga Horária Limite -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Carga Horária Limite</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" th:field="*{cargoHorarioLimite}" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoHorarioLimite')}" th:errors="*{cargoHorarioLimite}"></div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Setor</label>
-                    <div class="col-sm-8">
-                        <select class="form-control" th:field="*{setorId}" th:errorclass="is-invalid">
-                            <option value="" disabled selected>Selecione um setor</option>
-                            <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.nomesetor}"></option>
-                        </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('setorId')}" th:errors="*{setorId}"></div>
+                    <!-- Campo Setor -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Setor</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" th:field="*{setorId}" th:errorclass="is-invalid">
+                                <option value="" disabled selected>Selecione um setor</option>
+                                <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.nomesetor}"></option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('setorId')}" th:errors="*{setorId}"></div>
+                        </div>
                     </div>
-                </div>
 
-
-                <!-- Botões -->
-                <div class="row">
-                    <div class="offset-sm-4 col-sm-4 d-grid">
-                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    <!-- Botões -->
+                    <div class="row">
+                        <div class="offset-sm-4 col-sm-4 d-grid">
+                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                        </div>
+                        <div class="col-sm-4 d-grid">
+                            <a class="btn btn-outline-primary" href="/admin/setorcargo" role="button">Cancelar</a>
+                        </div>
                     </div>
-                    <div class="col-sm-4 d-grid">
-                        <a class="btn btn-outline-primary" href="/admin/setorcargo" role="button">Cancelar</a>
-                    </div>
-                </div>
 
-            </form>
-
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>

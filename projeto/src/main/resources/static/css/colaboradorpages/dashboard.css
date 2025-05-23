@@ -28,6 +28,22 @@ body {
     margin-bottom: 40px;
 }
 
+.menu li.logout {
+    background-color: #000000;
+    color: #000000;
+    border-radius: 8px;
+}
+
+.menu li.logout a {
+    color: white;
+}
+
+
+.menu li.logout:hover {
+    background-color: #c62828;
+    color: #000000;
+}
+
 .logo img {
     height: 36px;
     margin-right: 10px;

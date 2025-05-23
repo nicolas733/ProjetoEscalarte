@@ -14,6 +14,89 @@ body {
 
 .sidebar {
     width: 240px;
+    height: 100vh;
+
+}
+
+/* Aumentar espaçamento entre linhas */
+tbody tr {
+    vertical-align: middle;
+}
+
+/* Aumentar padding das células */
+table td,
+table th {
+    padding: 16px 12px;
+}
+
+/* Melhorar espaçamento e alinhamento dos botões */
+td .btn {
+    white-space: nowrap;
+}
+
+/* Descrição quebrando texto longo */
+/* Aplicar estilo específico para a célula de descrição */
+td.descricao {
+    max-height: 100px;         /* altura máxima antes de ativar a rolagem */
+    overflow-y: auto;          /* rolagem vertical quando necessário */
+    word-break: break-word;    /* quebra palavras muito grandes */
+    max-width: 300px;          /* largura máxima da célula */
+}
+
+
+
+.sidebar .logo {
+
+}
+
+.sidebar .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .menu li {
+    margin: 10px 0;
+}
+
+
+
+.sidebar .menu a i {
+    font-size: 1.2rem;
+}
+
+.sidebar .menu a:hover,
+.sidebar .menu a:focus {
+    color: #fff;
+}
+
+.sidebar .menu li.active > a,
+.sidebar .menu a.active {
+
+    font-weight: bold;
+}
+
+.sidebar .menu .logout a {
+    color: #fff;
+}
+
+.menu li.logout {
+    background-color: #000000;
+    color: #000000;
+}
+
+.menu li.logout a {
+    color: white;
+}
+
+
+.menu li.logout:hover {
+    background-color: #c62828;
+    color: #000000;
+}
+
+.sidebar {
+    width: 240px;
     background: white;
     border-right: 1px solid #eee;
     padding: 24px 16px;
