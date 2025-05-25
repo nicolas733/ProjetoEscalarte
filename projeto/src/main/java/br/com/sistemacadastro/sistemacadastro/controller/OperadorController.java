@@ -66,8 +66,7 @@ public class OperadorController {
         long totalSolicitacao = solicitacoesRepository.count();
         model.addAttribute("totalSolicitacoes", totalSolicitacao);
 
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
 
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
@@ -126,8 +125,7 @@ public class OperadorController {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
 
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
 
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
@@ -147,8 +145,7 @@ public class OperadorController {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
 
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
 
         Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
         PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
@@ -184,8 +181,7 @@ public class OperadorController {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
 
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
 
         List<Solicitacoes> solicitacoes = solicitacoesRepository.findByColaboradorId(colaboradorId.intValue());
         model.addAttribute("solicitacoes", solicitacoes);

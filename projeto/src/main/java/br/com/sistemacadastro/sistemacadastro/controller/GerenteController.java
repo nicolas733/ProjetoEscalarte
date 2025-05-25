@@ -4,7 +4,9 @@ import br.com.sistemacadastro.sistemacadastro.dto.EquipeDTO;
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
+import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.service.GerenteService;
+import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,29 @@ import java.util.Map;
 public class GerenteController {
 
     @Autowired
+    private ColaboradorRepository colaboradorRepository;
+
+    @Autowired
     private GerenteService gerenteService;
+
+    private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+        if (colaboradorId != null) {
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+            if (colaborador != null && colaborador.getTipoUsuario() == Colaborador.TipoUsuario.GERENTE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         int countMembrosDaEquipe = 0;
         int countSolicitacoesPendentes = 0;
         int countTotalCargos = 0; // Pode implementar se quiser no futuro
@@ -65,9 +86,12 @@ public class GerenteController {
         return "gerentepages/dashboard";
     }
 
-
     @GetMapping("/solicitacoes")
     public String solicitacoes(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         Integer gerenteId = null;
 
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
@@ -84,7 +108,8 @@ public class GerenteController {
 
         for (Solicitacoes sol : solicitacoes) {
             Colaborador colaborador = sol.getColaborador();
-            if (colaborador != null && colaborador.getContrato() != null && colaborador.getContrato().getCargos() != null) {
+            if (colaborador != null && colaborador.getContrato() != null
+                    && colaborador.getContrato().getCargos() != null) {
                 String nomeCargo = colaborador.getContrato().getCargos().getNomeCargo();
                 cargosPorColaborador.put(colaborador.getId(), nomeCargo);
             } else {
@@ -99,16 +124,21 @@ public class GerenteController {
         return "gerentepages/solicitacoes";
     }
 
-
-
-
     @GetMapping("/escala")
-    public String escala(Model model) {
+    public String escala(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         return "gerentepages/escala";
     }
 
     @GetMapping("/equipe")
     public String equipe(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         Integer gerenteId = null;
 
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
@@ -151,51 +181,52 @@ public class GerenteController {
         return "gerentepages/equipe";
     }
 
-
     @GetMapping("/minhaconta")
     public String mostrarMinhaConta(HttpSession session, Model model) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
-
-        if (colaboradorId != null) {
-            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
-            if (colaborador != null) {
-                model.addAttribute("colaborador", colaborador);
-                return "gerentepages/minhaconta";
-            }
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
         }
-        return "redirect:/login";
-    }
 
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+        Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
+
+        model.addAttribute("colaborador", colaborador);
+
+        return "gerentepages/minhaconta";
+    }
 
     @GetMapping("/alterarsenha")
     public String mostrarAlterarSenha(HttpSession session, Model model) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
-
-        if (colaboradorId != null) {
-            Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
-            if (colaborador != null) {
-                PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
-                passwordChangeDto.setEmail(colaborador.getEmail());
-                model.addAttribute("passwordChangeDto", passwordChangeDto);
-                return "gerentepages/alterarsenha";
-            }
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
         }
-        return "redirect:/login";
+
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+
+        Colaborador colaborador = gerenteService.buscarColaboradorPorId(colaboradorId);
+        PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
+        passwordChangeDto.setEmail(colaborador.getEmail());
+        model.addAttribute("passwordChangeDto", passwordChangeDto);
+
+        return "gerentepages/alterarsenha";
     }
 
-
     @PostMapping("/alterarsenha")
-    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
+    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         boolean sucesso = gerenteService.alterarSenha(passwordChangeDto);
 
         if (sucesso) {
             model.addAttribute("message", "Senha alterada com sucesso!");
+
             return "redirect:/gerente/minhaconta";
         } else {
             model.addAttribute("error", "A senha antiga está incorreta.");
             model.addAttribute("passwordChangeDto", passwordChangeDto);
+
             return "gerentepages/alterarsenha";
         }
     }
@@ -213,7 +244,5 @@ public class GerenteController {
         gerenteService.recusarSolicitacao(id);
         return ResponseEntity.ok("Reprovado");
     }
-
-
 
 }
