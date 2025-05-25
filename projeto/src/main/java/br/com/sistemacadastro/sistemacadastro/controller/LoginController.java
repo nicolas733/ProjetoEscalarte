@@ -18,6 +18,7 @@ import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
 @Controller
 @RequestMapping("")
 public class LoginController {
+    public static final String LOGIN_ROUTE = "/login";
 
     @Autowired
     private ColaboradorRepository colaboradorRepository;
@@ -33,7 +34,7 @@ public class LoginController {
         return "erro";
     }
 
-    @GetMapping("/login")
+    @GetMapping(LOGIN_ROUTE)
     public String login(HttpSession session) {
         if (SessionUtils.isLogged(session)) {
             return redirecionarParaDashboard(SessionUtils.getTipoUsuario(session));
@@ -41,9 +42,9 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping(LOGIN_ROUTE)
     public String logar(Colaborador colaborador, Model model, HttpServletResponse response, HttpSession session) {
-        Colaborador colaboradorLogado = this.colaboradorRepository.findFirstByEmailAndSenha(colaborador.getEmail(),
+        Colaborador colaboradorLogado = colaboradorRepository.findFirstByEmailAndSenha(colaborador.getEmail(),
                 colaborador.getSenha());
         if (colaboradorLogado != null) {
             SessionUtils.setUsuario(session, colaboradorLogado);
@@ -61,7 +62,7 @@ public class LoginController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/login";
+        return "redirect:" + LOGIN_ROUTE;
     }
 
 }
