@@ -4,7 +4,7 @@ import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador.TipoUsuario;
 import jakarta.servlet.http.HttpSession;
 
-public class SessionUtils {
+public class UserSessionUtils {
     public static boolean isLogged(HttpSession session) {
         return session != null && session.getAttribute("colaboradorId") != null;
     }

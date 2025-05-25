@@ -11,7 +11,7 @@ import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepositor
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
-import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
+import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class AdminController {
     private CargosPorSetorRepository cargosPorSetorRepository;
 
     private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
-        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null && colaborador.getTipoUsuario() == Colaborador.TipoUsuario.ADMIN) {
@@ -185,7 +185,7 @@ public class AdminController {
         if (!verifyIsUserCredentialsCorrect(session)) {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
-        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
         model.addAttribute("colaborador", colaborador);
 
@@ -197,7 +197,7 @@ public class AdminController {
         if (!verifyIsUserCredentialsCorrect(session)) {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
-        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
         PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
         passwordChangeDto.setEmail(colaborador.getEmail());

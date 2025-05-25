@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador.TipoUsuario;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
+import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 
 @Controller
 @RequestMapping("")
@@ -36,8 +36,8 @@ public class LoginController {
 
     @GetMapping(LOGIN_ROUTE)
     public String login(HttpSession session) {
-        if (SessionUtils.isLogged(session)) {
-            return redirecionarParaDashboard(SessionUtils.getTipoUsuario(session));
+        if (UserSessionUtils.isLogged(session)) {
+            return redirecionarParaDashboard(UserSessionUtils.getTipoUsuario(session));
         }
         return "login";
     }
@@ -47,7 +47,7 @@ public class LoginController {
         Colaborador colaboradorLogado = colaboradorRepository.findFirstByEmailAndSenha(colaborador.getEmail(),
                 colaborador.getSenha());
         if (colaboradorLogado != null) {
-            SessionUtils.setUsuario(session, colaboradorLogado);
+            UserSessionUtils.setUsuario(session, colaboradorLogado);
             Colaborador.TipoUsuario tipo = colaboradorLogado.getTipoUsuario();
 
             return redirecionarParaDashboard(tipo);
