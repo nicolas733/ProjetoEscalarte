@@ -17,11 +17,12 @@
         <span>Escalarte</span>
     </div>
     <ul class="menu">
-        <li><a href=    "/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+        <li><a href="/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
         <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
         <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
         <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
         <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+        <li><a href="/admin/turnos"><i data-lucide="user-cog"></i> Turnos </a></li>
         <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
         <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
     </ul>
@@ -167,6 +168,19 @@
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosSemanal')}" th:errors="*{contrato.diasTrabalhadosSemanal}"></div>
                 </div>
             </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Turno</label>
+                <div class="col-sm-8">
+                    <select class="form-select" th:field="*{turnosIds}" th:errorclass="is-invalid" multiple>
+                        <option th:each="turno : ${turnos}"
+                                th:value="${turno.id}"
+                                th:text="${turno.nome}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('turnosIds')}" th:errors="*{turnosIds}"></div>
+                </div>
+            </div>
+
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por mês</label>

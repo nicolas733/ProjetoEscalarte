@@ -1,16 +1,8 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
-import br.com.sistemacadastro.sistemacadastro.model.Cargos;
-import br.com.sistemacadastro.sistemacadastro.model.CargosPorSetor;
-import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Setores;
-import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
-import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
+import br.com.sistemacadastro.sistemacadastro.model.*;
+import br.com.sistemacadastro.sistemacadastro.repository.*;
 import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +34,12 @@ public class AdminController {
 
     @Autowired
     private CargosPorSetorRepository cargosPorSetorRepository;
+
+    @Autowired
+    private TurnosRepository turnosRepository;
+
+    @Autowired
+    private EscalaRepository escalaRepository;
 
     private String rotaPrivada(String rota, HttpSession session) {
         Long colaboradorId = SessionUtils.getIdUsuario(session);
@@ -116,8 +116,17 @@ public class AdminController {
     }
 
     @GetMapping("/escala")
-    public String mostrarEscala(Model model, HttpSession session) {
-        return rotaPrivada("adminpages/escala", session);
+    public String visualizarEscala(Model model) {
+        model.addAttribute("setores", setoresRepository.findAll());
+
+        // busca as escalas geradas, por exemplo, as próximas 7 dias
+        Date hoje = Date.valueOf(LocalDate.now());
+        Date seteDiasDepois = Date.valueOf(LocalDate.now().plusDays(7));
+
+        List<Escalas> escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
+        model.addAttribute("escalas", escalas);
+
+        return "adminpages/escala"; // nome do arquivo HTML (escala.html)
     }
 
     @GetMapping("/solici")
@@ -211,6 +220,14 @@ public class AdminController {
             return "OK";
         }
         return "Erro";
+    }
+
+    @GetMapping("/turnos")
+    public String mostrarTurnos(HttpSession session, Model model) {
+        List<Turnos> turnos = turnosRepository.findAll();
+        model.addAttribute("turnos", turnos);
+        model.addAttribute("turno", new Turnos());
+        return rotaPrivada("adminpages/turnos", session);
     }
 
 }

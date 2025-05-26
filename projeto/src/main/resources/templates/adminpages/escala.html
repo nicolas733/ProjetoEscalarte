@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,75 +22,56 @@
         <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
         <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
         <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+        <li><a href="/admin/turnos"><i data-lucide="user-cog"></i> Turnos </a></li>
         <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
         <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
     </ul>
 </div>
 
 <div class="main">
-    <div class="header">
-        <div class="header-title">Gerenciar Escalas</div>
-        <div class="user-initials">AU</div>
+    <div class="header d-flex align-items-center mb-3">
+        <form action="#" th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
+            <label for="setor" class="mb-0">Selecione o Setor:</label>
+            <select id="setor" name="setorId" required class="form-select">
+                <option value="" disabled selected>-- Escolha um setor --</option>
+                <option th:each="setor : ${setores}"
+                        th:value="${setor.id}"
+                        th:text="${setor.nomesetor}">
+                </option>
+            </select>
+            <button type="submit" class="btn btn-primary">Gerar Escala</button>
+        </form>
+
+        <button class="btn btn-outline-secondary ms-3">Semana</button>
+        <button class="btn btn-outline-secondary ms-2">Mês</button>
+        <button class="btn btn-danger ms-auto">Adicionar Escala</button>
     </div>
 
-    <div class="d-flex align-items-center mb-3 gap-2">
-        <select class="form-select w-auto" style="min-width: 160px;">
-            <option selected>IT</option>
-            <option>RH</option>
-            <option>Financeiro</option>
-            <option>Marketing</option>
-            <option>Operações</option>
-        </select>
-
-        <button class="btn btn-outline-secondary">Semana</button>
-        <button class="btn btn-outline-secondary">Mês</button>
-        <button class="btn btn-red ms-auto">Adicionar Escala</button>
-    </div>
-
-    <div class="card p-3">
-        <h5>Escala - IT - abril de 2025</h5>
-        <table class="table table-bordered mt-3">
-            <thead>
-            <tr>
-                <th>Funcionário</th>
-                <th>Contrato</th>
-                <th>seg.</th>
-                <th>ter.</th>
-                <th>qua.</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <strong>Pedro Santos</strong><br>
-                    <small>Desenvolvedor</small>
-                </td>
-                <td>
-                    Turno: Integral<br>
-                    Horas: 40h/semana<br>
-                    Folgas: Dom, Sáb
-                </td>
-                <td><span class="badge-turno">Manhã<br>08:00 - 12:00</span></td>
-                <td><span class="badge-turno">Integral<br>08:00 - 17:00</span></td>
-                <td><span class="badge-turno">Integral<br>08:00 - 17:00</span></td>
-            </tr>
-            <tr>
-                <td>
-                    <strong>Ana Lima</strong><br>
-                    <small>Analista de Dados</small>
-                </td>
-                <td>
-                    Turno: Manhã<br>
-                    Horas: 20h/semana<br>
-                    Folgas: Sex, Sáb
-                </td>
-                <td><span class="badge-turno">Manhã<br>08:00 - 12:00</span></td>
-                <td><span class="badge-turno">Tarde<br>13:00 - 17:00</span></td>
-                <td><span class="badge-turno">Manhã<br>08:00 - 12:00</span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Colaborador</th>
+            <th>Turno</th>
+            <th>Data</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="escala : ${escalas}">
+            <td>
+                <strong th:text="${escala.colaborador.nome}">Nome Colaborador</strong><br />
+                <small th:text="${escala.colaborador.contrato.cargo.nomeCargo}">Cargo</small>
+            </td>
+            <td>
+                Turno: <span th:text="${escala.turnos.nome}">Turno</span><br />
+                Horas: <span th:text="${escala.turnos.horarioInicio} + ' - ' + ${escala.turnos.horarioFim}">08:00 - 17:00</span><br />
+                <!-- Aqui coloque o que for relevante -->
+            </td>
+            <td>
+                <span class="badge bg-primary" th:text="${#temporals.format(escala.dataEscala.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(), 'dd/MM/yyyy')}">01/01/2025</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

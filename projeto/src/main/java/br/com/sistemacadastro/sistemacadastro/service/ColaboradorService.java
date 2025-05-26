@@ -92,8 +92,12 @@ public class ColaboradorService {
         colaboradorRepository.save(colaborador);
     }
 
-    public void deletarColaborador(int id) {
-        Colaborador colaborador = colaboradorRepository.findById(id);
-        colaboradorRepository.delete(colaborador);
-    }
+//    public void deletarColaborador(int id) {
+//        Colaborador colaborador = colaboradorRepository.findById(id);
+//        colaboradorRepository.delete(colaborador);
+//    }
+//
+//    public List<Colaborador> buscarPorSetorComContratoAtivo(Long setorId) {
+//        return colaboradorRepository.findBySetor_IdAndContratoAtivoTrue(setorId);
+//    }
 }

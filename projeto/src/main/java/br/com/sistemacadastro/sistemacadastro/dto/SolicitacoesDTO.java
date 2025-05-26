@@ -16,7 +16,7 @@ public class SolicitacoesDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataSolicitacao;
 
-    @NotBlank(message = "Descrava o motivo da alteração")
+    @NotBlank(message = "Descreva o motivo da alteração")
     @Size(min = 8, message = "A descrição deve ter no minimo 8 caracteres e no maximo 100", max = 100)
     private String descricaoSolicitacao;
 

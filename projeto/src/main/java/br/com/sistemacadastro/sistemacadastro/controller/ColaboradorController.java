@@ -2,10 +2,7 @@ package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.dto.ColaboradorDTO;
 import br.com.sistemacadastro.sistemacadastro.dto.EditDTO;
-import br.com.sistemacadastro.sistemacadastro.model.Cargos;
-import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Contrato;
-import br.com.sistemacadastro.sistemacadastro.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.model.*;
 import br.com.sistemacadastro.sistemacadastro.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -37,12 +34,17 @@ public class ColaboradorController {
     @Autowired
     private SolicitacoesRepository solicitacoesRepository;
 
+    @Autowired
+    private TurnosRepository turnosRepository;
+
     @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {
         ColaboradorDTO colaboradorDto = new ColaboradorDTO();
         List<Cargos> cargos = cargoRepository.findAll();
         model.addAttribute("cargos", cargos);
         model.addAttribute("colaboradorDTO", colaboradorDto);
+        List<Turnos> turnos = turnosRepository.findAll();
+        model.addAttribute("turnos", turnos);
         return "adminpages/cadastroColaborador"; // Retorna o template correto diretamente
     }
 
@@ -77,6 +79,9 @@ public class ColaboradorController {
 
             Cargos cargo = cargoRepository.findById(colaboradorDto.getCargoId()).orElseThrow(() -> new RuntimeException("Cargo não encontrado"));
             contrato.setCargos(cargo);
+
+            List<Turnos> turnos = turnosRepository.findAllById(colaboradorDto.getTurnosIds());
+            colaborador.setTurnos(turnos);
 
             colaborador.setContrato(contrato);
             // Salva o colaborador
@@ -142,6 +147,8 @@ public class ColaboradorController {
 
             colaborador.getEndereco().setNumero(editDto.getEndereco().getNumero());
             colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
+
+
 
             System.out.println(colaborador);
             colaboradorRepository.save(colaborador);

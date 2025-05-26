@@ -30,44 +30,43 @@
 
 <div class="main">
   <div class="header">
-    <div class="header-title">Cadastrar Cargo</div>
+    <div class="header-title">Cadastrar Turno</div>
   </div>
 
   <div class="card">
-    <form method="POST" th:action="@{/cargo/cadastrar}" enctype="multipart/form-data" th:object="${cargosDTO}">
+    <form method="POST" th:action="@{/turnos/cadastrar}" enctype="multipart/form-data" th:object="${turno}">
       <div class="row mb-3">
         <label class="col-sm-4 col-form-label">Nome</label>
         <div class="col-sm-8">
-          <input class="form-control" th:field="*{nomeCargo}" th:errorclass="is-invalid">
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeCargo')}" th:errors="*{nomeCargo}"></div>
+          <input class="form-control" th:field="*{nome}" th:errorclass="is-invalid">
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
         </div>
       </div>
 
       <div class="row mb-3">
-        <label class="col-sm-4 col-form-label">Carga Horária Limite Diária</label>
+        <label class="col-sm-4 col-form-label">Horaio de Inicio</label>
         <div class="col-sm-8">
-          <input class="form-control" th:field="*{cargoHorarioLimite}" th:errorclass="is-invalid">
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoHorarioLimite')}" th:errors="*{cargoHorarioLimite}"></div>
+          <input type="time" class="form-control" th:field="*{horarioInicio}" th:errorclass="is-invalid">
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('horarioInicio')}" th:errors="*{horarioInicio}"></div>
         </div>
       </div>
 
       <div class="row mb-3">
-        <label class="col-sm-4 col-form-label">Setor</label>
+        <label class="col-sm-4 col-form-label">Horaio de Termino</label>
         <div class="col-sm-8">
-          <select class="form-select" th:field="*{setorId}" th:errorclass="is-invalid">
-            <option value="" selected>Selecione um setor</option>
-            <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.nomesetor}"></option>
-          </select>
-          <div class="invalid-feedback" th:if="${#fields.hasErrors('setorId')}" th:errors="*{setorId}"></div>
+          <input type="time" class="form-control" th:field="*{horarioFim}" th:errorclass="is-invalid">
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('horarioFim')}" th:errors="*{horarioFim}"></div>
         </div>
       </div>
+
+
 
       <div class="row">
         <div class="offset-sm-4 col-sm-4 d-grid">
           <button type="submit" class="btn btn-primary">Cadastrar</button>
         </div>
         <div class="col-sm-4 d-grid">
-          <a class="btn btn-outline-primary" href="/admin/setorcargo" role="button">Cancelar</a>
+          <a class="btn btn-outline-primary" href="/admin/turnos" role="button">Cancelar</a>
         </div>
       </div>
     </form>
@@ -76,13 +75,13 @@
 
 <script th:inline="javascript">
   /*<![CDATA[*/
-  let cargoJaCadastrado = /*[[${cargoJaCadastrado}]]*/ false;
+  let turnoJaCadastrado = /*[[${turnoJaCadastrado}]]*/ false;
 
-  if (cargoJaCadastrado === true) {
+  if (turnoJaCadastrado === true) {
     Swal.fire({
       icon: 'error',
       title: 'Erro!',
-      text: 'Este cargo já está cadastrado.',
+      text: 'Este turno já está cadastrado.',
       confirmButtonColor: '#d33'
     });
   }
