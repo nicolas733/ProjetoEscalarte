@@ -17,6 +17,14 @@
             <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
             <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
         </ul>
+        <script>
+            document.querySelectorAll('.menu li').forEach(li => {
+                const href = li.querySelector('a').getAttribute('href');
+                if (href === window.location.pathname) {
+                    li.classList.add('active');
+                }
+            });
+        </script>
     </div>
     <!-- Gerente -->
     <div th:fragment="sidebarGerente" class="sidebar">
@@ -32,6 +40,14 @@
             <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
             <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
         </ul>
+        <script>
+            document.querySelectorAll('.menu li').forEach(li => {
+                const href = li.querySelector('a').getAttribute('href');
+                if (href === window.location.pathname) {
+                    li.classList.add('active');
+                }
+            });
+        </script>
     </div>
     <!-- Operador -->
     <div th:fragment="sidebarOperador" class="sidebar">
@@ -46,6 +62,14 @@
             <li><a href="/operador/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
             <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
         </ul>
+        <script>
+            document.querySelectorAll('.menu li').forEach(li => {
+                const href = li.querySelector('a').getAttribute('href');
+                if (href === window.location.pathname) {
+                    li.classList.add('active');
+                }
+            });
+        </script>
     </div>
 </body>
 

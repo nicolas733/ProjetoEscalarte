@@ -59,13 +59,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();
-        const currentPath = window.location.pathname;
-        document.querySelectorAll('.menu li').forEach(li => {
-            const href = li.querySelector('a').getAttribute('href');
-            if (href === currentPath) {
-                li.classList.add('active');
-            }
-        });
     </script>
 </body>
 

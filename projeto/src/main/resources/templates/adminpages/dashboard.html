@@ -53,15 +53,6 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
     lucide.createIcons();
-
-    document.querySelectorAll('.menu li').forEach(li => {
-      const link = li.querySelector('a');
-      li.addEventListener('click', () => {
-        if (link) {
-          window.location.href = link.getAttribute('href');
-        }
-      });
-    });
   </script>
 </body>
 
