@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,99 +12,89 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg d-lg-none fixed-top bg-white shadow-sm mobile-nav" id="mobileNav">
-    <div class="container-fluid">
-        <div class="mobile-logo">
-            <img src="./img/logo.png" alt="Logo">
-            <span class="navbar-brand">Escalarte</span>
+    <nav class="navbar navbar-expand-lg d-lg-none fixed-top bg-white shadow-sm mobile-nav" id="mobileNav">
+        <div class="container-fluid">
+            <div class="mobile-logo">
+                <img src="./img/logo.png" alt="Logo">
+                <span class="navbar-brand">Escalarte</span>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu"
+                aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
+    </nav>
 
-<div class="sidebar" id="sidebar">
-    <div class="logo">
-        <img src="/img/logo.png" alt="Logo">
-        <span>Escalarte</span>
-    </div>
-    <ul class="menu">
-        <li><a href="/operador/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-        <li><a href="/operador/escala"><i data-lucide="calendar"></i>Minha Escala</a></li>
-        <li><a href="/operador/solicita"><i data-lucide="clipboard-list"></i>Minhas Solicitações</a></li>
-        <li><a href="/operador/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
-    </ul>
-</div>
+    <div th:replace="~{layout/sidebarComponent :: sidebarOperador}"></div>
 
-<div class="main" id="main">
-    <div class="header">
-        <div class="header-content">
-            <div class="header-title">Minha Escala</div>
+    <div class="main" id="main">
+        <div class="header">
+            <div class="header-content">
+                <div class="header-title">Minha Escala</div>
+            </div>
+            <a class="btn btn-primary" href="/solicitacoes/alteracao">Solicitar Alteração</a>
         </div>
-        <a class="btn btn-primary" href="/solicitacoes/alteracao">Solicitar Alteração</a>
-    </div>
 
-    <div class="card p-3 mb-4">
-        <h5>Escala - abril de 2025</h5>
-    </div>
+        <div class="card p-3 mb-4">
+            <h5>Escala - abril de 2025</h5>
+        </div>
 
-    <div class="card p-3">
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Dia</th>
-                    <th>Turno</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>2025-04-07</td>
-                    <td>seg.</td>
-                    <td><span class="badge-turno">Manhã 08:00 - 12:00</span></td>
-                    <td><button class="btn-change">Solicitar Alteração</button></td>
-                </tr>
-                <tr>
-                    <td>2025-04-08</td>
-                    <td>ter.</td>
-                    <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
-                    <td><button class="btn-change">Solicitar Alteração</button></td>
-                </tr>
-                <tr>
-                    <td>2025-04-09</td>
-                    <td>qua.</td>
-                    <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
-                    <td><button class="btn-change">Solicitar Alteração</button></td>
-                </tr>
-                <tr>
-                    <td>2025-04-10</td>
-                    <td>qui.</td>
-                    <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
-                    <td><button class="btn-change">Solicitar Alteração</button></td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="card p-3">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Dia</th>
+                            <th>Turno</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-04-07</td>
+                            <td>seg.</td>
+                            <td><span class="badge-turno">Manhã 08:00 - 12:00</span></td>
+                            <td><button class="btn-change">Solicitar Alteração</button></td>
+                        </tr>
+                        <tr>
+                            <td>2025-04-08</td>
+                            <td>ter.</td>
+                            <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
+                            <td><button class="btn-change">Solicitar Alteração</button></td>
+                        </tr>
+                        <tr>
+                            <td>2025-04-09</td>
+                            <td>qua.</td>
+                            <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
+                            <td><button class="btn-change">Solicitar Alteração</button></td>
+                        </tr>
+                        <tr>
+                            <td>2025-04-10</td>
+                            <td>qui.</td>
+                            <td><span class="badge-turno">Integral 08:00 - 17:00</span></td>
+                            <td><button class="btn-change">Solicitar Alteração</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        lucide.createIcons();
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            lucide.createIcons();
 
-        const currentPath = window.location.pathname.split("/").pop();
-        document.querySelectorAll('.menu li a').forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-                link.classList.add('active');
-            }
+            const currentPath = window.location.pathname.split("/").pop();
+            document.querySelectorAll('.menu li a').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
