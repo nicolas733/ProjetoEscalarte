@@ -125,6 +125,7 @@ public class AdminController {
 
         List<Escalas> escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
         model.addAttribute("escalas", escalas);
+        model.addAttribute("escalas", escalaRepository.findAll()); // mesmo que vazio, precisa existir
 
         return "adminpages/escala"; // nome do arquivo HTML (escala.html)
     }

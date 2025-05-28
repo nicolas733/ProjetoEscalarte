@@ -22,15 +22,15 @@
         <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
         <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
         <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
-        <li><a href="/admin/turnos"><i data-lucide="user-cog"></i> Turnos </a></li>
-        <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+        <li><a href="/admin/turnos"><i data-lucide="user-cog"></i>Turnos</a></li>
+        <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i>Minha Conta</a></li>
+        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i>Sair da Conta</a></li>
     </ul>
 </div>
 
 <div class="main">
     <div class="header d-flex align-items-center mb-3">
-        <form action="#" th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
+        <form th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
             <label for="setor" class="mb-0">Selecione o Setor:</label>
             <select id="setor" name="setorId" required class="form-select">
                 <option value="" disabled selected>-- Escolha um setor --</option>
@@ -59,15 +59,18 @@
         <tr th:each="escala : ${escalas}">
             <td>
                 <strong th:text="${escala.colaborador.nome}">Nome Colaborador</strong><br />
-                <small th:text="${escala.colaborador.contrato.cargo.nomeCargo}">Cargo</small>
+                <small th:if="${escala.colaborador.contrato != null and escala.colaborador.contrato.cargos != null}"
+                       th:text="${escala.colaborador.contrato.cargos.nomeCargo}">Cargo</small>
             </td>
             <td>
                 Turno: <span th:text="${escala.turnos.nome}">Turno</span><br />
-                Horas: <span th:text="${escala.turnos.horarioInicio} + ' - ' + ${escala.turnos.horarioFim}">08:00 - 17:00</span><br />
-                <!-- Aqui coloque o que for relevante -->
+                <span th:text="${escala.turnos != null ? escala.turnos.horarioInicio + ' - ' + escala.turnos.horarioFim : 'Sem turno'}">08:00 - 17:00</span>
             </td>
             <td>
-                <span class="badge bg-primary" th:text="${#temporals.format(escala.dataEscala.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(), 'dd/MM/yyyy')}">01/01/2025</span>
+                <span th:if="${escala.dataEscala != null}"
+                      th:text="${#temporals.format(escala.dataEscala.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(), 'dd/MM/yyyy')}">
+                </span>
+                <span th:unless="${escala.dataEscala != null}">Data não definida</span>
             </td>
         </tr>
         </tbody>
