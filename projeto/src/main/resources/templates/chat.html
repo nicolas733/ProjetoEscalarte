@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat com Ollama</title>
+</head>
+<body>
+<h1>Chat com Ollama</h1>
+
+<form action="/chat" method="post">
+    <label for="prompt">Digite sua pergunta:</label><br>
+    <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br><br>
+    <input type="submit" value="Enviar">
+</form>
+
+<div th:if="${resposta}">
+    <h3>Prompt:</h3>
+    <p th:text="${prompt}"></p>
+
+    <h3>Resposta do modelo:</h3>
+    <p th:text="${resposta}"></p>
+</div>
+</body>
+</html>
