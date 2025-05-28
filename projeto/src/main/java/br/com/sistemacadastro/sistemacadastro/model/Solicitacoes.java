@@ -28,7 +28,7 @@ public class Solicitacoes {
     //@Column faz acessar o Id dessa tabela sem acessar a tabela por inteiro
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "colaborador_id", insertable = false, updatable = false)
-    private Integer collaboratorId;
+    private Integer colaboradorId;
 
     @OneToOne
     @JoinColumn(name = "escalas_id")

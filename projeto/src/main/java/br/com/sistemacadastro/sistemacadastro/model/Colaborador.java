@@ -20,9 +20,9 @@ public class  Colaborador {
 
     @NotEmpty
     public enum TipoUsuario {
-        ADMIN,
-        GERENTE,
-        OPERADOR,
+        ADMIN, // 0
+        GERENTE, // 1
+        OPERADOR, // 2
     }
 
 

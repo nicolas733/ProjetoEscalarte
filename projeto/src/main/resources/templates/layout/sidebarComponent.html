@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <!-- Admin -->
+    <div th:fragment="sidebarAdmin" class="sidebar">
+        <div class="logo">
+            <img src="/img/logo.png" alt="Logo">
+            <span>Escalarte</span>
+        </div>
+        <ul class="menu">
+            <li><a href="/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
+            <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
+            <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+            <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+            <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+            <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+        </ul>
+        <script>
+            document.querySelectorAll('.menu li').forEach(li => {
+                const href = li.querySelector('a').getAttribute('href');
+                if (href === window.location.pathname) {
+                    li.classList.add('active');
+                }
+            });
+        </script>
+    </div>
+    <!-- Gerente -->
+    <div th:fragment="sidebarGerente" class="sidebar">
+        <div class="logo">
+            <img src="/img/logo.png" alt="Logo" />
+            <span>Escalarte</span>
+        </div>
+        <ul class="menu">
+            <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
+            <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+            <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+            <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+            <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+        </ul>
+        <script>
+            document.querySelectorAll('.menu li').forEach(li => {
+                const href = li.querySelector('a').getAttribute('href');
+                if (href === window.location.pathname) {
+                    li.classList.add('active');
+                }
+            });
+        </script>
+    </div>
+    <!-- Operador -->
+    <div th:fragment="sidebarOperador" class="sidebar">
+        <div class="logo">
+            <img src="/img/logo.png" alt="Logo">
+            <span>Escalarte</span>
+        </div>
+        <ul class="menu">
+            <li><a href="/operador/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+            <li><a href="/operador/escala"><i data-lucide="calendar"></i> Minha Escala</a></li>
+            <li><a href="/operador/solicita"><i data-lucide="clipboard-list"></i>Minhas Solicitações</a></li>
+            <li><a href="/operador/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+            <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+        </ul>
+        <script>
+            document.querySelectorAll('.menu li').forEach(li => {
+                const href = li.querySelector('a').getAttribute('href');
+                if (href === window.location.pathname) {
+                    li.classList.add('active');
+                }
+            });
+        </script>
+    </div>
+</body>
+
+</html>

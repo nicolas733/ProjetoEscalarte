@@ -16,7 +16,7 @@ body {
     width: 240px;
     background: white;
     border-right: 1px solid #eee;
-    padding: 24px 16px;
+    padding: 10px 6px;
     min-height: 100vh;
     box-sizing: border-box;
 }
@@ -59,6 +59,20 @@ body {
     background-color: #ef5350;
     color: white;
 }
+
+
+th.col-status,
+td.col-status {
+    width: 100px;
+    text-align: center;
+}
+
+th.col-acoes,
+td.col-acoes {
+    width: 80px;
+    text-align: center;
+}
+
 
 svg.lucide {
     margin-right: 10px;

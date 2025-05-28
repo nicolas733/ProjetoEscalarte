@@ -45,7 +45,7 @@ public class SetoresController {
     @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {
         SetoresDTO setoresDto = new SetoresDTO();
-        List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
+        List<Colaborador> colaboradoresList = colaboradorRepository.findByTipoUsuario(Colaborador.TipoUsuario.OPERADOR);
         model.addAttribute("setoresDto", setoresDto);
         model.addAttribute("colaboradores", colaboradoresList);
         return "adminpages/cadastroSetor";
@@ -54,32 +54,29 @@ public class SetoresController {
     @PostMapping("/cadastrar")
     public String cadastrarSetores(@Valid @ModelAttribute("setoresDto") SetoresDTO setoresDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            // Repopula os colaboradores para o select
-            List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
+            List<Colaborador> colaboradoresList = colaboradorRepository.findByTipoUsuario(Colaborador.TipoUsuario.OPERADOR);
             model.addAttribute("colaboradores", colaboradoresList);
-            // setoresDto já está no model via @ModelAttribute
             return "adminpages/cadastroSetor";
         }
 
-        Optional<Setores> setoresExistentes = setoresRepository.findByNomesetor(setoresDto.getNomeSetor());
-        if (setoresExistentes.isEmpty()) {
-            Setores setores = new Setores();
-            setores.setNomesetor(setoresDto.getNomeSetor());
-            setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
-            setoresRepository.save(setores);
-        }else {
+        try {
+            setoresService.cadastrarSetor(setoresDto);
+        } catch (RuntimeException ex) {
             model.addAttribute("setorJaCadastrado", true);
+            List<Colaborador> colaboradoresList = colaboradorRepository.findByTipoUsuario(Colaborador.TipoUsuario.OPERADOR);
+            model.addAttribute("colaboradores", colaboradoresList);
             return "adminpages/cadastroSetor";
         }
+
         return "redirect:/admin/setorcargo?sucesso=true";
     }
 
     @GetMapping("/editar/{id}")
     public String showEditPage(Model model, @PathVariable("id") int id) {
         SetoresDTO setoresDto = setoresService.prepararEdicao(id);
-        List<Colaborador> colaboradoresList = colaboradorRepository.findAll();
+        List<Colaborador> operadoresList = colaboradorRepository.findByTipoUsuario(Colaborador.TipoUsuario.OPERADOR);
         model.addAttribute("setoresDto", setoresDto);
-        model.addAttribute("colaboradores", colaboradoresList);
+        model.addAttribute("colaboradores", operadoresList);
         model.addAttribute("id", id);
         return "adminpages/EditSetores";
     }
@@ -98,12 +95,11 @@ public class SetoresController {
 
     @GetMapping("/deletar")
     public String deleteSetores(@RequestParam int id, RedirectAttributes redirectAttributes) {
-        boolean sucesso = setoresService.excluirSetor(id);
-
-        if (!sucesso) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir o setor pois existem cargos associados.");
-        } else {
+        try {
+            setoresService.excluirSetor(id);
             redirectAttributes.addFlashAttribute("mensagemSucesso", "Setor excluído com sucesso.");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", e.getMessage());
         }
 
         return "redirect:/admin/setorcargo";

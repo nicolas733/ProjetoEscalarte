@@ -1,88 +1,123 @@
-    <!doctype html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Escarlarte</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" th:href="@{/css/adminpages/cadastroColaborador.css}">
-        <link rel="shortcut icon" th:href="@{/img/logoEscalarte.ico}" type="image/x-icon">
-    </head>
-    <body>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="/img/logo.png" alt="Logo" />
-            <span>Escalarte</span>
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solicitar Alteração - Escalarte</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide@latest" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/img/logoEscalarte.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/adminpages/cadastroColaborador.css}">
+    <style>
+        .main {
+            margin-top: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar hambúrguer para mobile -->
+<nav class="navbar d-lg-none bg-white shadow-sm fixed-top">
+    <div class="container-fluid">
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+            <i data-lucide="menu"></i>
+        </button>
+        <div class="d-flex align-items-center gap-2">
+            <img src="/img/logo.png" alt="Logo" style="height: 36px;">
+            <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
         </div>
-        <ul class="menu">
-            <li><a href="/operador/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-            <li><a href="/operador/escala"><i data-lucide="calendar"></i>Minha Escala</a></li>
-            <li><a href="/operador/solicita"><i data-lucide="clipboard-list"></i>Minhas Solicitações</a></li>
-            <li><a href="/operador/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-            <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
-
-        </ul>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 mx-auto rounded border p-4 m-4">
-                <h2 class="text-center mb-5">Solicitar Alteração</h2>
+</nav>
 
-                <form method="POST" th:action="@{/solicitacao/alteracao}"  th:object="${solicitacaoDto}">
-                    <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Data da Solicitação</label>
-                        <div class="col-sm-8">
-                            <input class="form-control" type="date" th:field="*{dataSolicitacao}" th:errorclass="is-invalid">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('dataSolicitacao')}" th:errors="*{dataSolicitacao}"></div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-4 col-form-label">Descrição</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control" th:field="*{descricaoSolicitacao}" th:errorclass="is-invalid"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('descricaoSolicitacao')}" th:errors="*{descricaoSolicitacao}"></div>
-                        </div>
+<!-- Sidebar mobile com offcanvas -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
+    <div class="offcanvas-header d-flex justify-content-between align-items-center px-3 pt-3">
+        <div class="d-flex align-items-center gap-2">
+            <img src="/img/logo.png" alt="Logo" style="height: 36px;">
+            <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="p-3">
+            <ul class="menu list-unstyled">
+                <li><a href="/operador/dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                <li><a href="/operador/escala"><i data-lucide="calendar"></i> Minha Escala</a></li>
+                <li><a href="/operador/solicita"><i data-lucide="clipboard-list"></i> Minhas Solicitações</a></li>
+                <li><a href="/operador/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+                <li><a href="/logout"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-                    </div>
+<!-- Sidebar fixa para desktop -->
+<div class="sidebar d-none d-lg-block">
+    <div th:replace="~{layout/sidebarComponent :: sidebarOperador}"></div>
+</div>
 
-                    <div class="row">
-                        <div class="offset-sm-4 col-sm-4 d-grid">
-                            <button type="submit" class="btn btn-primary">Solicitar</button>
-                        </div>
-                        <div class="col-sm-4 d-grid">
-                            <a class="btn btn-outline-primary" th:href="@{/operador/escala}" role="button">Cancelar</a>
-                        </div>
-                    </div>
+<!-- Conteúdo principal -->
+<main class="main container py-5 mt-lg-0">
+    <div class="card p-4 mx-auto shadow-sm" style="max-width: 720px;">
+        <h2 class="text-center mb-4">Solicitar Alteração</h2>
 
-                </form>
+        <form method="POST" th:action="@{/solicitacoes/alteracao}" th:object="${solicitacoesDto}">
+            <div class="mb-3">
+                <label class="form-label">Data da Solicitação</label>
+                <input class="form-control" type="date" th:field="*{dataSolicitacao}"
+                       th:attr="min=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}, max=${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+                       th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('dataSolicitacao')}"
+                     th:errors="*{dataSolicitacao}"></div>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea class="form-control" th:field="*{descricaoSolicitacao}" rows="4"
+                          th:errorclass="is-invalid"></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('descricaoSolicitacao')}"
+                     th:errors="*{descricaoSolicitacao}"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 d-grid">
+                    <button type="submit" class="btn btn-primary">Solicitar</button>
+                </div>
+                <div class="col-6 d-grid">
+                    <a class="btn btn-outline-primary" th:href="@{/operador/escala}" role="button">Cancelar</a>
+                </div>
+            </div>
+        </form>
     </div>
+</main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        lucide.createIcons();
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
+<script>
+    lucide.createIcons();
 
-            if (urlParams.get('sucesso') === 'true') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Solicitação enviada!',
-                    text: 'Sua solicitação foi registrada com sucesso.',
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    // Remove o parâmetro da URL sem recarregar
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                });
-            }
-        });
-    </script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('sucesso') === 'true') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Solicitação enviada!',
+                text: 'Sua solicitação foi registrada com sucesso.',
+                confirmButtonColor: '#3085d6'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/operador/escala';
+                }
+            });
+        }
+    });
+</script>
 
-    </body>
+</body>
+
 </html>

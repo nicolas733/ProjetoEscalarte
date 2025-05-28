@@ -34,4 +34,6 @@ public interface SolicitacoesRepository extends JpaRepository<Solicitacoes, Inte
 
     int countByColaboradorIdAndStatus(Integer colaboradorId, String status);
 
+    long countByStatus(String status);
+
 }

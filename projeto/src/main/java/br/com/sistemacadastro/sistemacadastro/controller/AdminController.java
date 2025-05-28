@@ -46,24 +46,30 @@ public class AdminController {
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null && colaborador.getTipoUsuario() == Colaborador.TipoUsuario.ADMIN) {
-                return rota;
+                return true;
             }
         }
 
-        return "redirect:/login";
+        return false;
     }
 
     @GetMapping({ "/main" })
 
     public String listarDados(HttpSession session, Model model) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
-        return rotaPrivada("adminpages/usuarios", session);
+        return "adminpages/usuarios";
     }
 
     @GetMapping("/dashboard")
     public String mostrarDashboard(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
         long total = colaboradorRepository.count();
         model.addAttribute("totalColaboradores", total);
 
@@ -73,17 +79,16 @@ public class AdminController {
         long totalCargo = cargoRepository.count();
         model.addAttribute("totalCargos", totalCargo);
 
-        long totalSolicitacao = solicitacoesRepository.count();
-        model.addAttribute("totalSolicitacoes", totalSolicitacao);
+        long totalSolicitacoesPendentes = solicitacoesRepository.countByStatus("Pendente");
+        model.addAttribute("totalSolicitacoesPendentes", totalSolicitacoesPendentes);
 
-        // Recuperar colaborador logado da sessão
         Object colaboradorIdObj = session.getAttribute("colaboradorId");
         Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
 
         if (colaboradorId != null) {
-            Colaborador colaborador = colaboradorRepository.findCollaboratorById(colaboradorId);
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
-                String nomeCompleto = ((Colaborador) colaborador).getNome();
+                String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
                 model.addAttribute("iniciais", getIniciais(nomeCompleto));
             }
@@ -92,7 +97,7 @@ public class AdminController {
             model.addAttribute("iniciais", "A");
         }
 
-        return rotaPrivada("adminpages/dashboard", session);
+        return "adminpages/dashboard";
     }
 
     private String getIniciais(String nomeCompleto) {
@@ -105,6 +110,9 @@ public class AdminController {
 
     @GetMapping("/setorcargo")
     public String mostrarSetoresCargos(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
         List<Setores> setores = setoresRepository.findAll();
         model.addAttribute("setores", setores);
         model.addAttribute("novoSetor", new Setores());
@@ -112,7 +120,7 @@ public class AdminController {
         model.addAttribute("cargosPorSetor", cargos);
         model.addAttribute("novoCargo", new Cargos());
 
-        return rotaPrivada("adminpages/setores", session);
+        return "adminpages/setores";
     }
 
     @GetMapping("/escala")
@@ -132,6 +140,9 @@ public class AdminController {
 
     @GetMapping("/solici")
     public String mostrarSolicitacao(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
         List<Solicitacoes> solicitacoes = solicitacoesRepository.findAll();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
@@ -142,48 +153,73 @@ public class AdminController {
         Map<Integer, String> setoresMap = new HashMap<>();
 
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
+
         for (Colaborador c : colaboradores) {
+            String nomeCargo = "Sem cargo";
+            String nomeSetor = "Sem setor";
+
             if (c.getCargoPorSetor() != null) {
                 if (c.getCargoPorSetor().getCargo() != null) {
-                    cargosMap.put(c.getId(), c.getCargoPorSetor().getCargo().getNomeCargo());
+                    nomeCargo = c.getCargoPorSetor().getCargo().getNomeCargo();
                 }
                 if (c.getCargoPorSetor().getSetor() != null) {
-                    setoresMap.put(c.getId(), c.getCargoPorSetor().getSetor().getNomesetor());
+                    nomeSetor = c.getCargoPorSetor().getSetor().getNomesetor();
                 }
             }
+
+            else if (c.getContrato() != null && c.getContrato().getCargos() != null) {
+                Cargos cargo = c.getContrato().getCargos();
+                nomeCargo = cargo.getNomeCargo();
+
+                CargosPorSetor cps = cargosPorSetorRepository.findByCargo(cargo);
+                if (cps != null && cps.getSetor() != null) {
+                    nomeSetor = cps.getSetor().getNomesetor();
+                }
+            }
+
+            cargosMap.put(c.getId(), nomeCargo);
+            setoresMap.put(c.getId(), nomeSetor);
         }
 
         model.addAttribute("cargos", cargosMap);
         model.addAttribute("setores", setoresMap);
 
-        return rotaPrivada("adminpages/Solici", session);
+        return "adminpages/Solici";
     }
-
 
     @GetMapping("/minhaconta")
     public String mostrarMinhaConta(HttpSession session, Model model) {
-        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
         model.addAttribute("colaborador", colaborador);
 
-        return rotaPrivada("adminpages/minhaconta", session);
+        return "adminpages/minhaconta";
     }
 
     @GetMapping("/alterarsenha")
     public String mostrarAlterarSenha(HttpSession session, Model model) {
-        Long colaboradorId = SessionUtils.getIdUsuario(session);
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
         PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
         passwordChangeDto.setEmail(colaborador.getEmail());
         model.addAttribute("passwordChangeDto", passwordChangeDto);
 
-        return rotaPrivada("adminpages/alterarsenha", session);
+        return "adminpages/alterarsenha";
     }
 
     @PostMapping("/alterarsenha")
     public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
         // Recupera o colaborador
-        Colaborador colaborador = colaboradorRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
+        Colaborador colaborador = colaboradorRepository.findByEmail(passwordChangeDto.getEmail()).orElse(null);
 
         if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
             // Atualiza a senha
@@ -195,8 +231,8 @@ public class AdminController {
             model.addAttribute("error", "A senha antiga está incorreta.");
             model.addAttribute("passwordChangeDto", passwordChangeDto);
         }
-        
-        return rotaPrivada("adminpages/alterarsenha", session);
+
+        return "adminpages/alterarsenha";
     }
 
     @PostMapping("/solicitacoes/aprovar/{id}")

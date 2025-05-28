@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,56 +12,48 @@
 </head>
 
 <body>
-<div th:replace="~{layout/sidebarAdmin :: sidebarAdmin}"></div>
+  <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
 
-<div class="main">
-  <div class="header">
-    <div>
-      <div class="title">Dashboard</div>
-      <div class="subtitle">
-        Bem-vindo, <span th:text="${nome} ?: 'Admin'">Admin</span> - Administrador
+  <div class="main">
+    <div class="header">
+      <div>
+        <div class="title">Dashboard</div>
+        <div class="subtitle">
+          Bem-vindo, <span th:text="${nome} ?: 'Admin'">Admin</span> - Administrador
+        </div>
+      </div>
+      <div class="user-initials" th:text="${iniciais} ?: 'A'">A</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Usuários</div>
+        <div class="card-value" th:text="${totalColaboradores}"></div>
+        <div class="card-icon"><i data-lucide="users"></i></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Setores</div>
+        <div class="card-value" th:text="${totalSetores}"></div>
+        <div class="card-icon"><i data-lucide="briefcase"></i></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cargos</div>
+        <div class="card-value" th:text="${totalCargos}"></div>
+        <div class="card-icon"><i data-lucide="briefcase"></i></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Solicitações Pendentes</div>
+        <div class="card-value" th:text="${totalSolicitacoesPendentes}"></div>
+        <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
       </div>
     </div>
-    <div class="user-initials" th:text="${iniciais} ?: 'A'">A</div>
   </div>
 
-  <div class="cards">
-    <div class="card">
-      <div class="card-title">Setores</div>
-      <div class="card-value" th:text="${totalSetores}"></div>
-      <div class="card-icon"><i data-lucide="briefcase"></i></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Usuários</div>
-      <div class="card-value" th:text="${totalColaboradores}"></div>
-      <div class="card-icon"><i data-lucide="users"></i></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Cargos</div>
-      <div class="card-value" th:text="${totalCargos}"></div>
-      <div class="card-icon"><i data-lucide="briefcase"></i></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Solicitações</div>
-      <div class="card-value" th:text="${totalSolicitacoes}"></div>
-      <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  lucide.createIcons();
-
-  document.querySelectorAll('.menu li').forEach(li => {
-    const link = li.querySelector('a');
-    li.addEventListener('click', () => {
-      if (link) {
-        window.location.href = link.getAttribute('href');
-      }
-    });
-  });
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
+
 </html>

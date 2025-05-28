@@ -35,6 +35,10 @@ public class ColaboradorService {
         return cargoRepository.findAll();
     }
 
+    public List<Colaborador> listarOperadores() {
+        return colaboradorRepository.findByTipoUsuario(Colaborador.TipoUsuario.valueOf("OPERADOR"));
+    }
+
     public Optional<Colaborador> buscarPorEmail(String email) {
         return colaboradorRepository.findByEmail(email);
     }

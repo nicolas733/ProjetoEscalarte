@@ -14,9 +14,7 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Intege
     Colaborador findById(long id);
     List<Colaborador> findAll();
 
-    public Colaborador findFirstByEmailAndSenha(String email, String senha);
-
-    Colaborador findCollaboratorById(Long id);
+   Colaborador findFirstByEmailAndSenha(String email, String senha);
 
     Colaborador findCollaboratorByEmail(String email);
 
