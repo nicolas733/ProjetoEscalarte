@@ -33,4 +33,7 @@ public interface EscalaRepository extends JpaRepository<Escalas, Integer> {
         Date fim = Date.from(dataInicial.plusDays(6).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return findByColaboradorAndSemana(colaboradorId, inicio, fim);
     }
+
+    List<Escalas> findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(Integer setorId, Date inicio, Date fim);
+
 }

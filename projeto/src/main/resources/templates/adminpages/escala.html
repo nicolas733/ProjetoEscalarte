@@ -41,11 +41,22 @@
             </select>
             <button type="submit" class="btn btn-primary">Gerar Escala</button>
         </form>
-
-        <button class="btn btn-outline-secondary ms-3">Semana</button>
-        <button class="btn btn-outline-secondary ms-2">Mês</button>
-        <button class="btn btn-danger ms-auto">Adicionar Escala</button>
     </div>
+    <!-- Formulário para FILTRAR Escala -->
+    <form th:action="@{/admin/escala}" method="get" class="d-flex align-items-center gap-2">
+        <label for="filtroSetor" class="mb-0">Visualizar setor:</label>
+        <select id="filtroSetor" name="setorId" class="form-select">
+            <option value="">-- Todos os setores --</option>
+            <option th:each="setor : ${setores}"
+                    th:value="${setor.id}"
+                    th:text="${setor.nomesetor}"
+                    th:selected="${setor.id == setorSelecionado}">
+            </option>
+        </select>
+        <button type="submit" class="btn btn-secondary">Filtrar</button>
+    </form>
+
+</div>
 
     <table class="table table-striped">
         <thead>

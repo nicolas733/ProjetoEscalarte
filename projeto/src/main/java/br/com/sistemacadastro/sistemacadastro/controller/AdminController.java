@@ -125,19 +125,25 @@ public class AdminController {
     }
 
     @GetMapping("/escala")
-    public String visualizarEscala(Model model) {
+    public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model) {
         model.addAttribute("setores", setoresRepository.findAll());
 
-        // busca as escalas geradas, por exemplo, as próximas 7 dias
         Date hoje = Date.valueOf(LocalDate.now());
         Date seteDiasDepois = Date.valueOf(LocalDate.now().plusDays(7));
 
-        List<Escalas> escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
-        model.addAttribute("escalas", escalas);
-        model.addAttribute("escalas", escalaRepository.findAll()); // mesmo que vazio, precisa existir
+        List<Escalas> escalas;
 
-        return "adminpages/escala"; // nome do arquivo HTML (escala.html)
+        if (setorId != null) {
+            escalas = escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, hoje, seteDiasDepois);
+            model.addAttribute("setorSelecionado", setorId); // para manter selecionado no <select>
+        } else {
+            escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
+        }
+
+        model.addAttribute("escalas", escalas);
+        return "adminpages/escala";
     }
+
 
     @GetMapping("/solici")
     public String mostrarSolicitacao(Model model, HttpSession session) {
