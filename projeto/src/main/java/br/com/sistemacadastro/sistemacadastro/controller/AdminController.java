@@ -3,7 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.controller;
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.model.*;
 import br.com.sistemacadastro.sistemacadastro.repository.*;
-import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
+import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,8 +41,8 @@ public class AdminController {
     @Autowired
     private EscalaRepository escalaRepository;
 
-    private String rotaPrivada(String rota, HttpSession session) {
-        Long colaboradorId = SessionUtils.getIdUsuario(session);
+    private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null && colaborador.getTipoUsuario() == Colaborador.TipoUsuario.ADMIN) {
@@ -62,6 +62,7 @@ public class AdminController {
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
+        
         return "adminpages/usuarios";
     }
 
@@ -261,10 +262,14 @@ public class AdminController {
 
     @GetMapping("/turnos")
     public String mostrarTurnos(HttpSession session, Model model) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         List<Turnos> turnos = turnosRepository.findAll();
         model.addAttribute("turnos", turnos);
         model.addAttribute("turno", new Turnos());
-        return rotaPrivada("adminpages/turnos", session);
+        return "adminpages/turnos";
     }
 
 }

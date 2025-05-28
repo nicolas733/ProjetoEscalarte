@@ -28,4 +28,5 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Intege
             "AND cps.setor.id = :setorId")
     List<Colaborador> findBySetorAndContratoAtivo(@Param("setorId") int setorId);
 
+    List<Colaborador> findByTipoUsuario(Colaborador.TipoUsuario tipoUsuario);
 }

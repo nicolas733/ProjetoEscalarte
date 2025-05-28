@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface GerenteRepository extends JpaRepository<Colaborador, Long> {
+public interface GerenteRepository extends JpaRepository<Colaborador, Integer> {
     @Query("""
     select c from colaborador c
     join c.contrato ct
