@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -135,14 +136,18 @@ public class AdminController {
 
         if (setorId != null) {
             escalas = escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, hoje, seteDiasDepois);
-            model.addAttribute("setorSelecionado", setorId); // para manter selecionado no <select>
+            model.addAttribute("setorSelecionado", setorId);
         } else {
             escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
         }
 
-        model.addAttribute("escalas", escalas);
+        Map<Colaborador, List<Escalas>> mapaEscalas = escalas.stream()
+                .collect(Collectors.groupingBy(Escalas::getColaborador));
+
+        model.addAttribute("mapaEscalas", mapaEscalas);
         return "adminpages/escala";
     }
+
 
 
     @GetMapping("/solici")

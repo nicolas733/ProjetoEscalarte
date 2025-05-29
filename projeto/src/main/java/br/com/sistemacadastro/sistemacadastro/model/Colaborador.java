@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.br.CPF;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Data
 @ToString(exclude = "contrato")  // Exclui o campo 'contrato' do método toString()
+@EqualsAndHashCode(exclude = "contrato")
 @Entity(name="colaborador")
 public class  Colaborador {
 
@@ -96,4 +98,3 @@ public class  Colaborador {
     private List<Turnos> turnos;
 
 }
-
