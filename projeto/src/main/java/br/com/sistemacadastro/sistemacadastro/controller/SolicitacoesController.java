@@ -32,7 +32,7 @@ public class SolicitacoesController {
     @GetMapping("/alteracao")
     public String mostrarFormulario(Model model) {
         SolicitacoesDTO solicitacoesDto = new SolicitacoesDTO();
-        model.addAttribute("solicitacaoDTO", solicitacoesDto);
+        model.addAttribute("solicitacoesDto", solicitacoesDto);
         return "colaboradorpages/solicitacoes"; // HTML com o form
     }
 
@@ -40,7 +40,7 @@ public class SolicitacoesController {
     @PostMapping("/alteracao")
     public String enviarSolicitacao(@Valid @ModelAttribute("solicitacoesDto") SolicitacoesDTO solicitacoesDto, BindingResult result, Model model, HttpSession session) {
         if (result.hasErrors()) {
-            model.addAttribute("solicitacaoDTO", solicitacoesDto);
+            model.addAttribute("solicitacoesDto", solicitacoesDto);
             return "colaboradorpages/solicitacoes";
         }
 

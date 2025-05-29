@@ -29,7 +29,6 @@
                 <th>Nome</th>
                 <th>Email</th>
                 <th>Tipo</th>
-                <th>CPF</th>
                 <th>Telefone</th>
                 <th>Nascimento</th>
                 <th>Contrato</th>
@@ -43,7 +42,6 @@
                 <td><strong th:text="${colaborador.nome}"></strong></td>
                 <td th:text="${colaborador.email}"></td>
                 <td th:text="${colaborador.tipoUsuario}"></td>
-                <td th:text="${colaborador.cpf}"></td>
                 <td th:text="${colaborador.telefone}"></td>
                 <td th:text="${colaborador.dataNascimento}"></td>
                 <td th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>

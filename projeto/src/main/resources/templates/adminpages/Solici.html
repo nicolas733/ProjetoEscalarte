@@ -12,23 +12,62 @@
 </head>
 
 <body>
-<div class="sidebar">
-    <div class="logo">
-        <img src="/img/logo.png" alt="Logo" />
-        <span>Escalarte</span>
-    </div>
-    <ul class="menu">
-        <li><a href="/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-        <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
-        <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
-        <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-        <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
-        <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-        <li><a href="/admin/turnos"><i data-lucide="user-cog"></i> Turnos </a></li>
-        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
-    </ul>
-</div>
 
+<div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
+
+<div class="main">
+    <div class="header">
+        <div class="header-title">Gerenciar Solicitações</div>
+    </div>
+
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID USER</th>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Setor</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="solicitacao : ${solicitacoes}">
+                <td th:text="${solicitacao.id}"></td>
+                <td th:text="${solicitacao.colaborador.id}"></td>
+                <td th:text="${solicitacao.colaborador.nome} ?: 'N/A'"></td>
+                <td th:text="${cargos[solicitacao.colaborador.id]} ?: 'Sem cargo'"></td>
+                <td th:text="${setores[solicitacao.colaborador.id]} ?: 'Sem setor'"></td>
+                <td th:text="${#temporals.format(solicitacao.dataSolicitacao, 'dd/MM/yyyy')}"></td>
+                <td class="descricao" th:text="${solicitacao.descricaoSolicitacao}"></td>
+                <td>
+                    <div th:switch="${solicitacao.status}">
+                        <div th:case="'Pendente'" class="d-flex gap-2">
+                            <a href="#"
+                               th:attr="data-url=@{'/admin/solicitacoes/aprovar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
+                               onclick="confirmarAcao(this, 'aprovar')" class="btn btn-success btn-sm">
+                                Aprovar
+                            </a>
+
+                            <a href="#"
+                               th:attr="data-url=@{'/admin/solicitacoes/recusar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
+                               onclick="confirmarAcao(this, 'recusar')" class="btn btn-danger btn-sm">
+                                Recusar
+                            </a>
+                        </div>
+
+                        <span th:case="'Aprovado'" class="text-success fw-bold">Aprovado</span>
+                        <span th:case="'Reprovado'" class="text-danger fw-bold">Reprovado</span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 

@@ -14,22 +14,7 @@
 
 <body>
 
-<div class="sidebar">
-    <div class="logo">
-        <img src="/img/logo.png" alt="Logo" />
-        <span>Escalarte</span>
-    </div>
-    <ul class="menu">
-        <li><a href="/admin/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-        <li><a href="/admin/setorcargo"><i data-lucide="briefcase"></i>Setores</a></li>
-        <li><a href="/admin/main"><i data-lucide="users"></i>Usuários</a></li>
-        <li><a href="/admin/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-        <li><a href="/admin/solici"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
-        <li><a href="/admin/turnos"><i data-lucide="user-cog"></i> Turnos </a></li>
-        <li><a href="/admin/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-        <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
-    </ul>
-</div>
+    <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
 
     <div class="main">
         <div class="header">
