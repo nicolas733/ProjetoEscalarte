@@ -16,7 +16,7 @@ body {
     width: 240px;
     background: white;
     border-right: 1px solid #eee;
-    padding: 24px 16px;
+    padding: 10px 6px;
     min-height: 100vh;
     box-sizing: border-box;
 }

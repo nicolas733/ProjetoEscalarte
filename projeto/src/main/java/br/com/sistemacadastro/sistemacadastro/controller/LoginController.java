@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador.TipoUsuario;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.util.SessionUtils;
+import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 
 @Controller
 @RequestMapping("")
 public class LoginController {
+    public static final String LOGIN_ROUTE = "/login";
 
     @Autowired
     private ColaboradorRepository colaboradorRepository;
@@ -33,20 +34,20 @@ public class LoginController {
         return "erro";
     }
 
-    @GetMapping("/login")
+    @GetMapping(LOGIN_ROUTE)
     public String login(HttpSession session) {
-        if (SessionUtils.isLogged(session)) {
-            return redirecionarParaDashboard(SessionUtils.getTipoUsuario(session));
+        if (UserSessionUtils.isLogged(session)) {
+            return redirecionarParaDashboard(UserSessionUtils.getTipoUsuario(session));
         }
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping(LOGIN_ROUTE)
     public String logar(Colaborador colaborador, Model model, HttpServletResponse response, HttpSession session) {
-        Colaborador colaboradorLogado = this.colaboradorRepository.findFirstByEmailAndSenha(colaborador.getEmail(),
+        Colaborador colaboradorLogado = colaboradorRepository.findFirstByEmailAndSenha(colaborador.getEmail(),
                 colaborador.getSenha());
         if (colaboradorLogado != null) {
-            SessionUtils.setUsuario(session, colaboradorLogado);
+            UserSessionUtils.setUsuario(session, colaboradorLogado);
             Colaborador.TipoUsuario tipo = colaboradorLogado.getTipoUsuario();
 
             return redirecionarParaDashboard(tipo);
@@ -61,7 +62,7 @@ public class LoginController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/login";
+        return "redirect:" + LOGIN_ROUTE;
     }
 
 }

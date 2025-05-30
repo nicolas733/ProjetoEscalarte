@@ -1,5 +1,14 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
@@ -8,15 +17,8 @@ import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
-import br.com.sistemacadastro.sistemacadastro.service.ColaboradorService;
+import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/operador")
@@ -24,9 +26,6 @@ public class OperadorController {
 
     @Autowired
     private ColaboradorRepository colaboradorRepository;
-
-    @Autowired
-    private ColaboradorService colaboradorService;
 
     @Autowired
     private CargoRepository cargoRepository;
@@ -37,11 +36,24 @@ public class OperadorController {
     @Autowired
     private SolicitacoesRepository solicitacoesRepository;
 
+    private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+        if (colaboradorId != null) {
+            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+            if (colaborador != null && colaborador.getTipoUsuario() == Colaborador.TipoUsuario.OPERADOR) {
+                return true;
+            }
+        }
 
-
+        return false;
+    }
 
     @GetMapping("/dashboard")
     public String mostrarDashboard(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+        
         long total = colaboradorRepository.count();
         model.addAttribute("totalColaboradores", total);
 
@@ -54,8 +66,7 @@ public class OperadorController {
         long totalSolicitacao = solicitacoesRepository.count();
         model.addAttribute("totalSolicitacoes", totalSolicitacao);
 
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
 
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
@@ -64,8 +75,8 @@ public class OperadorController {
                 model.addAttribute("nome", nomeCompleto);
                 model.addAttribute("iniciais", getIniciais(nomeCompleto));
 
-
-                int solicitacoesPendentes = solicitacoesRepository.countByColaboradorIdAndStatus(colaboradorId.intValue(), "Pendente");
+                int solicitacoesPendentes = solicitacoesRepository
+                        .countByColaboradorIdAndStatus(colaboradorId.intValue(), "Pendente");
                 model.addAttribute("countSolicitacoesPendentes", solicitacoesPendentes);
             }
         } else {
@@ -77,7 +88,6 @@ public class OperadorController {
         return "colaboradorpages/dashboard";
     }
 
-
     private String getIniciais(String nome) {
         String[] partes = nome.trim().split(" ");
         if (partes.length >= 2) {
@@ -88,15 +98,21 @@ public class OperadorController {
         return "";
     }
 
-
-
     @GetMapping("/escala")
-    public String mostrarEscala(Model model) {
+    public String mostrarEscala(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         return "colaboradorpages/escala";
     }
 
     @GetMapping("/solicitacoes")
-    public String mostrarSolicitacao(Model model) {
+    public String mostrarSolicitacao(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         List<Solicitacoes> solicitacoes = solicitacoesRepository.findAll();
         model.addAttribute("solicitacoes", solicitacoes);
         model.addAttribute("solicitacao", new Solicitacoes());
@@ -105,14 +121,16 @@ public class OperadorController {
 
     @GetMapping("/minhaconta")
     public String mostrarMinhaConta(HttpSession session, Model model) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
 
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
                 model.addAttribute("colaborador", colaborador);
-
 
                 return "colaboradorpages/minhaconta";
             }
@@ -123,29 +141,28 @@ public class OperadorController {
 
     @GetMapping("/alterarsenha")
     public String mostrarAlterarSenha(HttpSession session, Model model) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
-
-        if (colaboradorId != null) {
-            Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
-            if (colaborador != null) {
-                PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
-                passwordChangeDto.setEmail(colaborador.getEmail());
-                model.addAttribute("passwordChangeDto", passwordChangeDto);
-                return "colaboradorpages/alterarsenha";
-            }
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
         }
 
-        return "redirect:/login";
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+
+        Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+        PasswordChangeDTO passwordChangeDto = new PasswordChangeDTO();
+        passwordChangeDto.setEmail(colaborador.getEmail());
+        model.addAttribute("passwordChangeDto", passwordChangeDto);
+        return "colaboradorpages/alterarsenha";
     }
 
     @PostMapping("/alterarsenha")
-    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model) {
-        // Recupera o colaborador
+    public String alterarSenha(@ModelAttribute PasswordChangeDTO passwordChangeDto, Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
         Colaborador colaborador = colaboradorRepository.findCollaboratorByEmail(passwordChangeDto.getEmail());
 
         if (colaborador != null && colaborador.getSenha().equals(passwordChangeDto.getSenha())) {
-            // Atualiza a senha
             colaborador.setSenha(passwordChangeDto.getNovaSenha());
             colaboradorRepository.save(colaborador);
             model.addAttribute("message", "Senha alterada com sucesso!");
@@ -160,21 +177,15 @@ public class OperadorController {
 
     @GetMapping("/solicita")
     public String visualizarMinhasSolicitacoes(Model model, HttpSession session) {
-        Object colaboradorIdObj = session.getAttribute("colaboradorId");
-        Long colaboradorId = colaboradorIdObj != null ? ((Number) colaboradorIdObj).longValue() : null;
-
-        if (colaboradorId != null) {
-            List<Solicitacoes> solicitacoes = solicitacoesRepository.findByColaboradorId(colaboradorId.intValue());
-            model.addAttribute("solicitacoes", solicitacoes);
-            return "colaboradorpages/solicita";
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
         }
 
-        return "redirect:/login";
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+
+        List<Solicitacoes> solicitacoes = solicitacoesRepository.findByColaboradorId(colaboradorId.intValue());
+        model.addAttribute("solicitacoes", solicitacoes);
+        return "colaboradorpages/solicita";
     }
 
-
-
 }
-
-
-
