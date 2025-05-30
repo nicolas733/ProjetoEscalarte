@@ -15,4 +15,5 @@ public interface TurnosRepository extends JpaRepository<Turnos, Integer> {
     Turnos findById(int id);
 
     Optional<Turnos> findByNome(String nome);
+
 }
