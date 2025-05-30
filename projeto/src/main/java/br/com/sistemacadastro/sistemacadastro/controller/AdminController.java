@@ -1,16 +1,8 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
-import br.com.sistemacadastro.sistemacadastro.model.Cargos;
-import br.com.sistemacadastro.sistemacadastro.model.CargosPorSetor;
-import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Setores;
-import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
-import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
+import br.com.sistemacadastro.sistemacadastro.model.*;
+import br.com.sistemacadastro.sistemacadastro.repository.*;
 import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -40,6 +35,12 @@ public class AdminController {
 
     @Autowired
     private CargosPorSetorRepository cargosPorSetorRepository;
+
+    @Autowired
+    private TurnosRepository turnosRepository;
+
+    @Autowired
+    private EscalaRepository escalaRepository;
 
     private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
         Long colaboradorId = UserSessionUtils.getIdUsuario(session);
@@ -62,6 +63,7 @@ public class AdminController {
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
+        
         return "adminpages/usuarios";
     }
 
@@ -124,12 +126,29 @@ public class AdminController {
     }
 
     @GetMapping("/escala")
-    public String mostrarEscala(Model model, HttpSession session) {
-        if (!verifyIsUserCredentialsCorrect(session)) {
-            return "redirect:" + LoginController.LOGIN_ROUTE;
+    public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model) {
+        model.addAttribute("setores", setoresRepository.findAll());
+
+        Date hoje = Date.valueOf(LocalDate.now());
+        Date seteDiasDepois = Date.valueOf(LocalDate.now().plusDays(7));
+
+        List<Escalas> escalas;
+
+        if (setorId != null) {
+            escalas = escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, hoje, seteDiasDepois);
+            model.addAttribute("setorSelecionado", setorId);
+        } else {
+            escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
         }
+
+        Map<Colaborador, List<Escalas>> mapaEscalas = escalas.stream()
+                .collect(Collectors.groupingBy(Escalas::getColaborador));
+
+        model.addAttribute("mapaEscalas", mapaEscalas);
         return "adminpages/escala";
     }
+
+
 
     @GetMapping("/solici")
     public String mostrarSolicitacao(Model model, HttpSession session) {
@@ -250,6 +269,18 @@ public class AdminController {
             return "OK";
         }
         return "Erro";
+    }
+
+    @GetMapping("/turnos")
+    public String mostrarTurnos(HttpSession session, Model model) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
+        List<Turnos> turnos = turnosRepository.findAll();
+        model.addAttribute("turnos", turnos);
+        model.addAttribute("turno", new Turnos());
+        return "adminpages/turnos";
     }
 
 }

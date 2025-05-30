@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,77 +13,81 @@
 <body>
     <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
 
-    <div class="main">
-        <div class="header">
-            <div class="header-title">Gerenciar Escalas</div>
-            <div class="user-initials">AU</div>
-        </div>
-
-        <div class="d-flex align-items-center mb-3 gap-2">
-            <select class="form-select w-auto" style="min-width: 160px;">
-                <option selected>IT</option>
-                <option>RH</option>
-                <option>Financeiro</option>
-                <option>Marketing</option>
-                <option>Operações</option>
+<div class="main container py-4">
+    <div class="header d-flex align-items-center mb-3">
+        <form th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
+            <label for="setor" class="mb-0">Selecione o Setor:</label>
+            <select id="setor" name="setorId" required class="form-select">
+                <option value="" disabled selected>-- Escolha um setor --</option>
+                <option th:each="setor : ${setores}"
+                        th:value="${setor.id}"
+                        th:text="${setor.nomesetor}">
+                </option>
             </select>
-
-            <button class="btn btn-outline-secondary">Semana</button>
-            <button class="btn btn-outline-secondary">Mês</button>
-            <button class="btn btn-red ms-auto">Adicionar Escala</button>
-        </div>
-
-        <div class="card p-3">
-            <h5>Escala - IT - abril de 2025</h5>
-            <table class="table table-bordered mt-3">
-                <thead>
-                    <tr>
-                        <th>Funcionário</th>
-                        <th>Contrato</th>
-                        <th>seg.</th>
-                        <th>ter.</th>
-                        <th>qua.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <strong>Pedro Santos</strong><br>
-                            <small>Desenvolvedor</small>
-                        </td>
-                        <td>
-                            Turno: Integral<br>
-                            Horas: 40h/semana<br>
-                            Folgas: Dom, Sáb
-                        </td>
-                        <td><span class="badge-turno">Manhã<br>08:00 - 12:00</span></td>
-                        <td><span class="badge-turno">Integral<br>08:00 - 17:00</span></td>
-                        <td><span class="badge-turno">Integral<br>08:00 - 17:00</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>Ana Lima</strong><br>
-                            <small>Analista de Dados</small>
-                        </td>
-                        <td>
-                            Turno: Manhã<br>
-                            Horas: 20h/semana<br>
-                            Folgas: Sex, Sáb
-                        </td>
-                        <td><span class="badge-turno">Manhã<br>08:00 - 12:00</span></td>
-                        <td><span class="badge-turno">Tarde<br>13:00 - 17:00</span></td>
-                        <td><span class="badge-turno">Manhã<br>08:00 - 12:00</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <button type="submit" class="btn btn-primary">Gerar Escala</button>
+        </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
+    <form th:action="@{/admin/escala}" method="get" class="d-flex align-items-center gap-2">
+        <label for="filtroSetor" class="mb-0">Visualizar setor:</label>
+        <select id="filtroSetor" name="setorId" class="form-select">
+            <option value="">-- Todos os setores --</option>
+            <option th:each="setor : ${setores}"
+                    th:value="${setor.id}"
+                    th:text="${setor.nomesetor}"
+                    th:selected="${setor.id == setorSelecionado}">
+            </option>
+        </select>
+        <button type="submit" class="btn btn-secondary">Filtrar</button>
+    </form>
 
+    <hr/>
+
+    <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+            <th>Colaborador</th>
+            <th>Cargo</th>
+            <th th:each="i : ${#numbers.sequence(0,6)}"
+                th:text="${#temporals.format(T(java.time.LocalDate).now().plusDays(i), 'EEE dd/MM')}">Dia</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${mapaEscalas}">
+            <td th:text="${entry.key.nome}">Nome</td>
+            <td th:text="${entry.key.contrato != null && entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
+
+            <td colspan="1">
+                <div th:each="escala : ${entry.value}"
+                     th:classappend="${escala.turnos.nome.equalsIgnoreCase('Manhã') ? 'bg-success bg-opacity-25'
+                      : (escala.turnos.nome.equalsIgnoreCase('Tarde') ? 'bg-warning bg-opacity-25'
+                      : (escala.turnos.nome.equalsIgnoreCase('Noite') ? 'bg-primary bg-opacity-25 text-white'
+                      : (escala.turnos.nome.equalsIgnoreCase('Integral') ? 'bg-info bg-opacity-25' : '')))}"
+                     class="mb-2 p-2 rounded text-center">
+
+                    <!-- Nome do turno -->
+                    <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
+
+                    <!-- Horário -->
+                    <div class="small text-muted">
+                        <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
+                        <span th:text="${escala.turnos.horarioFim}">17:00</span>
+                    </div>
+                </div>
+            </td>
+
+
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+</script>
+</body>
 </html>

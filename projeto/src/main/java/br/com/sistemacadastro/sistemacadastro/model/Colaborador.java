@@ -5,17 +5,20 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @ToString(exclude = "contrato")  // Exclui o campo 'contrato' do método toString()
+@EqualsAndHashCode(exclude = "contrato")
 @Entity(name="colaborador")
-public class Colaborador {
+public class  Colaborador {
 
     @NotEmpty
     public enum TipoUsuario {
@@ -63,8 +66,6 @@ public class Colaborador {
     @JoinColumn(name = "escalas_id")
     private Escalas escalas;
 
-    @Column(name = "escalas_id", updatable = false, insertable = false)
-    private Integer escalasId;
 
 
     //Um contrato para um colaborador
@@ -88,5 +89,12 @@ public class Colaborador {
     @Column(name = "endereco_id", updatable = false, insertable = false)
     private Integer enderecoId;
 
-}
+    @ManyToMany
+    @JoinTable(
+            name = "colaborador_turno",
+            joinColumns = @JoinColumn(name = "colaborador_id"),
+            inverseJoinColumns = @JoinColumn(name = "turno_id")
+    )
+    private List<Turnos> turnos;
 
+}

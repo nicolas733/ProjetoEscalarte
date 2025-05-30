@@ -3,6 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.dto;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Contrato;
 import br.com.sistemacadastro.sistemacadastro.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class ColaboradorDTO {
@@ -56,5 +58,7 @@ public class ColaboradorDTO {
     @NotNull(message = "Selecione um cargo")
     private Integer cargoId;
 
+    @NotNull
+    private List<Integer> turnosIds;
 
 }
