@@ -65,7 +65,6 @@
                     <select class="form-select" th:field="*{tipoUsuario}" th:errorclass="is-invalid">
                         <option value=""   selected>Selecione um tipo</option>
                         <option value="ADMIN">Admin</option>
-                        <option value="GERENTE">Gerente</option>
                         <option value="OPERADOR">Operador</option>
                     </select>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoUsuario')}" th:errors="*{tipoUsuario}"></div>
