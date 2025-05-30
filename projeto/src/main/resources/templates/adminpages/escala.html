@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
+<div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
 
 <div class="main container py-4">
     <div class="header d-flex align-items-center mb-3">
@@ -48,17 +48,19 @@
         <tr>
             <th>Colaborador</th>
             <th>Cargo</th>
-            <th th:each="i : ${#numbers.sequence(0,6)}"
-                th:text="${#temporals.format(T(java.time.LocalDate).now().plusDays(i), 'EEE dd/MM')}">Dia</th>
+            <th th:each="dia : ${diasSemana}"
+                th:text="${#temporals.format(dia, 'EEE dd/MM')}">Dia</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${mapaEscalas}">
+        <tr th:each="entry : ${mapaEscalasPorData}">
             <td th:text="${entry.key.nome}">Nome</td>
             <td th:text="${entry.key.contrato != null && entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
 
-            <td colspan="1">
-                <div th:each="escala : ${entry.value}"
+            <!-- Para cada dia da semana, mostra as escalas se existirem -->
+            <td th:each="dia : ${diasSemana}">
+                <div th:if="${entry.value.containsKey(dia)}"
+                     th:each="escala : ${entry.value.get(dia)}"
                      th:classappend="${escala.turnos.nome.equalsIgnoreCase('Manhã') ? 'bg-success bg-opacity-25'
                       : (escala.turnos.nome.equalsIgnoreCase('Tarde') ? 'bg-warning bg-opacity-25'
                       : (escala.turnos.nome.equalsIgnoreCase('Noite') ? 'bg-primary bg-opacity-25 text-white'
@@ -74,9 +76,8 @@
                         <span th:text="${escala.turnos.horarioFim}">17:00</span>
                     </div>
                 </div>
+                <div th:if="${!entry.value.containsKey(dia)}" class="text-muted fst-italic">-</div>
             </td>
-
-
 
         </tr>
         </tbody>

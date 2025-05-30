@@ -11,7 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,29 +127,43 @@ public class AdminController {
 
         return "adminpages/setores";
     }
-
     @GetMapping("/escala")
     public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model) {
         model.addAttribute("setores", setoresRepository.findAll());
 
-        Date hoje = Date.valueOf(LocalDate.now());
-        Date seteDiasDepois = Date.valueOf(LocalDate.now().plusDays(7));
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.with(DayOfWeek.MONDAY);
+        LocalDate domingo = hoje.with(DayOfWeek.SUNDAY);
+
+        List<LocalDate> diasSemana = new ArrayList<>();
+        for (int i = 0; i <= 6; i++) {
+            diasSemana.add(segunda.plusDays(i));
+        }
+        model.addAttribute("diasSemana", diasSemana);
+
+        Date dataInicio = Date.valueOf(segunda);
+        Date dataFim = Date.valueOf(domingo);
 
         List<Escalas> escalas;
-
         if (setorId != null) {
-            escalas = escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, hoje, seteDiasDepois);
+            escalas = escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim);
             model.addAttribute("setorSelecionado", setorId);
         } else {
-            escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(hoje, seteDiasDepois);
+            escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
         }
 
-        Map<Colaborador, List<Escalas>> mapaEscalas = escalas.stream()
-                .collect(Collectors.groupingBy(Escalas::getColaborador));
+        Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = escalas.stream()
+                .collect(Collectors.groupingBy(
+                        Escalas::getColaborador,
+                        Collectors.groupingBy(e -> e.getDataEscala().toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate())
+                ));
 
-        model.addAttribute("mapaEscalas", mapaEscalas);
+        model.addAttribute("mapaEscalasPorData", mapaEscalasPorData);
         return "adminpages/escala";
     }
+
 
 
 
