@@ -57,22 +57,27 @@
             <td th:text="${entry.key.nome}">Nome</td>
             <td th:text="${entry.key.contrato != null && entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
 
-            <td th:each="i : ${#numbers.sequence(0,6)}"
-                th:with="dataAtual=${T(java.time.LocalDate).now().plusDays(i)}">
+            <td colspan="1">
+                <div th:each="escala : ${entry.value}"
+                     th:classappend="${escala.turnos.nome.equalsIgnoreCase('Manhã') ? 'bg-success bg-opacity-25'
+                      : (escala.turnos.nome.equalsIgnoreCase('Tarde') ? 'bg-warning bg-opacity-25'
+                      : (escala.turnos.nome.equalsIgnoreCase('Noite') ? 'bg-primary bg-opacity-25 text-white'
+                      : (escala.turnos.nome.equalsIgnoreCase('Integral') ? 'bg-info bg-opacity-25' : '')))}"
+                     class="mb-2 p-2 rounded text-center">
 
-                <!-- Itera sobre as escalas do colaborador -->
-                <div th:with="escalaEncontrada=${false}">
-                    <div th:each="escala : ${entry.value}">
-                        <span th:if="${#temporals.format(escala.dataEscala.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(), 'yyyy-MM-dd') == #temporals.format(dataAtual, 'yyyy-MM-dd')}"
-                              th:text="${escala.turnos.nome} + ' (' + escala.turnos.horarioInicio + ' - ' + escala.turnos.horarioFim + ')'"
-                              th:with="escalaEncontrada=${true}">
-                        </span>
+                    <!-- Nome do turno -->
+                    <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
+
+                    <!-- Horário -->
+                    <div class="small text-muted">
+                        <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
+                        <span th:text="${escala.turnos.horarioFim}">17:00</span>
                     </div>
-
-                    <span th:if="${escalaEncontrada == false}">-</span>
-
                 </div>
             </td>
+
+
+
         </tr>
         </tbody>
     </table>
