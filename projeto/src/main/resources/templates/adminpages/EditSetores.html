@@ -55,16 +55,6 @@
               </div>
             </div>
 
-            <!-- Campo Quantidade de Colaboradores -->
-            <div class="row mb-3">
-              <label class="col-sm-4 col-form-label">Quantidade de Colaboradores</label>
-              <div class="col-sm-8">
-                <input class="form-control" th:field="*{quantidadeColaboradores}" th:errorclass="is-invalid">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('quantidadeColaboradores')}"
-                  th:errors="*{quantidadeColaboradores}"></div>
-              </div>
-            </div>
-
             <!-- Botões -->
             <div class="row">
               <div class="offset-sm-4 col-sm-4 d-grid">

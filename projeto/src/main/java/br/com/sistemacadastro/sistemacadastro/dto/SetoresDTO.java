@@ -15,8 +15,4 @@ public class SetoresDTO {
     private String nomeSetor;
 
     private Colaborador gerenteSetor;
-
-    @NotNull(message = "A quantidade é obrigatorio")
-    @Min(value = 1, message = "Minimo 1 colaborador")
-    private Integer quantidadeColaboradores;
 }

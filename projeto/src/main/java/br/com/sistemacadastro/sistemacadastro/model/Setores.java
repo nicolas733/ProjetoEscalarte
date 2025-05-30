@@ -21,9 +21,6 @@ public class Setores {
     @Size(min = 4, message = "O nome deve ter no mínimo 4 letras")
     private String nomesetor;
 
-    @NotNull
-    private int quantidadeColaboradores;
-
     @OneToOne
     @JoinColumn(name = "gerente_id", referencedColumnName = "id", unique = true)
     private Colaborador gerenteSetor;

@@ -29,7 +29,6 @@
             <th>ID</th>
             <th>Nome</th>
             <th>Gerente</th>
-            <th>Qtd. Colaboradores Necessários</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -38,7 +37,6 @@
             <td th:text="${setor.id}"></td>
             <td th:text="${setor.nomesetor}"></td>
             <td th:text="${setor.gerenteSetor != null ? setor.gerenteSetor.nome : 'N/A'}"></td>
-            <td th:text="${setor.quantidadeColaboradores}"></td>
             <td>
               <div class="actions">
                 <a class="btn btn-primary btn-sm" th:href="@{/setores/editar/{id}(id=${setor.id})}">Editar</a>

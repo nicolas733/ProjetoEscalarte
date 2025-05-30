@@ -34,7 +34,6 @@ public class SetoresService {
 
         Setores setores = new Setores();
         setores.setNomesetor(setoresDto.getNomeSetor());
-        setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
 
         Colaborador gerente = setoresDto.getGerenteSetor();
         setores.setGerenteSetor(gerente);
@@ -58,7 +57,6 @@ public class SetoresService {
         setoresDto.setId(setores.getId());
         setoresDto.setNomeSetor(setores.getNomesetor());
         setoresDto.setGerenteSetor(setores.getGerenteSetor());
-        setoresDto.setQuantidadeColaboradores(setores.getQuantidadeColaboradores());
         return setoresDto;
     }
 
@@ -74,7 +72,6 @@ public class SetoresService {
 
         setores.setNomesetor(setoresDto.getNomeSetor());
         setores.setGerenteSetor(novoGerente);
-        setores.setQuantidadeColaboradores(setoresDto.getQuantidadeColaboradores());
         setoresRepository.save(setores);
 
         // Promove o novo gerente
@@ -119,14 +116,6 @@ public class SetoresService {
         }
 
         setoresRepository.delete(setor);
-    }
-
-    public Integer getQtdMinimaColaboradores(Long setorId) {
-        Setores setor = setoresRepository.findById(setorId); // retorna diretamente
-        if (setor == null) {
-            throw new RuntimeException("Setor não encontrado");
-        }
-        return setor.getQuantidadeColaboradores();
     }
 
     public List<Setores> listarTodos() {
