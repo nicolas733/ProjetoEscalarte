@@ -1,6 +1,7 @@
 package br.com.sistemacadastro.sistemacadastro.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,6 +19,10 @@ public class Cargos {
 
     @NotNull
     private int cargaHorarioLimite;
+
+    @NotNull(message = "Deve ser cadastrado")
+    @Min(value = 11, message = "O tempo minimo de iterjornada é de 11 horas")
+    private Integer intervaloInterjornada;
 
 
 }

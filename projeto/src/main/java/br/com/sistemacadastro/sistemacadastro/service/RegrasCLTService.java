@@ -22,7 +22,7 @@ public class RegrasCLTService {
         }
 
         // Validar intervalo interjornada
-        if (!validaIntervaloInterjornada(escalas, contrato.getIntervaloInterjornada())) {
+        if (!validaIntervaloInterjornada(escalas, cargo.getIntervaloInterjornada())) {
             return false; // Intervalo menor que o permitido
         }
 
@@ -45,9 +45,6 @@ public class RegrasCLTService {
         return true;
     }
 
-    /**
-     * Calcula a carga horária diária de um turno, em horas.
-     */
     private int calculaCargaHorariaDiaria(Turnos turno) {
         // Se o horário fim for antes do início, assume que o turno passa da meia-noite
         long duracaoHoras = Duration.between(turno.getHorarioInicio(), turno.getHorarioFim()).toHours();

@@ -55,10 +55,13 @@ public class ColaboradorDTO {
     @NotNull
     private Contrato contrato;
 
+    @NotNull(message = "Selecione pelo menos um dia de folga")
+    private List<Contrato.DiaFolga> diasFolga;
+
     @NotNull(message = "Selecione um cargo")
     private Integer cargoId;
 
-    @NotNull
+    @NotNull(message = "Selecione um turno")
     private List<Integer> turnosIds;
 
 }

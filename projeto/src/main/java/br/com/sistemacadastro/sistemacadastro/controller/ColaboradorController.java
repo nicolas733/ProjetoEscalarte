@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,7 @@ public class ColaboradorController {
         model.addAttribute("colaboradorDTO", colaboradorDto);
         List<Turnos> turnos = turnosRepository.findAll();
         model.addAttribute("turnos", turnos);
+        model.addAttribute("diasSemana", Arrays.asList(Contrato.DiaFolga.values()));
         return "adminpages/cadastroColaborador"; // Retorna o template correto diretamente
     }
 
@@ -58,6 +60,10 @@ public class ColaboradorController {
         if (result.hasErrors()) {
             List<Cargos> cargos = cargoRepository.findAll();
             model.addAttribute("cargos", cargos);
+            List<Turnos> turnos = turnosRepository.findAll();
+            model.addAttribute("turnos", turnos);
+            model.addAttribute("diasSemana", Arrays.asList(Contrato.DiaFolga.values()));
+            model.addAttribute("colaboradorDTO", colaboradorDto);
             return "adminpages/cadastroColaborador";
         }
         if (colaboradorExistente.isEmpty()) {
@@ -79,6 +85,7 @@ public class ColaboradorController {
             // Cria e associa o contrato
             Contrato contrato = colaboradorDto.getContrato();
             contrato.setColaborador(colaborador);
+            contrato.setDiasFolga(colaboradorDto.getDiasFolga());
 
 
             Cargos cargo = cargoRepository.findById(colaboradorDto.getCargoId()).orElseThrow(() -> new RuntimeException("Cargo não encontrado"));

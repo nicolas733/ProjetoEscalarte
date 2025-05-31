@@ -59,29 +59,45 @@
 
             <!-- Para cada dia da semana, mostra as escalas se existirem -->
             <td th:each="dia : ${diasSemana}">
-                <div th:if="${entry.value.containsKey(dia)}"
+                <div th:if="${#lists.contains(mapaFolgas[entry.key], dia)}"
+                     class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold">
+                    Folga
+                </div>
+                <div th:if="${!#lists.contains(mapaFolgas[entry.key], dia) and entry.value.containsKey(dia)}"
                      th:each="escala : ${entry.value.get(dia)}"
-                     th:classappend="${escala.turnos.nome.equalsIgnoreCase('Manhã') ? 'bg-success bg-opacity-25'
-                      : (escala.turnos.nome.equalsIgnoreCase('Tarde') ? 'bg-warning bg-opacity-25'
-                      : (escala.turnos.nome.equalsIgnoreCase('Noite') ? 'bg-primary bg-opacity-25 text-white'
-                      : (escala.turnos.nome.equalsIgnoreCase('Integral') ? 'bg-info bg-opacity-25' : '')))}"
-                     class="mb-2 p-2 rounded text-center">
+                     th:attr="data-turno=${escala.turnos.nome}"
+                     class="mb-2 p-2 rounded text-center escala-turno">
 
-                    <!-- Nome do turno -->
                     <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
-
-                    <!-- Horário -->
                     <div class="small text-muted">
                         <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
                         <span th:text="${escala.turnos.horarioFim}">17:00</span>
                     </div>
                 </div>
-                <div th:if="${!entry.value.containsKey(dia)}" class="text-muted fst-italic">-</div>
+
+                <div th:if="${!entry.value.containsKey(dia) and !#lists.contains(mapaFolgas[entry.key], dia)}" class="text-muted fst-italic">-</div>
             </td>
+
+
 
         </tr>
         </tbody>
     </table>
+
+    <!-- Legenda dos Turnos -->
+    <hr />
+    <h5 class="mt-4">Turnos disponíveis:</h5>
+    <div id="legenda-turnos" class="d-flex flex-wrap gap-3">
+        <div th:each="turno : ${turnos}"
+             class="badge border border-secondary px-3 py-2 turno-legenda"
+             th:attr="data-turno=${turno.nome}" style="color: black;">
+            <span th:text="${turno.nome}">Turno</span>
+            <small class="d-block text-muted" style="font-size: 0.75rem;">
+                <span th:text="${#temporals.format(turno.horarioInicio, 'HH:mm')}"></span> -
+                <span th:text="${#temporals.format(turno.horarioFim, 'HH:mm')}"></span>
+            </small>
+        </div>
+    </div>
 
 </div>
 
@@ -89,6 +105,30 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
     lucide.createIcons();
+
+    function gerarCorAleatoria(seed) {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i++) {
+            hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const h = Math.abs(hash) % 360;
+        return `hsl(${h}, 60%, 80%)`;
+    }
+
+    function aplicarCoresAosTurnos() {
+        const elementosTurno = document.querySelectorAll('[data-turno]');
+        const mapaCores = {};
+
+        elementosTurno.forEach(el => {
+            const nomeTurno = el.getAttribute('data-turno');
+            if (!mapaCores[nomeTurno]) {
+                mapaCores[nomeTurno] = gerarCorAleatoria(nomeTurno);
+            }
+            el.style.backgroundColor = mapaCores[nomeTurno];
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', aplicarCoresAosTurnos);
 </script>
 </body>
 </html>

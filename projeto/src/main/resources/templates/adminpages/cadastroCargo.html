@@ -42,6 +42,14 @@
         </div>
 
         <div class="row mb-3">
+          <label class="col-sm-4 col-form-label">Tempo de intevalo de Interjornada</label>
+          <div class="col-sm-8">
+            <input class="form-control" th:field="*{intervaloInterjornada}" th:errorclass="is-invalid">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('intervaloInterjornada')}" th:errors="*{intervaloInterjornada}"></div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
           <label class="col-sm-4 col-form-label">Setor</label>
           <div class="col-sm-8">
             <select class="form-select" th:field="*{setorId}" th:errorclass="is-invalid">

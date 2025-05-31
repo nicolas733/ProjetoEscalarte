@@ -14,10 +14,9 @@ import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Controller
@@ -127,13 +126,18 @@ public class AdminController {
 
         return "adminpages/setores";
     }
+
     @GetMapping("/escala")
     public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model) {
         model.addAttribute("setores", setoresRepository.findAll());
+        model.addAttribute("turnos", turnosRepository.findAll());
 
         LocalDate hoje = LocalDate.now();
-        LocalDate segunda = hoje.with(DayOfWeek.MONDAY);
-        LocalDate domingo = hoje.with(DayOfWeek.SUNDAY);
+
+        // Pega a segunda-feira da semana atual (ou hoje se hoje for segunda)
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        // Pega o domingo da semana atual (ou hoje se hoje for domingo)
+        LocalDate domingo = hoje.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
         List<LocalDate> diasSemana = new ArrayList<>();
         for (int i = 0; i <= 6; i++) {
@@ -152,6 +156,7 @@ public class AdminController {
             escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
         }
 
+        // Agrupa escalas por colaborador e data
         Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = escalas.stream()
                 .collect(Collectors.groupingBy(
                         Escalas::getColaborador,
@@ -160,9 +165,31 @@ public class AdminController {
                                 .toLocalDate())
                 ));
 
+        // Mapa de folgas: para cada colaborador, lista os dias da semana que são folga
+        Map<Colaborador, Set<LocalDate>> mapaFolgas = new HashMap<>();
+
+        for (Colaborador colaborador : mapaEscalasPorData.keySet()) {
+            Set<LocalDate> diasFolga = new HashSet<>();
+            if (colaborador.getContrato() != null && colaborador.getContrato().getDiasFolga() != null) {
+                for (Contrato.DiaFolga diaFolga : colaborador.getContrato().getDiasFolga()) {
+                    // Aqui converte direto, pois os nomes do enum batem com DayOfWeek
+                    DayOfWeek dow = DayOfWeek.valueOf(diaFolga.name());
+                    LocalDate dataFolga = segunda.with(dow);
+                    diasFolga.add(dataFolga);
+                }
+            }
+            mapaFolgas.put(colaborador, diasFolga);
+        }
+
         model.addAttribute("mapaEscalasPorData", mapaEscalasPorData);
+        model.addAttribute("mapaFolgas", mapaFolgas);
+
         return "adminpages/escala";
     }
+
+
+
+
 
 
 

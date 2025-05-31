@@ -36,6 +36,7 @@ public class CargoService {
         Cargos cargos = new Cargos();
         cargos.setNomeCargo(cargosDto.getNomeCargo());
         cargos.setCargaHorarioLimite(cargosDto.getCargoHorarioLimite());
+        cargos.setIntervaloInterjornada(cargosDto.getIntervaloInterjornada());
         cargoRepository.save(cargos);
 
         Setores setor = setoresRepository.findById(cargosDto.getSetorId())
@@ -56,6 +57,7 @@ public class CargoService {
         cargosDto.setId(cargos.getId());
         cargosDto.setNomeCargo(cargos.getNomeCargo());
         cargosDto.setCargoHorarioLimite(cargos.getCargaHorarioLimite());
+        cargosDto.setIntervaloInterjornada(cargos.getIntervaloInterjornada());
 
         CargosPorSetor cps = cargosPorSetorRepository.findByCargo(cargos);
         if (cps != null && cps.getSetor() != null) {
@@ -77,6 +79,7 @@ public class CargoService {
 
         cargos.setNomeCargo(dto.getNomeCargo());
         cargos.setCargaHorarioLimite(dto.getCargoHorarioLimite());
+        cargos.setIntervaloInterjornada(dto.getIntervaloInterjornada());
         cargoRepository.save(cargos);
 
         CargosPorSetor cps = cargosPorSetorRepository.findByCargo(cargos);

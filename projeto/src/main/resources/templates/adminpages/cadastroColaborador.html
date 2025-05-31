@@ -181,15 +181,24 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-4 col-form-label">Tempo de intevalo de Interjornada</label>
-                <div class="col-sm-8">
-                    <input class="form-control" th:field="*{contrato.intervaloInterjornada}" th:errorclass="is-invalid">
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.intervaloInterjornada')}" th:errors="*{contrato.intervaloInterjornada}"></div>
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Dias de folga</label>
+                    <div class="col-sm-8">
+                        <div class="form-check" th:each="dia : ${diasSemana}">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   th:value="${dia}"
+                                   th:field="*{diasFolga}"
+                                   th:id="${'dia-' + dia}" />
+                            <label class="form-check-label" th:for="${'dia-' + dia}" th:text="${dia}">Dia</label>
+                        </div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('diasFolga')}" th:errors="*{diasFolga}"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
+
+
+                <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Data do fim do contrato</label>
                 <div class="col-sm-8">
                     <input class="form-control" th:field="*{contrato.dataFimContrato}" th:errorclass="is-invalid">
