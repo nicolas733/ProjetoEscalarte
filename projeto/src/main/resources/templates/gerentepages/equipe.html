@@ -64,7 +64,6 @@
 
 
         <div class="card">
-
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -77,14 +76,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="colaborador : ${equipe}">
-                        <td th:text="${colaborador.nome}"></td>
-                        <td th:text="${colaborador.email}"></td>
-                        <td th:text="${colaborador.telefone}"></td>
-                        <td th:text="${colaborador.nomeCargo}"></td>
-                        <td th:text="${colaborador.nomeSetor}"></td>
-                        <td th:text="${colaborador.tipoUsuario}"></td>
-                    </tr>
+                <tr th:each="colaborador : ${equipe}">
+                    <td th:text="${colaborador.nome}" th:attr="data-label='Nome'"></td>
+                    <td th:text="${colaborador.email}" th:attr="data-label='Email'"></td>
+                    <td th:text="${colaborador.telefone}" th:attr="data-label='Telefone'"></td>
+                    <td th:text="${colaborador.nomeCargo}" th:attr="data-label='Cargo'"></td>
+                    <td th:text="${colaborador.nomeSetor}" th:attr="data-label='Setor'"></td>
+                    <td th:text="${colaborador.tipoUsuario}" th:attr="data-label='Tipo de Usuário'"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
