@@ -65,43 +65,37 @@
 
 
         <div class="card">
-            <table>
+            <table class="table table-striped table-bordered table-hover">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Tipo</th>
-                        <th>CPF</th>
-                        <th>Telefone</th>
-                        <th>Nascimento</th>
-                        <th>Contrato</th>
-                        <th>Cargo</th>
-                        <th>Ações</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Tipo</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>Nascimento</th>
+                    <th>Contrato</th>
+                    <th>Cargo</th>
+                    <th>Ações</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="colaborador : ${colaboradores}">
-                        <td th:text="${colaborador.id}"></td>
-                        <td><strong th:text="${colaborador.nome}"></strong></td>
-                        <td th:text="${colaborador.email}"></td>
-                        <td th:text="${colaborador.tipoUsuario}"></td>
-                        <td th:text="${colaborador.cpf}"></td>
-                        <td th:text="${colaborador.telefone}"></td>
-                        <td th:text="${colaborador.dataNascimento}"></td>
-                        <td
-                            th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}">
-                        </td>
-                        <td
-                            th:text="${colaborador.contrato != null && colaborador.contrato.cargos != null ? colaborador.contrato.cargos.nomeCargo : 'Cargo não atribuído'}">
-                        </td>
-                        <td style="white-space: nowrap">
-                            <a class="btn btn-primary btn-sm"
-                                th:href="@{/colaborador/editar/{id}(id=${colaborador.id})}">Editar</a>
-                            <a class="btn btn-danger btn-sm btn-excluir" href="#"
-                                th:attr="data-id=${colaborador.id}">Excluir</a>
-                        </td>
-                    </tr>
+                <tr th:each="colaborador : ${colaboradores}">
+                    <td data-label="ID" th:text="${colaborador.id}"></td>
+                    <td data-label="Nome" th:text="${colaborador.nome}"></td>
+                    <td data-label="Email" th:text="${colaborador.email}"></td>
+                    <td data-label="Tipo" th:text="${colaborador.tipoUsuario}"></td>
+                    <td data-label="CPF" th:text="${colaborador.cpf}"></td>
+                    <td data-label="Telefone" th:text="${colaborador.telefone}"></td>
+                    <td data-label="Nascimento" th:text="${colaborador.dataNascimento}"></td>
+                    <td data-label="Contrato" th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
+                    <td data-label="Cargo" th:text="${colaborador.contrato != null && colaborador.contrato.cargos != null ? colaborador.contrato.cargos.nomeCargo : 'Cargo não atribuído'}"></td>
+                    <td data-label="Ações" style="white-space: nowrap;">
+                        <a class="btn btn-primary btn-sm" th:href="@{/colaborador/editar/{id}(id=${colaborador.id})}">Editar</a>
+                        <a class="btn btn-danger btn-sm btn-excluir" href="#" th:attr="data-id=${colaborador.id}">Excluir</a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

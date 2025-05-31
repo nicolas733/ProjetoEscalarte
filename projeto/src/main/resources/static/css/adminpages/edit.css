@@ -1,4 +1,4 @@
-/* cadastro Colaborador css */
+/* Edit css para todas as abas Editar */
 * {
     text-decoration: none;
 }
@@ -15,41 +15,9 @@ body {
     width: 240px;
     background: white;
     border-right: 1px solid #eee;
-    padding: 10px 6px;
+    padding: 24px 16px;
     min-height: 100vh;
     box-sizing: border-box;
-}
-
-.menu li.logout {
-    background-color: #000000;
-    color: #000000;
-}
-
-.menu li.logout a {
-    color: white;
-}
-
-
-.menu li.logout:hover {
-    background-color: #c62828;
-    color: #000000;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-}
-
-.logo img {
-    height: 36px;
-    margin-right: 10px;
-}
-
-.logo span {
-    font-weight: 700;
-    font-size: 22px;
-    color: #e53935;
 }
 
 .sidebar {
@@ -91,6 +59,38 @@ body {
 
 .sidebar .menu .logout a {
     color: #fff;
+}
+
+.menu li.logout {
+    background-color: #000000;
+    color: #000000;
+}
+
+.menu li.logout a {
+    color: white;
+}
+
+
+.menu li.logout:hover {
+    background-color: #c62828;
+    color: #000000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.logo img {
+    height: 36px;
+    margin-right: 10px;
+}
+
+.logo span {
+    font-weight: 700;
+    font-size: 22px;
+    color: #e53935;
 }
 
 .menu {
@@ -138,23 +138,24 @@ body {
 }
 
 .btn.btn-primary {
-    background-color: #ef5350 !important;
-    color: white !important;
-    border: none !important;
+    background-color: #ef5350;
+    border-color: #ef5350;
+    color: white;
 }
 
 .btn.btn-primary:hover {
-    background-color: #c62828 !important;
-    border-color: #c62828 !important;
-    color: white !important;
+    background-color: #c62828;
+    border-color: #c62828;
+    color: white;
 }
 
 .btn.btn-primary:focus,
 .btn.btn-primary:focus-visible {
-    background-color: #c62828 !important;
-    border-color: #c62828 !important;
-    box-shadow: 0 0 0 0.25rem rgba(198, 40, 40, 0.5) !important;
-    outline: none !important;
+    background-color: #c62828;
+    border-color: #c62828;
+    box-shadow: 0 0 0 0.25rem rgba(198,40,40,0.5);
+    color: white;
+    outline: none;
 }
 
 .btn.btn-primary:active {
@@ -164,43 +165,31 @@ body {
     box-shadow: none !important;
 }
 
-.btn.btn-primary.btn-sm {
+.btn-primary.btn-sm {
     background-color: #fb8c00 !important; /* Laranja escuro */
     color: white !important;
     border: none !important;
 }
 
-.btn.btn-primary.btn-sm:hover {
-    background-color: #ef6c00 !important; /* Hover laranja queimado */
-}
-
-.btn.btn-primary.btn-sm:focus,
-.btn.btn-primary.btn-sm:focus-visible {
-    background-color: #ef6c00 !important;
-    box-shadow: 0 0 0 0.25rem rgba(239, 108, 0, 0.5) !important;
-    outline: none !important;
-}
-
-.btn.btn-primary.btn-sm:active {
-    background-color: #e65100 !important; /* Pressed mais escuro */
-    box-shadow: none !important;
-}
-
-
-
-
-.btn.btn-outline-primary {
-    background-color: orange !important;
+.btn-primary.btn-sm:hover {
+    background-color: #ef6c00 !important; /* Laranja queimado */
     color: white !important;
     border: none !important;
 }
 
-.btn-outline-primary:hover {
+.btn-primary.btn-sm:focus,
+.btn-primary.btn-sm:focus-visible {
     background-color: #ef6c00 !important;
-    border-color: #ef6c00 !important;
-    color: white !important;
+    box-shadow: 0 0 0 0.25rem rgba(239, 108, 0, 0.5) !important;
+    outline: none !important;
+    border: none !important;
 }
 
+.btn-primary.btn-sm:active {
+    background-color: #e65100 !important; /* Laranja mais escuro */
+    box-shadow: none !important;
+    border: none !important;
+}
 
 .btn-danger {
     background-color: #d32f2f;
@@ -214,8 +203,12 @@ body {
 }
 
 .btn-outline-primary:hover {
-    background-color: rgb(224, 168, 64);
+    background-color: #ef6c00 !important;
+    border-color: #ef6c00 !important;
+    color: white !important;
 }
+
+
 
 .header {
     display: flex;
@@ -229,24 +222,23 @@ body {
     font-weight: 700;
 }
 
-.card {
-    background-color: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-select {
-    text-align: center;
-}
-
 @media (max-width: 768px) {
     .sidebar {
         display: none;
     }
+}
 
 @media (max-width: 991.98px) {
      .main {
          margin-left: 0;
          padding-top: 80px; /* para não ficar por baixo da navbar */
      }
+}
+
+@media (max-width: 575.98px) {
+  .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
 }

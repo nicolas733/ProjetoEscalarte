@@ -163,7 +163,20 @@
                 }
             });
         }
+
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const labels = ["ID", "ID USER", "Nome", "Cargo", "Setor", "Data", "Descrição", "Status"];
+
+            document.querySelectorAll("tbody tr").forEach(tr => {
+                tr.querySelectorAll("td").forEach((td, index) => {
+                    td.setAttribute("data-label", labels[index]);
+                });
+            });
+        });
+    </script>
+
 
 </body>
 

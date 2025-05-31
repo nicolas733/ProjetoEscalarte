@@ -165,6 +165,7 @@ th {
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
+  white-space: nowrap;
 }
 .btn.btn-primary {
   background-color: #ef5350;
@@ -222,4 +223,21 @@ th {
          margin-left: 0;
          padding-top: 80px; /* para não ficar por baixo da navbar */
      }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 400px;
+}
+
+@media (max-width: 620px) {
+  .actions {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

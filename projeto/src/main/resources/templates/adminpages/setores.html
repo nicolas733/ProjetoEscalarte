@@ -65,8 +65,9 @@
 
     <div class="card">
       <h3>Setores</h3>
-      <table>
-        <thead>
+      <div class="table-responsive">
+        <table>
+          <thead>
           <tr>
             <th>ID</th>
             <th>Nome</th>
@@ -74,8 +75,8 @@
             <th>Qtd. Colaboradores Necessários</th>
             <th>Ações</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           <tr th:each="setor: ${setores}">
             <td th:text="${setor.id}"></td>
             <td th:text="${setor.nomesetor}"></td>
@@ -85,14 +86,14 @@
               <div class="actions">
                 <a class="btn btn-primary btn-sm" th:href="@{/setores/editar/{id}(id=${setor.id})}">Editar</a>
                 <a href="#" class="btn btn-danger btn-sm"
-                  th:onclick="'confirmarExclusao(\'/setores/deletar?id=' + ${setor.id} + '\')'">Excluir</a>
+                   th:onclick="'confirmarExclusao(\'/setores/deletar?id=' + ${setor.id} + '\')'">Excluir</a>
               </div>
             </td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
-
 
     <div class="header" style="margin-top: 30px;">
       <div class="header-title">Gerenciar Cargos</div>
@@ -101,8 +102,9 @@
 
     <div class="card">
       <h3>Cargos</h3>
-      <table>
-        <thead>
+      <div class="table-responsive">
+        <table>
+          <thead>
           <tr>
             <th>ID</th>
             <th>Nome do Cargo</th>
@@ -110,9 +112,8 @@
             <th>Setor</th>
             <th>Ações</th>
           </tr>
-        </thead>
-        <tbody>
-
+          </thead>
+          <tbody>
           <tr th:each="cargoPorSetor : ${cargosPorSetor}">
             <td th:text="${cargoPorSetor.cargo.id}"></td>
             <td th:text="${cargoPorSetor.cargo.nomeCargo}"></td>
@@ -121,18 +122,19 @@
             <td>
               <div class="actions">
                 <a class="btn btn-primary btn-sm"
-                  th:href="@{/cargo/editar/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
+                   th:href="@{/cargo/editar/{id}(id=${cargoPorSetor.cargo.id})}">Editar</a>
                 <a class="btn btn-danger btn-sm"
-                  th:onclick="'confirmarExclusao(\'/cargo/deletar?id=' + ${cargoPorSetor.cargo.id} + '\')'">Excluir</a>
+                   th:onclick="'confirmarExclusao(\'/cargo/deletar?id=' + ${cargoPorSetor.cargo.id} + '\')'">Excluir</a>
               </div>
             </td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <!-- Modal Setor -->
+
+    <!-- Modal Setor -->
   <div class="modal fade" id="modalSetor" tabindex="-1" aria-labelledby="modalSetorLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content p-3">
