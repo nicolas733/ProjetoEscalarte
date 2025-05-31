@@ -200,3 +200,10 @@ a {
     padding: 20px;
   }
 }
+
+@media (max-width: 991.98px) {
+     .main {
+         margin-left: 0;
+         padding-top: 80px; /* para não ficar por baixo da navbar */
+     }
+}
