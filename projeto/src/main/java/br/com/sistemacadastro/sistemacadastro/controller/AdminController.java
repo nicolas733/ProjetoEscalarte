@@ -130,7 +130,6 @@ public class AdminController {
     @GetMapping("/escala")
     public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model) {
         model.addAttribute("setores", setoresRepository.findAll());
-        model.addAttribute("turnos", turnosRepository.findAll());
 
         LocalDate hoje = LocalDate.now();
         LocalDate segunda = hoje.with(DayOfWeek.MONDAY);

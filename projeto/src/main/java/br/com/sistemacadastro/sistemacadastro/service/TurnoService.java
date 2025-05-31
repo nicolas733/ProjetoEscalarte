@@ -16,7 +16,5 @@ public class TurnoService {
 //    public List<Turnos> buscarTurnosPorColaborador(Integer colaboradorId) {
 //        return turnosRepository.findByColaboradorId(colaboradorId);
 //    }
-    public List<Turnos> buscarTodos() {
-        return turnosRepository.findAll();
-    }
+
 }
