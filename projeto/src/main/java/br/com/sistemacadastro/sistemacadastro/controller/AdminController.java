@@ -134,7 +134,8 @@ public class AdminController {
 
         LocalDate hoje = LocalDate.now();
         LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate domingo = hoje.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+        LocalDate domingo = segunda.plusDays(6);
+        // garante sempre até domingo
 
         List<LocalDate> diasSemana = new ArrayList<>();
         for (int i = 0; i <= 6; i++) diasSemana.add(segunda.plusDays(i));
@@ -149,13 +150,18 @@ public class AdminController {
 
         if (setorId != null) model.addAttribute("setorSelecionado", setorId);
 
-        Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = escalas.stream()
+        Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = new TreeMap<>(
+                Comparator.comparing(Colaborador::getNome)
+        );
+
+        escalas.stream()
                 .collect(Collectors.groupingBy(
                         Escalas::getColaborador,
                         Collectors.groupingBy(e -> e.getDataEscala().toInstant()
                                 .atZone(ZoneId.systemDefault()).toLocalDate()
                         )
-                ));
+                ))
+                .forEach(mapaEscalasPorData::put);
 
         Map<Colaborador, Set<LocalDate>> mapaFolgas = new HashMap<>();
         for (Colaborador colaborador : mapaEscalasPorData.keySet()) {

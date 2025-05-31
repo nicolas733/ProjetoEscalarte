@@ -35,5 +35,5 @@ public interface EscalaRepository extends JpaRepository<Escalas, Integer> {
     }
 
     List<Escalas> findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(Integer setorId, Date inicio, Date fim);
-
+    boolean existsByColaboradorIdAndDataEscala(Long colaboradorId, Date dataEscala);
 }

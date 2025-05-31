@@ -57,24 +57,37 @@ public class EscalaService {
                     DayOfWeek diaSemana = dataEscala.getDayOfWeek();
 
                     boolean ehFolga = contrato.getDiasFolga() != null &&
-                            contrato.getDiasFolga().stream().anyMatch(d -> DayOfWeek.valueOf(d.name()).equals(diaSemana));
-                    if (ehFolga) continue;
+                            contrato.getDiasFolga().stream()
+                                    .map(folga -> DayOfWeek.valueOf(folga.name()))
+                                    .anyMatch(d -> d.equals(diaSemana));
+
+                    if (ehFolga) {
+                        continue; // pular a geração de escala nesse dia
+                    }
+
 
                     Turnos turno = turnosDisponiveis.get(i % turnosDisponiveis.size());
 
-                    Escalas escala = new Escalas();
-                    escala.setColaborador(colaborador);
-                    escala.setTurnos(turno);
-                    escala.setDataEscala(Date.from(dataEscala.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                    escala.setSetores(setor);
+                    Date dataEscalaDate = Date.from(dataEscala.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                    List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
-                    List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
-                    escalasParaValidar.add(escala);
+                    boolean escalaExiste = escalaRepository.existsByColaboradorIdAndDataEscala((long) colaborador.getId(), dataEscalaDate);
 
-                    if (regrasCLTService.podeEscalar(contrato, cargo, escalasParaValidar)) {
-                        escalasGeradas.add(escalaRepository.save(escala));
+                    if (!escalaExiste) {
+                        Escalas escala = new Escalas();
+                        escala.setColaborador(colaborador);
+                        escala.setTurnos(turno);
+                        escala.setDataEscala(dataEscalaDate);
+                        escala.setSetores(setor);
+
+                        List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
+                        List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
+                        escalasParaValidar.add(escala);
+
+                        if (regrasCLTService.podeEscalar(contrato, cargo, escalasParaValidar)) {
+                            escalasGeradas.add(escalaRepository.save(escala));
+                        }
                     }
+
                 }
             }
         }
