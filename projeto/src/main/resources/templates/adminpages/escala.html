@@ -1,200 +1,291 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerenciar Escalas - Escalarte</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/lucide@latest" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/adminpages/escala.css}">
-    <link rel="shortcut icon" th:href="@{/img/logoEscalarte.ico}" type="image/x-icon">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/lucide@latest" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/adminpages/escala.css}" />
+    <link
+      rel="shortcut icon"
+      th:href="@{/img/logoEscalarte.ico}"
+      type="image/x-icon"
+    />
+  </head>
 
-<body>
-<div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
+  <body>
+    <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
 
-<div class="main container py-4">
-    <div>
+    <div class="main container py-4">
+      <div>
         <div class="header align-items-center mb-3">
-            <form th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
-                <label for="setor" class="mb-0">Selecione o Setor:</label>
-                <select id="setor" name="setorId" required class="form-select">
-                    <option value="" disabled selected>-- Escolha um setor --</option>
-                    <option th:each="setor : ${setores}"
-                            th:value="${setor.id}"
-                            th:text="${setor.nomesetor}">
-                    </option>
-                </select>
-                <button type="submit" class="btn btn-red">Gerar Escala</button>
-            </form>
-        </div>
-        <form th:action="@{/admin/escala}" method="get" class="d-flex align-items-center gap-2">
-            <label for="filtroSetor" class="mb-0">Visualizar setor:</label>
-            <select id="filtroSetor" name="setorId" class="form-select">
-                <option value="">-- Todos os setores --</option>
-                <option th:each="setor : ${setores}"
-                        th:value="${setor.id}"
-                        th:text="${setor.nomesetor}"
-                        th:selected="${setor.id == setorSelecionado}">
-                </option>
+          <form
+            th:action="@{/escala/gerarescala}"
+            method="post"
+            class="d-flex align-items-center gap-2"
+          >
+            <label for="setor" class="mb-0">Selecione o Setor:</label>
+            <select id="setor" name="setorId" required class="form-select">
+              <option value="" disabled selected>-- Escolha um setor --</option>
+              <option
+                th:each="setor : ${setores}"
+                th:value="${setor.id}"
+                th:text="${setor.nomesetor}"
+              ></option>
             </select>
-            <button type="submit" class="btn btn-secondary">Filtrar</button>
+            <button type="submit" class="btn btn-red">Gerar Escala</button>
+          </form>
+        </div>
+        <form
+          th:action="@{/admin/escala}"
+          method="get"
+          class="d-flex align-items-center gap-2"
+        >
+          <label for="filtroSetor" class="mb-0">Visualizar setor:</label>
+          <select id="filtroSetor" name="setorId" class="form-select">
+            <option value="">-- Todos os setores --</option>
+            <option
+              th:each="setor : ${setores}"
+              th:value="${setor.id}"
+              th:text="${setor.nomesetor}"
+              th:selected="${setor.id == setorSelecionado}"
+            ></option>
+          </select>
+          <button type="submit" class="btn btn-secondary">Filtrar</button>
         </form>
-    </div>
-    <div class="d-flex flex-wrap mt-2 mt-md-0"
-         th:if="${setorSelecionado != null and temEscala}">
-        <button class="btn btn-red" type="button"
-                th:text="'Enviar para o gerente do setor ' + ${setorSelecionadoNome}">Enviar</button>
-    </div>
+      </div>
 
+      <form
+        th:action="@{/escala/enviar}"
+        method="post"
+        th:if="${setorSelecionado != null and temEscala}"
+        id="enviarForm"
+      >
+        <input type="hidden" name="setorId" th:value="${setorSelecionado}" />
+        <button
+          class="btn btn-red"
+          type="submit"
+          th:text="'Enviar para o gerente do setor ' + ${setorSelecionadoNome}"
+        >
+          Enviar
+        </button>
+      </form>
 
-    <table class="table table-bordered">
+      <table class="table table-bordered">
         <thead class="table-light">
-        <tr>
+          <tr>
             <th>Colaborador</th>
             <th>Cargo</th>
-            <th th:each="dia : ${diasSemana}"
-                th:text="${#temporals.format(dia, 'EEE dd/MM')}">Dia</th>
-        </tr>
+            <th
+              th:each="dia : ${diasSemana}"
+              th:text="${#temporals.format(dia, 'EEE dd/MM')}"
+            >
+              Dia
+            </th>
+          </tr>
         </thead>
         <tbody>
-        <tr th:each="entry : ${mapaEscalasPorData}">
+          <tr th:each="entry : ${mapaEscalasPorData}">
             <td th:text="${entry.key.nome}">Nome</td>
-            <td th:text="${entry.key.contrato != null and entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
+            <td
+              th:text="${entry.key.contrato != null and entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}"
+            >
+              Cargo
+            </td>
 
             <!-- Para cada dia da semana, mostra as escalas se existirem -->
             <td th:each="dia : ${diasSemana}">
-                <div th:if="${#lists.contains(mapaFolgas[entry.key], dia)}"
-                     class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold">
-                    Folga
+              <div
+                th:if="${#lists.contains(mapaFolgas[entry.key], dia)}"
+                class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold"
+              >
+                Folga
+              </div>
+              <div
+                th:if="${!#lists.contains(mapaFolgas[entry.key], dia) and entry.value.containsKey(dia)}"
+                th:each="escala : ${entry.value.get(dia)}"
+                th:attr="data-turno=${escala.turnos.nome}"
+                class="mb-2 p-2 rounded text-center escala-turno"
+              >
+                <div class="small fw-semibold" th:text="${escala.turnos.nome}">
+                  Turno
                 </div>
-                <div th:if="${!#lists.contains(mapaFolgas[entry.key], dia) and entry.value.containsKey(dia)}"
-                     th:each="escala : ${entry.value.get(dia)}"
-                     th:attr="data-turno=${escala.turnos.nome}"
-                     class="mb-2 p-2 rounded text-center escala-turno">
-
-                    <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
-                    <div class="small text-muted">
-                        <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
-                        <span th:text="${escala.turnos.horarioFim}">17:00</span>
-                    </div>
+                <div class="small text-muted">
+                  <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
+                  <span th:text="${escala.turnos.horarioFim}">17:00</span>
                 </div>
+              </div>
 
-                <div th:if="${!entry.value.containsKey(dia) and !#lists.contains(mapaFolgas[entry.key], dia)}" class="text-muted fst-italic">-</div>
+              <div
+                th:if="${!entry.value.containsKey(dia) and !#lists.contains(mapaFolgas[entry.key], dia)}"
+                class="text-muted fst-italic"
+              >
+                -
+              </div>
             </td>
-        </tr>
+          </tr>
         </tbody>
-    </table>
+      </table>
 
-    <!-- Legenda dos Turnos -->
-    <div class="d-flex flex-wrap mt-2 mt-md-0">
+      <!-- Legenda dos Turnos -->
+      <div class="d-flex flex-wrap mt-2 mt-md-0">
         <h5 class="mt-4">Turnos disponíveis:</h5>
-        <div class="mudar"
-             th:if="${setorSelecionado != null and temEscala}">
-            <button class="btn btn-red" type="button">Modificar Escala</button>
+        <div class="mudar" th:if="${setorSelecionado != null and temEscala}">
+          <button class="btn btn-red" type="button">Modificar Escala</button>
         </div>
-    </div>
-    <div id="legenda-turnos" class="d-flex flex-wrap gap-3">
-        <div th:each="turno : ${turnos}"
-             class="badge border border-secondary px-3 py-2 turno-legenda"
-             th:attr="data-turno=${turno.nome}" style="color: black;">
-            <span th:text="${turno.nome}">Turno</span>
-            <small class="d-block text-muted" style="font-size: 0.75rem;">
-                <span th:text="${#temporals.format(turno.horarioInicio, 'HH:mm')}"></span> -
-                <span th:text="${#temporals.format(turno.horarioFim, 'HH:mm')}"></span>
-            </small>
+      </div>
+      <div id="legenda-turnos" class="d-flex flex-wrap gap-3">
+        <div
+          th:each="turno : ${turnos}"
+          class="badge border border-secondary px-3 py-2 turno-legenda"
+          th:attr="data-turno=${turno.nome}"
+          style="color: black"
+        >
+          <span th:text="${turno.nome}">Turno</span>
+          <small class="d-block text-muted" style="font-size: 0.75rem">
+            <span
+              th:text="${#temporals.format(turno.horarioInicio, 'HH:mm')}"
+            ></span>
+            -
+            <span
+              th:text="${#temporals.format(turno.horarioFim, 'HH:mm')}"
+            ></span>
+          </small>
         </div>
+      </div>
     </div>
-</div>
-<!-- Modal para Modificar Escala -->
-<div class="modal fade" id="modalModificarEscala" tabindex="-1" aria-labelledby="modalModificarEscalaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form th:action="@{/escala/modificar}" method="post" class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalModificarEscalaLabel">Modificar Escala</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+    <!-- Modal para Modificar Escala -->
+    <div
+      class="modal fade"
+      id="modalModificarEscala"
+      tabindex="-1"
+      aria-labelledby="modalModificarEscalaLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <form
+          th:action="@{/escala/modificar}"
+          method="post"
+          class="modal-content"
+        >
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalModificarEscalaLabel">
+              Modificar Escala
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Fechar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Funcionário -->
+            <div class="mb-3">
+              <label for="colaboradorMod" class="form-label">Colaborador</label>
+              <select
+                id="colaboradorMod"
+                name="colaboradorId"
+                class="form-select"
+                required
+              >
+                <option value="" disabled selected>
+                  Selecione um colaborador
+                </option>
+                <option
+                  th:each="f : ${ColaboradorDoSetor}"
+                  th:value="${f.id}"
+                  th:text="${f.nome}"
+                >
+                  Colaborador
+                </option>
+              </select>
             </div>
-            <div class="modal-body">
 
-                <!-- Funcionário -->
-                <div class="mb-3">
-                    <label for="colaboradorMod" class="form-label">Colaborador</label>
-                    <select id="colaboradorMod" name="colaboradorId" class="form-select" required>
-                        <option value="" disabled selected>Selecione um colaborador</option>
-                        <option th:each="f : ${ColaboradorDoSetor}"
-                                th:value="${f.id}"
-                                th:text="${f.nome}">Colaborador</option>
-                    </select>
-                </div>
-
-                <!-- Dia -->
-                <div class="mb-3">
-                    <label for="dataMod" class="form-label">Data</label>
-                    <select id="dataMod" name="data" class="form-select" required>
-                        <option value="" disabled selected>Selecione uma data</option>
-                        <option th:each="dia : ${diasSemana}"
-                                th:value="${#temporals.format(dia, 'yyyy-MM-dd')}"
-                                th:text="${#temporals.format(dia, 'EEE dd/MM')}">Dia</option>
-                    </select>
-                </div>
-
-                <!-- Turno -->
-                <div class="mb-3">
-                    <label for="turnoMod" class="form-label">Turno</label>
-                    <select id="turnoMod" name="turnoId" class="form-select" required>
-                        <option value="" disabled selected>Selecione um turno</option>
-                        <option th:each="turno : ${turnos}"
-                                th:value="${turno.id}"
-                                th:text="${turno.nome + ' - ' + #temporals.format(turno.horarioInicio, 'HH:mm') + ' - ' + #temporals.format(turno.horarioFim, 'HH:mm')}">
-                        </option>
-                        <option value="folga">Folga</option>
-                    </select>
-                </div>
-
+            <!-- Dia -->
+            <div class="mb-3">
+              <label for="dataMod" class="form-label">Data</label>
+              <select id="dataMod" name="data" class="form-select" required>
+                <option value="" disabled selected>Selecione uma data</option>
+                <option
+                  th:each="dia : ${diasSemana}"
+                  th:value="${#temporals.format(dia, 'yyyy-MM-dd')}"
+                  th:text="${#temporals.format(dia, 'EEE dd/MM')}"
+                >
+                  Dia
+                </option>
+              </select>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-red">Salvar</button>
+
+            <!-- Turno -->
+            <div class="mb-3">
+              <label for="turnoMod" class="form-label">Turno</label>
+              <select id="turnoMod" name="turnoId" class="form-select" required>
+                <option value="" disabled selected>Selecione um turno</option>
+                <option
+                  th:each="turno : ${turnos}"
+                  th:value="${turno.id}"
+                  th:text="${turno.nome + ' - ' + #temporals.format(turno.horarioInicio, 'HH:mm') + ' - ' + #temporals.format(turno.horarioFim, 'HH:mm')}"
+                ></option>
+                <option value="folga">Folga</option>
+              </select>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-red">Salvar</button>
+          </div>
         </form>
+      </div>
     </div>
-</div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    lucide.createIcons();
-
-    function gerarCorAleatoria(seed) {
+      function gerarCorAleatoria(seed) {
         let hash = 0;
         for (let i = 0; i < seed.length; i++) {
-            hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+          hash = seed.charCodeAt(i) + ((hash << 5) - hash);
         }
         const h = Math.abs(hash) % 360;
         return `hsl(${h}, 60%, 80%)`;
-    }
+      }
 
-    function aplicarCoresAosTurnos() {
-        const elementosTurno = document.querySelectorAll('[data-turno]');
+      function aplicarCoresAosTurnos() {
+        const elementosTurno = document.querySelectorAll("[data-turno]");
         const mapaCores = {};
 
-        elementosTurno.forEach(el => {
-            const nomeTurno = el.getAttribute('data-turno');
-            if (!mapaCores[nomeTurno]) {
-                mapaCores[nomeTurno] = gerarCorAleatoria(nomeTurno);
-            }
-            el.style.backgroundColor = mapaCores[nomeTurno];
+        elementosTurno.forEach((el) => {
+          const nomeTurno = el.getAttribute("data-turno");
+          if (!mapaCores[nomeTurno]) {
+            mapaCores[nomeTurno] = gerarCorAleatoria(nomeTurno);
+          }
+          el.style.backgroundColor = mapaCores[nomeTurno];
         });
-    }
+      }
 
-    document.addEventListener('DOMContentLoaded', aplicarCoresAosTurnos);
+      document.addEventListener("DOMContentLoaded", aplicarCoresAosTurnos);
 
-    document.querySelector('.mudar button').addEventListener('click', function () {
-        const modal = new bootstrap.Modal(document.getElementById('modalModificarEscala'));
-        modal.show();
-    });
-
-</script>
-</body>
+      document
+        .querySelector(".mudar button")
+        .addEventListener("click", function () {
+          const modal = new bootstrap.Modal(
+            document.getElementById("modalModificarEscala")
+          );
+          modal.show();
+        });
+    </script>
+  </body>
 </html>

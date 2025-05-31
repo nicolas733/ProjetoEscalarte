@@ -2,6 +2,7 @@ package br.com.sistemacadastro.sistemacadastro.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -10,6 +11,13 @@ import java.util.Date;
 @Data
 @Entity
 public class Escalas {
+
+    @NotEmpty
+    public enum StatusEscala {
+        CRIADO, // 0
+        EM_ANALISE, // 1
+        PUBLICADO, // 2
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,5 +47,8 @@ public class Escalas {
     @ManyToOne
     @JoinColumn(name = "setor_id")
     private Setores setores;
+
+    @NotNull
+    private StatusEscala statusEscala;
 
 }

@@ -34,6 +34,11 @@ public class LoginController {
         return "erro";
     }
 
+    @GetMapping("/")
+    public String mainPage() {
+        return "redirect:" + LOGIN_ROUTE;
+    }
+
     @GetMapping(LOGIN_ROUTE)
     public String login(HttpSession session) {
         if (UserSessionUtils.isLogged(session)) {

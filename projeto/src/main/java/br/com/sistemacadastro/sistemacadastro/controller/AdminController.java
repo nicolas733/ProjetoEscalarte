@@ -65,7 +65,7 @@ public class AdminController {
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
-        
+
         return "adminpages/usuarios";
     }
 
@@ -138,7 +138,8 @@ public class AdminController {
         // garante sempre até domingo
 
         List<LocalDate> diasSemana = new ArrayList<>();
-        for (int i = 0; i <= 6; i++) diasSemana.add(segunda.plusDays(i));
+        for (int i = 0; i <= 6; i++)
+            diasSemana.add(segunda.plusDays(i));
         model.addAttribute("diasSemana", diasSemana);
 
         Date dataInicio = Date.valueOf(segunda);
@@ -148,7 +149,8 @@ public class AdminController {
                 ? escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim)
                 : escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
 
-        if (setorId != null) model.addAttribute("setorSelecionado", setorId);
+        if (setorId != null)
+            model.addAttribute("setorSelecionado", setorId);
         if (setorId != null) {
             Optional<Setores> setor = setoresRepository.findById(setorId);
             setor.ifPresent(s -> model.addAttribute("setorSelecionadoNome", s.getNomesetor()));
@@ -157,18 +159,21 @@ public class AdminController {
             model.addAttribute("temEscala", temEscala);
         }
 
+        if (setorId != null) {
+            // List<Colaborador> colaboradoresDoSetor = colaboradorRepository.findByCargoPorSetor_Setor_Id(setorId);
+            List<Colaborador> colaboradoresDoSetor = setoresRepository.findColaboradoresBySetorId(setorId);
+            
+            model.addAttribute("ColaboradorDoSetor", colaboradoresDoSetor);
+        }
 
         Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = new TreeMap<>(
-                Comparator.comparing(Colaborador::getNome)
-        );
+                Comparator.comparing(Colaborador::getNome));
 
         escalas.stream()
                 .collect(Collectors.groupingBy(
                         Escalas::getColaborador,
                         Collectors.groupingBy(e -> e.getDataEscala().toInstant()
-                                .atZone(ZoneId.systemDefault()).toLocalDate()
-                        )
-                ))
+                                .atZone(ZoneId.systemDefault()).toLocalDate())))
                 .forEach(mapaEscalasPorData::put);
 
         Map<Colaborador, Set<LocalDate>> mapaFolgas = new HashMap<>();

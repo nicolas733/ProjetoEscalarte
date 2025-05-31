@@ -78,6 +78,7 @@ public class EscalaService {
                         escala.setTurnos(turno);
                         escala.setDataEscala(dataEscalaDate);
                         escala.setSetores(setor);
+                        escala.setStatusEscala(Escalas.StatusEscala.CRIADO);
 
                         List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
                         List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
