@@ -17,12 +17,34 @@ body {
   box-sizing: border-box;
 }
 
-
 .sidebar .menu {
   list-style: none;
   padding: 0;
   margin: 0;
 
+}
+
+div.mudar {
+  margin-top: 20px;
+}
+
+div.d-flex.flex-wrap.mt-2.mt-md-0 {
+  margin-bottom: 30px;
+  justify-content: start;
+  gap: 1.5rem;
+}
+
+button.btn.btn-red {
+  min-width: 7rem;
+}
+
+form.d-flex.align-items-center.gap-2{
+  margin-bottom: 30px;
+  max-width: 27rem;
+}
+
+label.mb-0{
+  min-width: 8rem;
 }
 
 .sidebar .menu li {

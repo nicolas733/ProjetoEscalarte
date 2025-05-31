@@ -149,6 +149,14 @@ public class AdminController {
                 : escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
 
         if (setorId != null) model.addAttribute("setorSelecionado", setorId);
+        if (setorId != null) {
+            Optional<Setores> setor = setoresRepository.findById(setorId);
+            setor.ifPresent(s -> model.addAttribute("setorSelecionadoNome", s.getNomesetor()));
+
+            boolean temEscala = !escalas.isEmpty(); // se encontrou alguma escala
+            model.addAttribute("temEscala", temEscala);
+        }
+
 
         Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = new TreeMap<>(
                 Comparator.comparing(Colaborador::getNome)

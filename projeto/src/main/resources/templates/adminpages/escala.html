@@ -14,34 +14,39 @@
 <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
 
 <div class="main container py-4">
-    <div class="header d-flex align-items-center mb-3">
-        <form th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
-            <label for="setor" class="mb-0">Selecione o Setor:</label>
-            <select id="setor" name="setorId" required class="form-select">
-                <option value="" disabled selected>-- Escolha um setor --</option>
+    <div>
+        <div class="header align-items-center mb-3">
+            <form th:action="@{/escala/gerarescala}" method="post" class="d-flex align-items-center gap-2">
+                <label for="setor" class="mb-0">Selecione o Setor:</label>
+                <select id="setor" name="setorId" required class="form-select">
+                    <option value="" disabled selected>-- Escolha um setor --</option>
+                    <option th:each="setor : ${setores}"
+                            th:value="${setor.id}"
+                            th:text="${setor.nomesetor}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-red">Gerar Escala</button>
+            </form>
+        </div>
+        <form th:action="@{/admin/escala}" method="get" class="d-flex align-items-center gap-2">
+            <label for="filtroSetor" class="mb-0">Visualizar setor:</label>
+            <select id="filtroSetor" name="setorId" class="form-select">
+                <option value="">-- Todos os setores --</option>
                 <option th:each="setor : ${setores}"
                         th:value="${setor.id}"
-                        th:text="${setor.nomesetor}">
+                        th:text="${setor.nomesetor}"
+                        th:selected="${setor.id == setorSelecionado}">
                 </option>
             </select>
-            <button type="submit" class="btn btn-primary">Gerar Escala</button>
+            <button type="submit" class="btn btn-secondary">Filtrar</button>
         </form>
     </div>
+    <div class="d-flex flex-wrap mt-2 mt-md-0"
+         th:if="${setorSelecionado != null and temEscala}">
+        <button class="btn btn-red" type="button"
+                th:text="'Enviar para o gerente do setor ' + ${setorSelecionadoNome}">Enviar</button>
+    </div>
 
-    <form th:action="@{/admin/escala}" method="get" class="d-flex align-items-center gap-2">
-        <label for="filtroSetor" class="mb-0">Visualizar setor:</label>
-        <select id="filtroSetor" name="setorId" class="form-select">
-            <option value="">-- Todos os setores --</option>
-            <option th:each="setor : ${setores}"
-                    th:value="${setor.id}"
-                    th:text="${setor.nomesetor}"
-                    th:selected="${setor.id == setorSelecionado}">
-            </option>
-        </select>
-        <button type="submit" class="btn btn-secondary">Filtrar</button>
-    </form>
-
-    <hr/>
 
     <table class="table table-bordered">
         <thead class="table-light">
@@ -82,8 +87,13 @@
     </table>
 
     <!-- Legenda dos Turnos -->
-    <hr />
-    <h5 class="mt-4">Turnos disponíveis:</h5>
+    <div class="d-flex flex-wrap mt-2 mt-md-0">
+        <h5 class="mt-4">Turnos disponíveis:</h5>
+        <div class="mudar"
+             th:if="${setorSelecionado != null and temEscala}">
+            <button class="btn btn-red" type="button">Modificar Escala</button>
+        </div>
+    </div>
     <div id="legenda-turnos" class="d-flex flex-wrap gap-3">
         <div th:each="turno : ${turnos}"
              class="badge border border-secondary px-3 py-2 turno-legenda"
