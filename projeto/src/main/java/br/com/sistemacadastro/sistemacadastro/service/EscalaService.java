@@ -20,6 +20,7 @@ import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.EscalaRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
+
 @Service
 public class EscalaService {
 
@@ -37,55 +38,47 @@ public class EscalaService {
 
     public List<Escalas> gerarEscalasSemanais() {
         List<Escalas> escalasGeradas = new ArrayList<>();
-
         List<Setores> setores = setoresRepository.findAll();
-
         LocalDate hoje = LocalDate.now();
-        LocalDate domingo = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)); // Começa no domingo da semana atual
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
 
         for (Setores setor : setores) {
-            List<Colaborador> colaboradoresAtivos = colaboradorRepository.findBySetorAndContratoAtivo(setor.getId());
+            List<Colaborador> colaboradores = colaboradorRepository.findBySetorAndContratoAtivo(setor.getId());
 
-            for (Colaborador colaborador : colaboradoresAtivos) {
+            for (Colaborador colaborador : colaboradores) {
                 Contrato contrato = colaborador.getContrato();
                 Cargos cargo = contrato.getCargos();
-
                 List<Turnos> turnosDisponiveis = colaborador.getTurnos();
+
                 if (turnosDisponiveis.isEmpty()) continue;
 
                 for (int i = 0; i < 7; i++) {
-                    LocalDate dataEscala = domingo.plusDays(i); // Vai de domingo a sábado
+                    LocalDate dataEscala = segunda.plusDays(i);
                     DayOfWeek diaSemana = dataEscala.getDayOfWeek();
 
                     boolean ehFolga = contrato.getDiasFolga() != null &&
-                            contrato.getDiasFolga().stream()
-                                    .anyMatch(d -> DayOfWeek.valueOf(d.name()).equals(diaSemana));
+                            contrato.getDiasFolga().stream().anyMatch(d -> DayOfWeek.valueOf(d.name()).equals(diaSemana));
                     if (ehFolga) continue;
 
-                    Turnos turnoParaDia = turnosDisponiveis.get(i % turnosDisponiveis.size());
+                    Turnos turno = turnosDisponiveis.get(i % turnosDisponiveis.size());
 
-                    Escalas escalaTemp = new Escalas();
-                    escalaTemp.setColaborador(colaborador);
-                    escalaTemp.setTurnos(turnoParaDia);
-                    escalaTemp.setDataEscala(Date.from(dataEscala.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-                    escalaTemp.setSetores(setor);
+                    Escalas escala = new Escalas();
+                    escala.setColaborador(colaborador);
+                    escala.setTurnos(turno);
+                    escala.setDataEscala(Date.from(dataEscala.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    escala.setSetores(setor);
 
-                    List<Escalas> escalasDoColaboradorNaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
+                    List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
+                    List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
+                    escalasParaValidar.add(escala);
 
-                    List<Escalas> escalasParaValidar = new ArrayList<>(escalasDoColaboradorNaSemana);
-                    escalasParaValidar.add(escalaTemp);
-
-                    boolean pode = regrasCLTService.podeEscalar(contrato, cargo, escalasParaValidar);
-
-                    if (pode) {
-                        Escalas escalaSalva = escalaRepository.save(escalaTemp);
-                        escalasGeradas.add(escalaSalva);
+                    if (regrasCLTService.podeEscalar(contrato, cargo, escalasParaValidar)) {
+                        escalasGeradas.add(escalaRepository.save(escala));
                     }
                 }
             }
         }
 
-        escalaRepository.saveAll(escalasGeradas);
         return escalasGeradas;
     }
 }

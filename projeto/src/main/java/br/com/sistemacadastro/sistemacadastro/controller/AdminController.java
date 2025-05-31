@@ -133,49 +133,36 @@ public class AdminController {
         model.addAttribute("turnos", turnosRepository.findAll());
 
         LocalDate hoje = LocalDate.now();
-
-        // Pega a segunda-feira da semana atual (ou hoje se hoje for segunda)
         LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        // Pega o domingo da semana atual (ou hoje se hoje for domingo)
         LocalDate domingo = hoje.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
         List<LocalDate> diasSemana = new ArrayList<>();
-        for (int i = 0; i <= 6; i++) {
-            diasSemana.add(segunda.plusDays(i));
-        }
+        for (int i = 0; i <= 6; i++) diasSemana.add(segunda.plusDays(i));
         model.addAttribute("diasSemana", diasSemana);
 
         Date dataInicio = Date.valueOf(segunda);
         Date dataFim = Date.valueOf(domingo);
 
-        List<Escalas> escalas;
-        if (setorId != null) {
-            escalas = escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim);
-            model.addAttribute("setorSelecionado", setorId);
-        } else {
-            escalas = escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
-        }
+        List<Escalas> escalas = (setorId != null)
+                ? escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim)
+                : escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
 
-        // Agrupa escalas por colaborador e data
+        if (setorId != null) model.addAttribute("setorSelecionado", setorId);
+
         Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = escalas.stream()
                 .collect(Collectors.groupingBy(
                         Escalas::getColaborador,
                         Collectors.groupingBy(e -> e.getDataEscala().toInstant()
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDate())
+                                .atZone(ZoneId.systemDefault()).toLocalDate()
+                        )
                 ));
 
-        // Mapa de folgas: para cada colaborador, lista os dias da semana que são folga
         Map<Colaborador, Set<LocalDate>> mapaFolgas = new HashMap<>();
-
         for (Colaborador colaborador : mapaEscalasPorData.keySet()) {
             Set<LocalDate> diasFolga = new HashSet<>();
             if (colaborador.getContrato() != null && colaborador.getContrato().getDiasFolga() != null) {
                 for (Contrato.DiaFolga diaFolga : colaborador.getContrato().getDiasFolga()) {
-                    // Aqui converte direto, pois os nomes do enum batem com DayOfWeek
-                    DayOfWeek dow = DayOfWeek.valueOf(diaFolga.name());
-                    LocalDate dataFolga = segunda.with(dow);
-                    diasFolga.add(dataFolga);
+                    diasFolga.add(segunda.with(DayOfWeek.valueOf(diaFolga.name())));
                 }
             }
             mapaFolgas.put(colaborador, diasFolga);
@@ -186,13 +173,6 @@ public class AdminController {
 
         return "adminpages/escala";
     }
-
-
-
-
-
-
-
 
     @GetMapping("/solici")
     public String mostrarSolicitacao(Model model, HttpSession session) {
