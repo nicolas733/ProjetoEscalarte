@@ -3,6 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,6 @@ import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.EscalaRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-
 @Service
 public class EscalaService {
 
@@ -41,7 +41,7 @@ public class EscalaService {
         List<Setores> setores = setoresRepository.findAll();
 
         LocalDate hoje = LocalDate.now();
-        LocalDate segunda = hoje.with(DayOfWeek.MONDAY);
+        LocalDate domingo = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)); // Começa no domingo da semana atual
 
         for (Setores setor : setores) {
             List<Colaborador> colaboradoresAtivos = colaboradorRepository.findBySetorAndContratoAtivo(setor.getId());
@@ -54,7 +54,13 @@ public class EscalaService {
                 if (turnosDisponiveis.isEmpty()) continue;
 
                 for (int i = 0; i < 7; i++) {
-                    LocalDate dataEscala = segunda.plusDays(i);
+                    LocalDate dataEscala = domingo.plusDays(i); // Vai de domingo a sábado
+                    DayOfWeek diaSemana = dataEscala.getDayOfWeek();
+
+                    boolean ehFolga = contrato.getDiasFolga() != null &&
+                            contrato.getDiasFolga().stream()
+                                    .anyMatch(d -> DayOfWeek.valueOf(d.name()).equals(diaSemana));
+                    if (ehFolga) continue;
 
                     Turnos turnoParaDia = turnosDisponiveis.get(i % turnosDisponiveis.size());
 

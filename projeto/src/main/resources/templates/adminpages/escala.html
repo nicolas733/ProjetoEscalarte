@@ -55,7 +55,7 @@
         <tbody>
         <tr th:each="entry : ${mapaEscalasPorData}">
             <td th:text="${entry.key.nome}">Nome</td>
-            <td th:text="${entry.key.contrato != null && entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
+            <td th:text="${entry.key.contrato != null and entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
 
             <!-- Para cada dia da semana, mostra as escalas se existirem -->
             <td th:each="dia : ${diasSemana}">
@@ -77,9 +77,6 @@
 
                 <div th:if="${!entry.value.containsKey(dia) and !#lists.contains(mapaFolgas[entry.key], dia)}" class="text-muted fst-italic">-</div>
             </td>
-
-
-
         </tr>
         </tbody>
     </table>
@@ -98,7 +95,6 @@
             </small>
         </div>
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

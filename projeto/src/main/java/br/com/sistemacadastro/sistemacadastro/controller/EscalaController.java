@@ -16,7 +16,6 @@ public class EscalaController {
     @Autowired
     private EscalaService escalaService;
 
-    // Método para gerar escala semanal por setor
     @PostMapping("/gerarescala")
     public String gerarEscalaSemanal(@RequestParam("setorId") int setorId, RedirectAttributes redirectAttributes) {
 
