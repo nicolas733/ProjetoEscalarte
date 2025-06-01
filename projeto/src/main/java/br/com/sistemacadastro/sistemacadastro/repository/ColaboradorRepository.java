@@ -7,6 +7,8 @@ import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
+import br.com.sistemacadastro.sistemacadastro.model.Setores;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -34,5 +36,8 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Intege
     List<Colaborador> findByCargoPorSetor_Setor_Id(int setorId);
 
     boolean existsByTurnos(Turnos turnos);
+
+    @Query("SELECT cps.setor FROM colaborador c JOIN c.contrato ct JOIN ct.cargos cg JOIN cargoSetor cps ON cps.cargo = cg WHERE c.id = :colaboradorId")
+    Setores findSetorByColaboradorId(@Param("colaboradorId") Long colaboradorId);
 
 }
