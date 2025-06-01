@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,222 +11,169 @@
 </head>
 
 <body>
-    <!-- Sidebar fixa para desktop -->
-    <div class="d-none d-lg-block">
-        <div th:replace="~{layout/sidebarComponent :: sidebarGerente}"></div>
-    </div>
+<!-- Sidebar fixa para desktop -->
+<div class="d-none d-lg-block">
+    <div th:replace="~{layout/sidebarComponent :: sidebarGerente}"></div>
+</div>
 
-    <!-- Botão para abrir o menu hambúrguer -->
-    <nav class="navbar d-lg-none bg-white shadow-sm fixed-top">
-        <div class="container-fluid">
-            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
-                <i data-lucide="menu"></i>
-            </button>
-            <div class="d-flex align-items-center gap-2">
-                <img src="/img/logo.png" alt="Logo" style="height: 36px;">
-                <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Sidebar Offcanvas (para mobile) -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
-        <div class="offcanvas-header d-flex justify-content-between align-items-center px-3 pt-3">
-            <div class="d-flex align-items-center gap-2">
-                <img src="/img/logo.png" alt="Logo" style="height: 36px;">
-                <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body p-0">
-            <!-- Aqui aplicamos a sidebar no hambúrguer também -->
-            <div class="p-3">
-                <ul class="menu list-unstyled">
-                    <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
-                    <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
-                    <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
-                    <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
-                    <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
-                    <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
-                </ul>
-            </div>
-
+<!-- Botão para abrir o menu hambúrguer -->
+<nav class="navbar d-lg-none bg-white shadow-sm fixed-top">
+    <div class="container-fluid">
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+            <i data-lucide="menu"></i>
+        </button>
+        <div class="d-flex align-items-center gap-2">
+            <img src="/img/logo.png" alt="Logo" style="height: 36px;">
+            <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
         </div>
     </div>
+</nav>
 
-    <div class="main container py-4">
+<!-- Sidebar Offcanvas (para mobile) -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
+    <div class="offcanvas-header d-flex justify-content-between align-items-center px-3 pt-3">
+        <div class="d-flex align-items-center gap-2">
+            <img src="/img/logo.png" alt="Logo" style="height: 36px;">
+            <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
 
-        <form th:action="@{/escala/aprovar}" method="post" id="enviarForm" class="mb-3">
-            <input type="hidden" name="setorId" th:value="${setorId}" />
-            <button class="btn btn-red" type="submit">
-                Aprovar escala
-            </button>
-        </form>
+    <div class="offcanvas-body p-0">
+        <div class="p-3">
+            <ul class="menu list-unstyled">
+                <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+                <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
+                <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+                <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+                <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+                <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-        <table class="table table-bordered">
-            <thead class="table-light">
-                <tr>
-                    <th>Colaborador</th>
-                    <th>Cargo</th>
-                    <th th:each="dia : ${diasSemana}" th:text="${#temporals.format(dia, 'EEE dd/MM')}">
-                        Dia
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="entry : ${mapaEscalasPorData}">
-                    <td th:text="${entry.key.nome}">Nome</td>
-                    <td
-                        th:text="${entry.key.contrato != null and entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">
-                        Cargo
-                    </td>
+<div class="main container py-4">
+    <form th:action="@{/escala/aprovar}" method="post" id="enviarForm" class="mb-3">
+        <input type="hidden" name="setorId" th:value="${setorId}" />
+        <button class="btn btn-red" type="submit">Aprovar escala</button>
+    </form>
 
-                    <!-- Para cada dia da semana, mostra as escalas se existirem -->
-                    <td th:each="dia : ${diasSemana}">
-                        <div th:if="${entry.value.containsKey(dia)}" th:each="escala : ${entry.value.get(dia)}">
-
-                            <!-- Se for folga -->
-                            <div th:if="${escala.folga == true}"
-                                class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold">
-                                Folga
-                            </div>
-
-                            <!-- Se não for folga, mostra o turno -->
-                            <div th:if="${escala.folga != true}" th:attr="data-turno=${escala.turnos.nome}"
-                                class="mb-2 p-2 rounded text-center escala-turno">
-                                <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
-                                <div class="small text-muted">
-                                    <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
-                                    <span th:text="${escala.turnos.horarioFim}">17:00</span>
-                                </div>
-                            </div>
-
+    <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+            <th>Colaborador</th>
+            <th>Cargo</th>
+            <th th:each="dia : ${diasSemana}" th:text="${#temporals.format(dia, 'EEE dd/MM')}">Dia</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${mapaEscalasPorData}">
+            <td th:text="${entry.key.nome}">Nome</td>
+            <td th:text="${entry.key.contrato != null and entry.key.contrato.cargos != null ? entry.key.contrato.cargos.nomeCargo : 'Sem cargo'}">Cargo</td>
+            <td th:each="dia : ${diasSemana}">
+                <div th:if="${entry.value.containsKey(dia)}" th:each="escala : ${entry.value.get(dia)}">
+                    <div th:if="${escala.folga == true}" class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold">Folga</div>
+                    <div th:if="${escala.folga != true}" th:attr="data-turno=${escala.turnos.nome}" class="mb-2 p-2 rounded text-center escala-turno">
+                        <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
+                        <div class="small text-muted">
+                            <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
+                            <span th:text="${escala.turnos.horarioFim}">17:00</span>
                         </div>
+                    </div>
+                </div>
+                <div th:if="${!entry.value.containsKey(dia)}" class="text-muted fst-italic">-</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-                        <div th:if="${!entry.value.containsKey(dia)}" class="text-muted fst-italic">-</div>
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Legenda dos Turnos -->
-        <div class="d-flex flex-wrap mt-2 mt-md-0">
-            <h5 class="mt-4">Turnos disponíveis:</h5>
-            <div class="mudar" th:if="${setorSelecionado != null and temEscala}">
-                <button class="btn btn-red" type="button">Modificar Escala</button>
-            </div>
-        </div>
-        <div id="legenda-turnos" class="d-flex flex-wrap gap-3">
-            <div th:each="turno : ${turnos}" class="badge border border-secondary px-3 py-2 turno-legenda"
-                th:attr="data-turno=${turno.nome}" style="color: black">
-                <span th:text="${turno.nome}">Turno</span>
-                <small class="d-block text-muted" style="font-size: 0.75rem">
-                    <span th:text="${#temporals.format(turno.horarioInicio, 'HH:mm')}"></span>
-                    -
-                    <span th:text="${#temporals.format(turno.horarioFim, 'HH:mm')}"></span>
-                </small>
-            </div>
+    <!-- Legenda dos Turnos -->
+    <div class="d-flex flex-wrap mt-2 mt-md-0">
+        <h5 class="mt-4">Turnos disponíveis:</h5>
+        <div class="mudar" th:if="${setorSelecionado != null and temEscala}">
+            <button class="btn btn-red" type="button" data-bs-toggle="modal" data-bs-target="#modalModificarEscala">Modificar Escala</button>
         </div>
     </div>
-    <!-- Modal para Modificar Escala -->
-    <div class="modal fade" id="modalModificarEscala" tabindex="-1" aria-labelledby="modalModificarEscalaLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <form th:action="@{/escala/modificar}" method="post" class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalModificarEscalaLabel">
-                        Modificar Escala
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Funcionário -->
-                    <div class="mb-3">
-                        <label for="colaboradorMod" class="form-label">Colaborador</label>
-                        <select id="colaboradorMod" name="colaboradorId" class="form-select" required>
-                            <option value="" disabled selected>
-                                Selecione um colaborador
-                            </option>
-                            <option th:each="f : ${ColaboradorDoSetor}" th:value="${f.id}" th:text="${f.nome}">
-                                Colaborador
-                            </option>
-                        </select>
-                    </div>
-
-                    <!-- Dia -->
-                    <div class="mb-3">
-                        <label for="dataMod" class="form-label">Data</label>
-                        <select id="dataMod" name="dataEscala" class="form-select" required>
-                            <option value="" disabled selected>Selecione uma data</option>
-                            <option th:each="dia : ${diasSemana}" th:value="${#temporals.format(dia, 'yyyy-MM-dd')}"
-                                th:text="${#temporals.format(dia, 'EEE dd/MM')}">
-                                Dia
-                            </option>
-                        </select>
-                    </div>
-
-                    <!-- Turno -->
-                    <div class="mb-3">
-                        <label for="turnoMod" class="form-label">Turno</label>
-                        <select id="turnoMod" name="turnoId" class="form-select" required>
-                            <option value="" disabled selected>Selecione um turno</option>
-                            <option th:each="turno : ${turnos}" th:value="${turno.id}"
-                                th:text="${turno.nome + ' - ' + #temporals.format(turno.horarioInicio, 'HH:mm') + ' - ' + #temporals.format(turno.horarioFim, 'HH:mm')}">
-                            </option>
-                            <option value="folga">Folga</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Cancelar
-                    </button>
-                    <button type="submit" class="btn btn-red">Salvar</button>
-                </div>
-            </form>
+    <div id="legenda-turnos" class="d-flex flex-wrap gap-3">
+        <div th:each="turno : ${turnos}" class="badge border border-secondary px-3 py-2 turno-legenda" th:attr="data-turno=${turno.nome}" style="color: black">
+            <span th:text="${turno.nome}">Turno</span>
+            <small class="d-block text-muted" style="font-size: 0.75rem">
+                <span th:text="${#temporals.format(turno.horarioInicio, 'HH:mm')}"></span> -
+                <span th:text="${#temporals.format(turno.horarioFim, 'HH:mm')}"></span>
+            </small>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        lucide.createIcons();
+<!-- Modal para Modificar Escala -->
+<div class="modal fade" id="modalModificarEscala" tabindex="-1" aria-labelledby="modalModificarEscalaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form th:action="@{/gerente/modificar}" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalModificarEscalaLabel">Modificar Escala</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="colaboradorMod" class="form-label">Colaborador</label>
+                    <select id="colaboradorMod" name="colaboradorId" class="form-select" required>
+                        <option value="" disabled selected>Selecione um colaborador</option>
+                        <option th:each="f : ${ColaboradorDoSetor}" th:value="${f.id}" th:text="${f.nome}">Colaborador</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="dataMod" class="form-label">Data</label>
+                    <select id="dataMod" name="dataEscala" class="form-select" required>
+                        <option value="" disabled selected>Selecione uma data</option>
+                        <option th:each="dia : ${diasSemana}" th:value="${#temporals.format(dia, 'yyyy-MM-dd')}" th:text="${#temporals.format(dia, 'EEE dd/MM')}">Dia</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="turnoMod" class="form-label">Turno</label>
+                    <select id="turnoMod" name="turnoId" class="form-select" required>
+                        <option value="" disabled selected>Selecione um turno</option>
+                        <option th:each="turno : ${turnos}" th:value="${turno.id}" th:text="${turno.nome + ' - ' + #temporals.format(turno.horarioInicio, 'HH:mm') + ' - ' + #temporals.format(turno.horarioFim, 'HH:mm')}"></option>
+                        <option value="folga">Folga</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-red">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-        function gerarCorAleatoria(seed) {
-            let hash = 0;
-            for (let i = 0; i < seed.length; i++) {
-                hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+
+    function gerarCorAleatoria(seed) {
+        let hash = 0;
+        for (let i = 0; i < seed.length; i++) {
+            hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const h = Math.abs(hash) % 360;
+        return `hsl(${h}, 60%, 80%)`;
+    }
+
+    function aplicarCoresAosTurnos() {
+        const elementosTurno = document.querySelectorAll("[data-turno]");
+        const mapaCores = {};
+
+        elementosTurno.forEach(el => {
+            const nomeTurno = el.getAttribute("data-turno");
+            if (!mapaCores[nomeTurno]) {
+                mapaCores[nomeTurno] = gerarCorAleatoria(nomeTurno);
             }
-            const h = Math.abs(hash) % 360;
-            return `hsl(${h}, 60%, 80%)`;
-        }
+            el.style.backgroundColor = mapaCores[nomeTurno];
+        });
+    }
 
-        function aplicarCoresAosTurnos() {
-            const elementosTurno = document.querySelectorAll("[data-turno]");
-            const mapaCores = {};
-
-            elementosTurno.forEach((el) => {
-                const nomeTurno = el.getAttribute("data-turno");
-                if (!mapaCores[nomeTurno]) {
-                    mapaCores[nomeTurno] = gerarCorAleatoria(nomeTurno);
-                }
-                el.style.backgroundColor = mapaCores[nomeTurno];
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", aplicarCoresAosTurnos);
-
-        document
-            .querySelector(".mudar button")
-            .addEventListener("click", function () {
-                const modal = new bootstrap.Modal(
-                    document.getElementById("modalModificarEscala")
-                );
-                modal.show();
-            });
-    </script>
+    aplicarCoresAosTurnos();
+</script>
 </body>
-
 </html>
