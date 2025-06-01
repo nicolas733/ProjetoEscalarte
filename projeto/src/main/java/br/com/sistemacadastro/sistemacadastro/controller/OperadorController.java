@@ -145,8 +145,7 @@ public class OperadorController {
         List<Escalas> escalas = escalaRepository
                 .findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim)
                 .stream()
-                .filter(e -> (e.getStatusEscala() == StatusEscala.EM_ANALISE
-                        || e.getStatusEscala() == StatusEscala.PUBLICADO)
+                .filter(e -> (e.getStatusEscala() == StatusEscala.PUBLICADO)
                         && e.getColaboradorId() == (colaboradorId))
                 .toList();
 
