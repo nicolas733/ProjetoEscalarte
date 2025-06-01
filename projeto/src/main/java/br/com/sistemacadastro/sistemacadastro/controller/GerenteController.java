@@ -110,6 +110,45 @@ public class GerenteController {
         return "gerentepages/dashboard";
     }
 
+    @GetMapping("/solicitacoes")
+    public String solicitacoes(Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
+        Integer gerenteId = null;
+
+        Object colaboradorIdObj = session.getAttribute("colaboradorId");
+        if (colaboradorIdObj instanceof Integer) {
+            gerenteId = (Integer) colaboradorIdObj;
+        } else if (colaboradorIdObj instanceof Long) {
+            gerenteId = ((Long) colaboradorIdObj).intValue();
+        }
+
+        List<Solicitacoes> solicitacoes = gerenteService.listarSolicitacoesPorSetorDoGerente(gerenteId);
+
+        // Mapeia colaboradorId -> cargo
+        Map<Integer, String> cargosPorColaborador = new HashMap<>();
+
+        for (Solicitacoes sol : solicitacoes) {
+            Colaborador colaborador = sol.getColaborador();
+            if (colaborador != null && colaborador.getContrato() != null
+                    && colaborador.getContrato().getCargos() != null) {
+                String nomeCargo = colaborador.getContrato().getCargos().getNomeCargo();
+                cargosPorColaborador.put(colaborador.getId(), nomeCargo);
+            } else {
+                cargosPorColaborador.put(colaborador.getId(), "Cargo não atribuído");
+            }
+        }
+
+        model.addAttribute("solicitacoes", solicitacoes);
+        model.addAttribute("cargos", cargosPorColaborador);
+        model.addAttribute("solicitacao", new Solicitacoes());
+
+        return "gerentepages/solicitacoes";
+    }
+
+
     @GetMapping("/escala")
     public String visualizarEscala(Model model, HttpSession session) {
         if (!verifyIsUserCredentialsCorrect(session)) {
