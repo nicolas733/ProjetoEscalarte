@@ -26,8 +26,8 @@ public class EscalaController {
         // Chama o service para gerar as escalas
         escalaService.gerarEscalasSemanais();
 
-        redirectAttributes.addFlashAttribute("mensagem", "Escala gerada com sucesso para o setor ID: " + setorId);
-        return "redirect:/admin/escala";
+        redirectAttributes.addFlashAttribute("escalaGeradaSucesso", true);
+        return "redirect:/admin/escala?setorId=" + setorId;
     }
 
     @PostMapping("/modificar")
@@ -57,7 +57,7 @@ public class EscalaController {
         boolean alterado = escalaService.alterarTurnoEscala(colaboradorId, dataEscala, turno);
 
         if (alterado) {
-            redirectAttributes.addFlashAttribute("msgSucesso", "Turno alterado com sucesso!");
+            redirectAttributes.addFlashAttribute("modificacaoSucesso",true);
         } else {
             redirectAttributes.addFlashAttribute("msgErro", "Não foi possível alterar o turno.");
         }
@@ -69,7 +69,7 @@ public class EscalaController {
     public String enviarEscalaParaRevisao(@RequestParam("setorId") Integer setorId, RedirectAttributes redirectAttributes) {
         try {
             escalaService.revisarEscalasSemanaSetor(setorId);
-            redirectAttributes.addFlashAttribute("msgSucesso", "Escala enviada para o gerente do setor com sucesso!");
+            redirectAttributes.addFlashAttribute("enviadoComSucesso",true);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("msgErro", "Erro ao enviar escala para revisão.");
         }

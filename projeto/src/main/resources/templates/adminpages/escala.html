@@ -328,5 +328,32 @@
           modal.show();
         });
     </script>
+    <script th:if="${escalaGeradaSucesso}">
+        Swal.fire({
+            icon: 'success',
+            title: 'Escala Gerada com Sucesso!',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:if="${escalaModificada}">
+        Swal.fire({
+            icon: 'success',
+            title: 'Escala Modificada com Sucesso',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    <script th:if="${enviadoComSucesso}">
+        Swal.fire({
+            title: 'Enviado!',
+            text: 'Escala enviada com sucesso para o gerente.',
+            icon: 'success',
+            confirmButtonColor: '#ef5350',
+            confirmButtonText: 'OK'
+        });
+    </script>
   </body>
 </html>
