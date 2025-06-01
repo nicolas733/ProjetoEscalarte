@@ -12,8 +12,49 @@
 </head>
 
 <body>
-    <div th:replace="~{layout/sidebarComponent :: sidebarGerente}"></div>
+    <!-- Sidebar fixa para desktop -->
+    <div class="sidebar d-none d-lg-block">
+        <div th:replace="~{layout/sidebarComponent :: sidebarGerente}"></div>
+    </div>
 
+    <!-- Botão para abrir o menu hambúrguer -->
+    <nav class="navbar d-lg-none bg-white shadow-sm fixed-top">
+        <div class="container-fluid">
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+                <i data-lucide="menu"></i>
+            </button>
+            <div class="d-flex align-items-center gap-2">
+                <img src="/img/logo.png" alt="Logo" style="height: 36px;">
+                <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Offcanvas (para mobile) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas">
+        <div class="offcanvas-header d-flex justify-content-between align-items-center px-3 pt-3">
+            <div class="d-flex align-items-center gap-2">
+                <img src="/img/logo.png" alt="Logo" style="height: 36px;">
+                <span style="font-weight: 700; font-size: 22px; color: #ef5350;">Escalarte</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body p-0">
+            <!-- Aqui aplicamos a sidebar no hambúrguer também -->
+            <div class="p-3">
+                <ul class="menu list-unstyled">
+                    <li><a href="/gerente/dashboard"><i data-lucide="layout-dashboard"></i>Dashboard</a></li>
+                    <li><a href="/gerente/equipe"><i data-lucide="users"></i>Equipe</a></li>
+                    <li><a href="/gerente/escala"><i data-lucide="calendar"></i>Escalas</a></li>
+                    <li><a href="/gerente/solicitacoes"><i data-lucide="clipboard-list"></i>Solicitações</a></li>
+                    <li><a href="/gerente/minhaconta"><i data-lucide="user-cog"></i> Minha Conta</a></li>
+                    <li class="logout"><a th:href="@{/logout}"><i data-lucide="log-out"></i> Sair da Conta</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
     <div class="main">
         <div class="header">
             <div class="header-title">Gerenciar Solicitações</div>
@@ -120,7 +161,17 @@
             });
         }
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const labels = ["ID", "ID USER", "Nome", "Cargo", "Setor", "Data", "Descrição", "Status"];
 
+            document.querySelectorAll("tbody tr").forEach(tr => {
+                tr.querySelectorAll("td").forEach((td, index) => {
+                    td.setAttribute("data-label", labels[index]);
+                });
+            });
+        });
+    </script>
 
 </body>
 

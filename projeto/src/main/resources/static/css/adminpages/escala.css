@@ -199,3 +199,10 @@ small.d-block.text-muted {
     border-color: #c62828 !important;
     color: white !important;
 }
+
+@media (max-width: 991.98px) {
+     .main {
+         margin-left: 0;
+         padding-top: 80px; /* para não ficar por baixo da navbar */
+     }
+}

@@ -199,29 +199,73 @@ td strong {
 }
 
 @media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
+    .sidebar {
+        display: none;
+    }
 
-  .main {
-    padding: 20px;
-  }
+    .main {
+        padding: 20px;
+    }
 
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
+    .card {
+        padding: 10px;
+        overflow-x: auto;
+    }
 
-  td {
-    padding: 10px 0;
-    border: none;
-  }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-  th {
-    display: none;
-  }
+    thead {
+        display: none;
+    }
+
+    tbody,
+    tr,
+    td {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: bold;
+        text-align: left;
+        white-space: nowrap;
+        color: #666;
+    }
+
+    td.descricao {
+        max-width: 100%;
+    }
+}
+
+
+@media (max-width: 991.98px) {
+     .main {
+         margin-left: 0;
+         padding-top: 80px; /* para não ficar por baixo da navbar */
+     }
 }

@@ -260,21 +260,64 @@ td strong {
         padding: 20px;
     }
 
-    table,
-    thead,
+    .card {
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        display: none;
+    }
+
     tbody,
-    th,
-    td,
-    tr {
+    tr,
+    td {
         display: block;
+        width: 100%;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
 
     td {
-        padding: 10px 0;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
         border: none;
+        border-bottom: 1px solid #eee;
     }
 
-    th {
-        display: none;
+    td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: bold;
+        text-align: left;
+        white-space: nowrap;
+        color: #666;
     }
+
+    td.descricao {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 991.98px) {
+     .main {
+         margin-left: 0;
+         padding-top: 80px; /* para não ficar por baixo da navbar */
+     }
 }

@@ -1,4 +1,4 @@
-/* Editar colaborador css */
+/* Edit css para todas as abas Editar */
 * {
     text-decoration: none;
 }
@@ -226,4 +226,19 @@ body {
     .sidebar {
         display: none;
     }
+}
+
+@media (max-width: 991.98px) {
+     .main {
+         margin-left: 0;
+         padding-top: 80px; /* para não ficar por baixo da navbar */
+     }
+}
+
+@media (max-width: 575.98px) {
+  .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
 }
