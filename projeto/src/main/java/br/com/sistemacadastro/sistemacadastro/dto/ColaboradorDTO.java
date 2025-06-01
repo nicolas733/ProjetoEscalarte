@@ -44,7 +44,8 @@ public class ColaboradorDTO {
     @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?\\d{4,5}[- ]?\\d{4}$",message = "Telefone inválido. Use formatos como (XX) XXXXX-XXXX ou XX XXXXX XXXX")
     private String telefone;
 
-    @NotNull(message = "A data de nascimento é obrigatorio")
+    @PastOrPresent(message = "A data de nascimento não pode ser no futuro")
+    @NotNull(message = "A data de nascimento é obrigatória")
     private LocalDate dataNascimento;
 
     @Valid
