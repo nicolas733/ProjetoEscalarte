@@ -76,4 +76,15 @@ public class EscalaController {
         return "redirect:/admin/escala?setorId=" + setorId;
     }
 
+    @PostMapping("/aprovar")
+    public String aprovarEscala(@RequestParam("setorId") Integer setorId, RedirectAttributes redirectAttributes) {
+        try {
+            escalaService.aprovarEscalasSemanaSetor(setorId);
+            redirectAttributes.addFlashAttribute("msgSucesso", "Escala enviada para os operadores com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("msgErro", "Erro ao enviar escala para os operadores.");
+        }
+        return "redirect:/gerente/escala";
+    }
+
 }

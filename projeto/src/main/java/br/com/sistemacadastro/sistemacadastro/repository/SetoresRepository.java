@@ -16,4 +16,6 @@ public interface SetoresRepository extends JpaRepository<Setores, Integer> {
 
     @Query("SELECT c FROM colaborador c WHERE c.contrato.cargos.id IN (SELECT cargo.id FROM cargoSetor cps WHERE cps.setor.id = :setorId)")
     List<Colaborador> findColaboradoresBySetorId(@Param("setorId") Integer setorId);
+
+    List<Setores> findByGerenteId(Long gerenteId);
 }

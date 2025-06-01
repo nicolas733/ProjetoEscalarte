@@ -128,7 +128,10 @@ public class AdminController {
     }
 
     @GetMapping("/escala")
-    public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model) {
+    public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model, HttpSession session) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
         model.addAttribute("setores", setoresRepository.findAll());
         model.addAttribute("turnos", turnosRepository.findAll());
 

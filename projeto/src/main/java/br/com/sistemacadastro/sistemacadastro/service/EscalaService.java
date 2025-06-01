@@ -55,7 +55,8 @@ public class EscalaService {
                 Cargos cargo = contrato.getCargos();
                 List<Turnos> turnosDisponiveis = colaborador.getTurnos();
 
-                if (turnosDisponiveis.isEmpty()) continue; // sem turno, pula colaborador
+                if (turnosDisponiveis.isEmpty())
+                    continue; // sem turno, pula colaborador
 
                 for (int i = 0; i < 7; i++) {
                     LocalDate dataEscala = segunda.plusDays(i);
@@ -68,7 +69,8 @@ public class EscalaService {
 
                     Date dataEscalaDate = Date.from(dataEscala.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                    boolean escalaExiste = escalaRepository.existsByColaboradorIdAndDataEscala((long) colaborador.getId(), dataEscalaDate);
+                    boolean escalaExiste = escalaRepository
+                            .existsByColaboradorIdAndDataEscala((long) colaborador.getId(), dataEscalaDate);
 
                     if (!escalaExiste) {
                         Escalas escala = new Escalas();
@@ -87,7 +89,8 @@ public class EscalaService {
                             escala.setFolga(false);
                         }
 
-                        List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
+                        List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(),
+                                hoje);
                         List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
                         escalasParaValidar.add(escala);
 
@@ -102,7 +105,6 @@ public class EscalaService {
         return escalasGeradas;
     }
 
-
     public boolean alterarTurnoEscala(Integer colaboradorId, Date dataEscala, Turnos novoTurno) {
         LocalDate dataEscalaLocal = dataEscala.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -110,7 +112,8 @@ public class EscalaService {
 
         Escalas escalaExistente = escalas.stream()
                 .filter(e -> {
-                    LocalDate dataExistente = e.getDataEscala().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate dataExistente = e.getDataEscala().toInstant().atZone(ZoneId.systemDefault())
+                            .toLocalDate();
                     return dataExistente.isEqual(dataEscalaLocal);
                 })
                 .findFirst()
@@ -149,10 +152,28 @@ public class EscalaService {
         Date dataInicio = Date.from(segunda.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date dataFim = Date.from(domingo.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<Escalas> escalasSemana = escalaRepository.findBySetoresIdAndDataEscalaBetween(setorId, dataInicio, dataFim);
+        List<Escalas> escalasSemana = escalaRepository.findBySetoresIdAndDataEscalaBetween(setorId, dataInicio,
+                dataFim);
 
         for (Escalas escala : escalasSemana) {
             escala.setStatusEscala(Escalas.StatusEscala.EM_ANALISE);
+            escalaRepository.save(escala);
+        }
+    }
+
+    public void aprovarEscalasSemanaSetor(Integer setorId) {
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate domingo = segunda.plusDays(6);
+
+        Date dataInicio = Date.from(segunda.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date dataFim = Date.from(domingo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        List<Escalas> escalasSemana = escalaRepository.findBySetoresIdAndDataEscalaBetween(setorId, dataInicio,
+                dataFim);
+
+        for (Escalas escala : escalasSemana) {
+            escala.setStatusEscala(Escalas.StatusEscala.PUBLICADO);
             escalaRepository.save(escala);
         }
     }
