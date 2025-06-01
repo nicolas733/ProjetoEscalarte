@@ -43,14 +43,17 @@ public class TurnoController {
     @GetMapping("/excluir")
     public String excluirTurno(@RequestParam int id) {
         try {
-            Turnos turnos = turnosRepository.findById(id);
-            if (turnos != null) {
-                turnosRepository.delete(turnos);
+            Optional<Turnos> optionalTurno = turnosRepository.findById(id);
+            if (optionalTurno.isPresent()) {
+                turnosRepository.delete(optionalTurno.get());
+            } else {
+                System.out.println("Turno não encontrado para exclusão, id: " + id);
             }
         } catch (Exception ex) {
-            System.out.println("Erro ao excluir colaborador: " + ex.getMessage());
+            System.out.println("Erro ao excluir turno: " + ex.getMessage());
         }
 
         return "redirect:/admin/turnos?excluido=true";
     }
+
 }

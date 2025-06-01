@@ -99,34 +99,30 @@
 
             <!-- Para cada dia da semana, mostra as escalas se existirem -->
             <td th:each="dia : ${diasSemana}">
-              <div
-                th:if="${#lists.contains(mapaFolgas[entry.key], dia)}"
-                class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold"
-              >
-                Folga
-              </div>
-              <div
-                th:if="${!#lists.contains(mapaFolgas[entry.key], dia) and entry.value.containsKey(dia)}"
-                th:each="escala : ${entry.value.get(dia)}"
-                th:attr="data-turno=${escala.turnos.nome}"
-                class="mb-2 p-2 rounded text-center escala-turno"
-              >
-                <div class="small fw-semibold" th:text="${escala.turnos.nome}">
-                  Turno
+              <div th:if="${entry.value.containsKey(dia)}" th:each="escala : ${entry.value.get(dia)}">
+
+                <!-- Se for folga -->
+                <div th:if="${escala.folga == true}"
+                     class="mb-2 p-2 rounded text-center bg-secondary bg-opacity-25 text-muted fw-bold">
+                  Folga
                 </div>
-                <div class="small text-muted">
-                  <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
-                  <span th:text="${escala.turnos.horarioFim}">17:00</span>
+
+                <!-- Se não for folga, mostra o turno -->
+                <div th:if="${escala.folga != true}"
+                     th:attr="data-turno=${escala.turnos.nome}"
+                     class="mb-2 p-2 rounded text-center escala-turno">
+                  <div class="small fw-semibold" th:text="${escala.turnos.nome}">Turno</div>
+                  <div class="small text-muted">
+                    <span th:text="${escala.turnos.horarioInicio}">08:00</span> -
+                    <span th:text="${escala.turnos.horarioFim}">17:00</span>
+                  </div>
                 </div>
+
               </div>
 
-              <div
-                th:if="${!entry.value.containsKey(dia) and !#lists.contains(mapaFolgas[entry.key], dia)}"
-                class="text-muted fst-italic"
-              >
-                -
-              </div>
+              <div th:if="${!entry.value.containsKey(dia)}" class="text-muted fst-italic">-</div>
             </td>
+
           </tr>
         </tbody>
       </table>
@@ -209,7 +205,7 @@
             <!-- Dia -->
             <div class="mb-3">
               <label for="dataMod" class="form-label">Data</label>
-              <select id="dataMod" name="data" class="form-select" required>
+              <select id="dataMod" name="dataEscala" class="form-select" required>
                 <option value="" disabled selected>Selecione uma data</option>
                 <option
                   th:each="dia : ${diasSemana}"

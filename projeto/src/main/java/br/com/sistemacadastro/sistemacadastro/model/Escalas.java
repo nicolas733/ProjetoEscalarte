@@ -51,4 +51,7 @@ public class Escalas {
     @NotNull
     private StatusEscala statusEscala;
 
+    @Column(name = "folga")
+    private Boolean folga = false; // padrão: não é folga
+
 }

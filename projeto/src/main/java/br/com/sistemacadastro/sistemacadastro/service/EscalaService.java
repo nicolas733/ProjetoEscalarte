@@ -7,7 +7,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import br.com.sistemacadastro.sistemacadastro.repository.TurnosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,9 @@ public class EscalaService {
     @Autowired
     private EscalaRepository escalaRepository;
 
+    @Autowired
+    private TurnosRepository turnosRepository;
+
     public List<Escalas> gerarEscalasSemanais() {
         List<Escalas> escalasGeradas = new ArrayList<>();
         List<Setores> setores = setoresRepository.findAll();
@@ -50,7 +55,7 @@ public class EscalaService {
                 Cargos cargo = contrato.getCargos();
                 List<Turnos> turnosDisponiveis = colaborador.getTurnos();
 
-                if (turnosDisponiveis.isEmpty()) continue;
+                if (turnosDisponiveis.isEmpty()) continue; // sem turno, pula colaborador
 
                 for (int i = 0; i < 7; i++) {
                     LocalDate dataEscala = segunda.plusDays(i);
@@ -61,13 +66,6 @@ public class EscalaService {
                                     .map(folga -> DayOfWeek.valueOf(folga.name()))
                                     .anyMatch(d -> d.equals(diaSemana));
 
-                    if (ehFolga) {
-                        continue; // pular a geração de escala nesse dia
-                    }
-
-
-                    Turnos turno = turnosDisponiveis.get(i % turnosDisponiveis.size());
-
                     Date dataEscalaDate = Date.from(dataEscala.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
                     boolean escalaExiste = escalaRepository.existsByColaboradorIdAndDataEscala((long) colaborador.getId(), dataEscalaDate);
@@ -75,10 +73,19 @@ public class EscalaService {
                     if (!escalaExiste) {
                         Escalas escala = new Escalas();
                         escala.setColaborador(colaborador);
-                        escala.setTurnos(turno);
                         escala.setDataEscala(dataEscalaDate);
                         escala.setSetores(setor);
                         escala.setStatusEscala(Escalas.StatusEscala.CRIADO);
+
+                        Turnos turnoParaEscala = turnosDisponiveis.get(i % turnosDisponiveis.size());
+
+                        escala.setTurnos(turnoParaEscala);
+
+                        if (ehFolga) {
+                            escala.setFolga(true);
+                        } else {
+                            escala.setFolga(false);
+                        }
 
                         List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), hoje);
                         List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
@@ -88,11 +95,49 @@ public class EscalaService {
                             escalasGeradas.add(escalaRepository.save(escala));
                         }
                     }
-
                 }
             }
         }
 
         return escalasGeradas;
+    }
+
+
+    public boolean alterarTurnoEscala(Integer colaboradorId, Date dataEscala, Turnos novoTurno) {
+        LocalDate dataEscalaLocal = dataEscala.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        List<Escalas> escalas = escalaRepository.findByColaboradorAndSemana(colaboradorId, dataEscalaLocal);
+
+        Escalas escalaExistente = escalas.stream()
+                .filter(e -> {
+                    LocalDate dataExistente = e.getDataEscala().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    return dataExistente.isEqual(dataEscalaLocal);
+                })
+                .findFirst()
+                .orElse(null);
+
+        if (escalaExistente == null) {
+            System.out.println("Escala não encontrada para colaborador " + colaboradorId + " na data " + dataEscala);
+            return false;
+        }
+
+        if (novoTurno == null || novoTurno.getId() == 0) {
+            // Caso folga - remover o turno da escala
+            escalaExistente.setFolga(true);
+
+        } else {
+            // Caso turno normal - buscar no banco para garantir que existe
+            Optional<Turnos> optionalTurno = turnosRepository.findById(novoTurno.getId());
+            if (!optionalTurno.isPresent()) {
+                System.out.println("Turno não encontrado no banco.");
+                return false;
+            }
+            escalaExistente.setTurnos(optionalTurno.get());
+            escalaExistente.setFolga(false);
+        }
+
+        escalaRepository.save(escalaExistente);
+        System.out.println("Escala atualizada com sucesso.");
+        return true;
     }
 }
