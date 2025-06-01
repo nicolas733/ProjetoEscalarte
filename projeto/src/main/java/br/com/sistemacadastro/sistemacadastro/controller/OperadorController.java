@@ -124,8 +124,9 @@ public class OperadorController {
         if (!verifyIsUserCredentialsCorrect(session)) {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
-
-        Setores setor = colaboradorRepository.findSetorByColaboradorId(UserSessionUtils.getIdUsuario(session));
+        
+        Long colaboradorId = UserSessionUtils.getIdUsuario(session);
+        Setores setor = colaboradorRepository.findSetorByColaboradorId(colaboradorId);
         Integer setorId = (setor != null) ? setor.getId() : null;
         model.addAttribute("setorId", setorId);
 
@@ -144,8 +145,9 @@ public class OperadorController {
         List<Escalas> escalas = escalaRepository
                 .findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim)
                 .stream()
-                .filter(e -> e.getStatusEscala() == StatusEscala.EM_ANALISE
+                .filter(e -> (e.getStatusEscala() == StatusEscala.EM_ANALISE
                         || e.getStatusEscala() == StatusEscala.PUBLICADO)
+                        && e.getColaboradorId() == (colaboradorId))
                 .toList();
 
         Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = new TreeMap<>(
