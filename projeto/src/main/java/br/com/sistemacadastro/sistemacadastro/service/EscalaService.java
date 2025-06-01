@@ -140,4 +140,20 @@ public class EscalaService {
         System.out.println("Escala atualizada com sucesso.");
         return true;
     }
+
+    public void revisarEscalasSemanaSetor(Integer setorId) {
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate domingo = segunda.plusDays(6);
+
+        Date dataInicio = Date.from(segunda.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date dataFim = Date.from(domingo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        List<Escalas> escalasSemana = escalaRepository.findBySetoresIdAndDataEscalaBetween(setorId, dataInicio, dataFim);
+
+        for (Escalas escala : escalasSemana) {
+            escala.setStatusEscala(Escalas.StatusEscala.EM_ANALISE);
+            escalaRepository.save(escala);
+        }
+    }
 }

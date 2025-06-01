@@ -1,18 +1,17 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
-import br.com.sistemacadastro.sistemacadastro.model.Turnos;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import br.com.sistemacadastro.sistemacadastro.service.EscalaService;
-
-import java.util.Date;
 
 @Controller
 @RequestMapping("/escala")
@@ -64,6 +63,17 @@ public class EscalaController {
         }
 
         return "redirect:/admin/escala";
+    }
+
+    @PostMapping("/enviar")
+    public String enviarEscalaParaRevisao(@RequestParam("setorId") Integer setorId, RedirectAttributes redirectAttributes) {
+        try {
+            escalaService.revisarEscalasSemanaSetor(setorId);
+            redirectAttributes.addFlashAttribute("msgSucesso", "Escala enviada para o gerente do setor com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("msgErro", "Erro ao enviar escala para revisão.");
+        }
+        return "redirect:/admin/escala?setorId=" + setorId;
     }
 
 }
