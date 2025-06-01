@@ -29,7 +29,7 @@
                     <th>Nome</th>
                     <th>Horario de Inicio</th>
                     <th>Horario de Termino</th>
-                    <th></th>
+                    <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -77,6 +77,17 @@
             title: 'Sucesso!',
             text: 'Colaborador editado com sucesso.',
             confirmButtonColor: '#3085d6'
+        }).then(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+
+    if (urlParams.get('erroUso') === 'true') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Não é possível excluir',
+            text: 'Este turno está em uso e não pode ser excluído.',
+            confirmButtonColor: '#d33'
         }).then(() => {
             window.history.replaceState({}, document.title, window.location.pathname);
         });

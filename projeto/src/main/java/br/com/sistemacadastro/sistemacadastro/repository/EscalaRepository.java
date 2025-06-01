@@ -1,6 +1,8 @@
 package br.com.sistemacadastro.sistemacadastro.repository;
 
+import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Escalas;
+import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,4 +38,9 @@ public interface EscalaRepository extends JpaRepository<Escalas, Integer> {
 
     List<Escalas> findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(Integer setorId, Date inicio, Date fim);
     boolean existsByColaboradorIdAndDataEscala(Long colaboradorId, Date dataEscala);
+
+
+    boolean existsByTurnos(Turnos turnos);
+
+    boolean existsByColaborador(Colaborador colaborador);
 }

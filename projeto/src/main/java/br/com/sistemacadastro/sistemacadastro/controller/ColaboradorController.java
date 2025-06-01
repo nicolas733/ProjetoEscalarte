@@ -7,6 +7,7 @@ import br.com.sistemacadastro.sistemacadastro.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +28,7 @@ public class ColaboradorController {
     private EnderecoRepository enderecoRepository;
 
     @Autowired
-    private ContratoRepository contratoRepository;
+    private EscalaRepository escalaRepository;
 
     @Autowired
     private CargoRepository cargoRepository;
@@ -176,17 +177,22 @@ public class ColaboradorController {
         try {
             Colaborador colaborador = colaboradorRepository.findById(id);
             if (colaborador != null) {
-                solicitacoesRepository.deleteByColaborador(colaborador); // <- delete solicitações primeiro
+                // Aqui você verifica se o colaborador está vinculado a uma escala
+                boolean vinculadoAEscala = escalaRepository.existsByColaborador(colaborador);
+                if (vinculadoAEscala) {
+                    return "redirect:/admin/main?excluido=false&erro=restricao";
+                }
+
+                solicitacoesRepository.deleteByColaborador(colaborador);
                 colaboradorRepository.delete(colaborador);
-                System.out.println("Colaborador excluído com sucesso.");
+                return "redirect:/admin/main?excluido=true";
             }
+        } catch (DataIntegrityViolationException ex) {
+            return "redirect:/admin/main?excluido=false&erro=restricao";
         } catch (Exception ex) {
-            System.out.println("Erro ao excluir colaborador: " + ex.getMessage());
+            return "redirect:/admin/main?excluido=false&erro=geral";
         }
 
-        return "redirect:/admin/main?excluido=true";
+        return "redirect:/admin/main?excluido=false&erro=geral";
     }
-
-
-
 }

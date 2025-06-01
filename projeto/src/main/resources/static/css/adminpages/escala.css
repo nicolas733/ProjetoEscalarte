@@ -43,6 +43,10 @@ form.d-flex.align-items-center.gap-2{
   max-width: 27rem;
 }
 
+form#enviarForm{
+  margin-bottom: 30px;
+}
+
 label.mb-0{
   min-width: 8rem;
 }

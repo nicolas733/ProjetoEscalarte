@@ -63,7 +63,7 @@
                 <label class="col-sm-4 col-form-label">Tipo de Usuário</label>
                 <div class="col-sm-8">
                     <select class="form-select" th:field="*{tipoUsuario}" th:errorclass="is-invalid">
-                        <option value=""   selected>Selecione um tipo</option>
+                        <option value="" disabled  selected>Selecione um tipo</option>
                         <option value="ADMIN">Admin</option>
                         <option value="OPERADOR">Operador</option>
                     </select>
@@ -134,7 +134,7 @@
                 <label class="col-sm-4 col-form-label">Cargo</label>
                 <div class="col-sm-8">
                     <select class="form-select" th:field="*{cargoId}" th:errorclass="is-invalid">
-                        <option value=""  selected>Selecione um cargo</option>
+                        <option value="" disabled selected>Selecione um cargo</option>
                         <option th:each="cargo : ${cargos}"
                                 th:value="${cargo.id}"
                                 th:text="${cargo.nomeCargo}">
@@ -162,10 +162,11 @@
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Turno</label>
                 <div class="col-sm-8">
-                    <select class="form-select" th:field="*{turnosIds}" th:errorclass="is-invalid" multiple>
+                    <select class="form-select" th:field="*{turnosIds}">
+                        <option value="" disabled selected>Selecione um turno</option>
                         <option th:each="turno : ${turnos}"
                                 th:value="${turno.id}"
-                                th:text="${turno.nome}">
+                                th:text="${turno.nome + ' (' + turno.horarioInicio + ' - ' + turno.horarioFim + ')'}">
                         </option>
                     </select>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('turnosIds')}" th:errors="*{turnosIds}"></div>

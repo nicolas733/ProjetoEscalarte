@@ -32,7 +32,4 @@ public class Turnos {
         @JsonIgnore
         @ManyToMany(mappedBy = "turnos")
         private List<Colaborador> colaboradores;
-
-
-
 }

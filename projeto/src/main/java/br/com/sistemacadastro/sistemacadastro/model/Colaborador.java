@@ -15,8 +15,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@ToString(exclude = "contrato")  // Exclui o campo 'contrato' do método toString()
+@ToString(exclude = {"contrato", "turnos"})
 @EqualsAndHashCode(exclude = "contrato")
+
 @Entity(name="colaborador")
 public class  Colaborador {
 

@@ -3,6 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.repository;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
@@ -31,4 +32,7 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Intege
     List<Colaborador> findByTipoUsuario(Colaborador.TipoUsuario tipoUsuario);
 
     List<Colaborador> findByCargoPorSetor_Setor_Id(int setorId);
+
+    boolean existsByTurnos(Turnos turnos);
+
 }

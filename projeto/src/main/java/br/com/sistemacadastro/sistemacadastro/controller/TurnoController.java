@@ -2,6 +2,7 @@ package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Turnos;
+import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
 import br.com.sistemacadastro.sistemacadastro.repository.TurnosRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class TurnoController {
 
     @Autowired
     TurnosRepository turnosRepository;
+
+    @Autowired
+    ColaboradorRepository colaboradorRepository;
 
     @GetMapping("/cadastrar")
     public String mostrarPagCadastro(Model model) {
@@ -45,7 +49,14 @@ public class TurnoController {
         try {
             Optional<Turnos> optionalTurno = turnosRepository.findById(id);
             if (optionalTurno.isPresent()) {
-                turnosRepository.delete(optionalTurno.get());
+                Turnos turnos = optionalTurno.get();
+                boolean emUso = verificarSeTurnoEstaSendoUsado(turnos); // você precisa implementar isso
+
+                if (emUso) {
+                    return "redirect:/admin/turnos?erroUso=true";
+                }
+
+                turnosRepository.delete(turnos);
             } else {
                 System.out.println("Turno não encontrado para exclusão, id: " + id);
             }
@@ -55,5 +66,10 @@ public class TurnoController {
 
         return "redirect:/admin/turnos?excluido=true";
     }
+
+    private boolean verificarSeTurnoEstaSendoUsado(Turnos turnos) {
+        return colaboradorRepository.existsByTurnos(turnos);
+    }
+
 
 }

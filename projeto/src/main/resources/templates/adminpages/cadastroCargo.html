@@ -53,7 +53,7 @@
           <label class="col-sm-4 col-form-label">Setor</label>
           <div class="col-sm-8">
             <select class="form-select" th:field="*{setorId}" th:errorclass="is-invalid">
-              <option value="" selected>Selecione um setor</option>
+              <option value="" disabled selected>Selecione um setor</option>
               <option th:each="setor : ${setores}" th:value="${setor.id}" th:text="${setor.nomesetor}"></option>
             </select>
             <div class="invalid-feedback" th:if="${#fields.hasErrors('setorId')}" th:errors="*{setorId}"></div>
