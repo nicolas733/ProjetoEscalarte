@@ -119,6 +119,11 @@ body {
     margin-left: 240px;
 }
 
+div.header {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
