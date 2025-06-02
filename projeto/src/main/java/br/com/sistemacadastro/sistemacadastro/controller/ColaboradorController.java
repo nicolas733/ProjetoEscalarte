@@ -2,19 +2,18 @@ package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.dto.ColaboradorDTO;
 import br.com.sistemacadastro.sistemacadastro.dto.EditDTO;
-import br.com.sistemacadastro.sistemacadastro.model.Cargos;
-import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Contrato;
-import br.com.sistemacadastro.sistemacadastro.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.model.*;
 import br.com.sistemacadastro.sistemacadastro.repository.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ public class ColaboradorController {
     private EnderecoRepository enderecoRepository;
 
     @Autowired
-    private ContratoRepository contratoRepository;
+    private EscalaRepository escalaRepository;
 
     @Autowired
     private CargoRepository cargoRepository;
@@ -37,12 +36,18 @@ public class ColaboradorController {
     @Autowired
     private SolicitacoesRepository solicitacoesRepository;
 
+    @Autowired
+    private TurnosRepository turnosRepository;
+
     @GetMapping("/cadastrar")
     public String showCadastrarPage(Model model) {
         ColaboradorDTO colaboradorDto = new ColaboradorDTO();
         List<Cargos> cargos = cargoRepository.findAll();
         model.addAttribute("cargos", cargos);
         model.addAttribute("colaboradorDTO", colaboradorDto);
+        List<Turnos> turnos = turnosRepository.findAll();
+        model.addAttribute("turnos", turnos);
+        model.addAttribute("diasSemana", Arrays.asList(Contrato.DiaFolga.values()));
         return "adminpages/cadastroColaborador"; // Retorna o template correto diretamente
     }
 
@@ -56,6 +61,10 @@ public class ColaboradorController {
         if (result.hasErrors()) {
             List<Cargos> cargos = cargoRepository.findAll();
             model.addAttribute("cargos", cargos);
+            List<Turnos> turnos = turnosRepository.findAll();
+            model.addAttribute("turnos", turnos);
+            model.addAttribute("diasSemana", Arrays.asList(Contrato.DiaFolga.values()));
+            model.addAttribute("colaboradorDTO", colaboradorDto);
             return "adminpages/cadastroColaborador";
         }
         if (colaboradorExistente.isEmpty()) {
@@ -77,10 +86,14 @@ public class ColaboradorController {
             // Cria e associa o contrato
             Contrato contrato = colaboradorDto.getContrato();
             contrato.setColaborador(colaborador);
+            contrato.setDiasFolga(colaboradorDto.getDiasFolga());
 
 
             Cargos cargo = cargoRepository.findById(colaboradorDto.getCargoId()).orElseThrow(() -> new RuntimeException("Cargo não encontrado"));
             contrato.setCargos(cargo);
+
+            List<Turnos> turnos = turnosRepository.findAllById(colaboradorDto.getTurnosIds());
+            colaborador.setTurnos(turnos);
 
             colaborador.setContrato(contrato);
             // Salva o colaborador
@@ -147,6 +160,8 @@ public class ColaboradorController {
             colaborador.getEndereco().setNumero(editDto.getEndereco().getNumero());
             colaborador.getContrato().setAtivo(editDto.getContrato().isAtivo());
 
+
+
             System.out.println(colaborador);
             colaboradorRepository.save(colaborador);
         } catch (Exception ex) {
@@ -162,17 +177,22 @@ public class ColaboradorController {
         try {
             Colaborador colaborador = colaboradorRepository.findById(id);
             if (colaborador != null) {
-                solicitacoesRepository.deleteByColaborador(colaborador); // <- delete solicitações primeiro
+                // Aqui você verifica se o colaborador está vinculado a uma escala
+                boolean vinculadoAEscala = escalaRepository.existsByColaborador(colaborador);
+                if (vinculadoAEscala) {
+                    return "redirect:/admin/main?excluido=false&erro=restricao";
+                }
+
+                solicitacoesRepository.deleteByColaborador(colaborador);
                 colaboradorRepository.delete(colaborador);
-                System.out.println("Colaborador excluído com sucesso.");
+                return "redirect:/admin/main?excluido=true";
             }
+        } catch (DataIntegrityViolationException ex) {
+            return "redirect:/admin/main?excluido=false&erro=restricao";
         } catch (Exception ex) {
-            System.out.println("Erro ao excluir colaborador: " + ex.getMessage());
+            return "redirect:/admin/main?excluido=false&erro=geral";
         }
 
-        return "redirect:/admin/main?excluido=true";
+        return "redirect:/admin/main?excluido=false&erro=geral";
     }
-
-
-
 }

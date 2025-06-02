@@ -2,21 +2,33 @@ package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.dto.EquipeDTO;
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
-import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
+import br.com.sistemacadastro.sistemacadastro.model.*;
+import br.com.sistemacadastro.sistemacadastro.model.Escalas.StatusEscala;
 import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.EscalaRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
+import br.com.sistemacadastro.sistemacadastro.repository.TurnosRepository;
+import br.com.sistemacadastro.sistemacadastro.service.EscalaService;
 import br.com.sistemacadastro.sistemacadastro.service.GerenteService;
 import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/gerente")
@@ -27,6 +39,18 @@ public class GerenteController {
 
     @Autowired
     private GerenteService gerenteService;
+
+    @Autowired
+    private TurnosRepository turnosRepository;
+
+    @Autowired
+    private SetoresRepository setoresRepository;
+
+    @Autowired
+    private EscalaRepository escalaRepository;
+
+    @Autowired
+    private EscalaService escalaService;
 
     private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
         Long colaboradorId = UserSessionUtils.getIdUsuario(session);
@@ -124,14 +148,107 @@ public class GerenteController {
         return "gerentepages/solicitacoes";
     }
 
+
     @GetMapping("/escala")
-    public String escala(Model model, HttpSession session) {
+    public String visualizarEscala(Model model, HttpSession session) {
         if (!verifyIsUserCredentialsCorrect(session)) {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
 
+        // Pegar o setor do gerente
+        Integer setorId = setoresRepository.findByGerenteId(UserSessionUtils.getIdUsuario(session))
+                .stream().findFirst().map(Setores::getId).orElse(null);
+
+        if (setorId == null) {
+            model.addAttribute("ColaboradorDoSetor", Collections.emptyList());
+            model.addAttribute("temEscala", false);
+            model.addAttribute("setorSelecionado", null);
+            return "gerentepages/escala";
+        }
+
+        model.addAttribute("setorSelecionado", setorId);
+        model.addAttribute("turnos", turnosRepository.findAll());
+        model.addAttribute("setorId", setorId);
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate domingo = segunda.plusDays(6);
+
+        List<LocalDate> diasSemana = new ArrayList<>();
+        for (int i = 0; i <= 6; i++)
+            diasSemana.add(segunda.plusDays(i));
+        model.addAttribute("diasSemana", diasSemana);
+
+        Date dataInicio = Date.valueOf(segunda);
+        Date dataFim = Date.valueOf(domingo);
+
+        List<Escalas> escalas = escalaRepository
+                .findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim)
+                .stream()
+                .filter(e -> e.getStatusEscala() == StatusEscala.EM_ANALISE || e.getStatusEscala() == StatusEscala.PUBLICADO)
+                .toList();
+
+        boolean temEscala = !escalas.isEmpty();
+        model.addAttribute("temEscala", temEscala);
+
+        // Usar o método do repositório que você já tem para buscar colaboradores ativos do setor
+        List<Colaborador> colaboradoresDoSetor = colaboradorRepository.findBySetorAndContratoAtivo(setorId);
+        model.addAttribute("ColaboradorDoSetor", colaboradoresDoSetor);
+
+        Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = new TreeMap<>(Comparator.comparing(Colaborador::getNome));
+
+        Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaTemp = escalas.stream()
+                .collect(Collectors.groupingBy(
+                        Escalas::getColaborador,
+                        Collectors.groupingBy(e -> {
+                            Timestamp ts = (Timestamp) e.getDataEscala(); // conversão segura
+                            return ts.toLocalDateTime().toLocalDate();    // extrai o LocalDate
+                        })
+                ));
+
+        mapaEscalasPorData.putAll(mapaTemp);
+
+        model.addAttribute("mapaEscalasPorData", mapaEscalasPorData);
+
         return "gerentepages/escala";
     }
+
+    @PostMapping("/modificar")
+    public String alterarTurnoEscala(
+            @RequestParam Integer colaboradorId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") java.util.Date dataEscala,
+            @RequestParam(required = false) String turnoId,
+            RedirectAttributes redirectAttributes) {
+
+        Turnos turno = null;
+
+        // Trata caso de folga (turnoId null, vazio ou "folga")
+        if (turnoId != null && !turnoId.trim().isEmpty() && !turnoId.equalsIgnoreCase("folga")) {
+            try {
+                int id = Integer.parseInt(turnoId);
+                if (id > 0) {
+                    turno = new Turnos();
+                    turno.setId(id);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("ID de turno inválido: " + turnoId);
+            }
+        } else {
+            System.out.println("Folga selecionada.");
+        }
+
+        boolean alterado = escalaService.alterarTurnoEscala(colaboradorId, dataEscala, turno);
+
+        if (alterado) {
+            redirectAttributes.addFlashAttribute("modificacaoSucesso",true);
+        } else {
+            redirectAttributes.addFlashAttribute("msgErro", "Não foi possível alterar o turno.");
+        }
+
+        return "redirect:/gerente/escala";
+    }
+
+
 
     @GetMapping("/equipe")
     public String equipe(Model model, HttpSession session) {

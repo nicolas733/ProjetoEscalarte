@@ -72,6 +72,7 @@ public class CargoController {
     public String updateCargo(@Valid @ModelAttribute CargosDTO cargosDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("setores", setoresRepository.findAll());
+            model.addAttribute("cargosDTO", cargosDto);
             return "adminpages/EditCargo";
         }
 

@@ -16,7 +16,7 @@
 
 
     <!-- Sidebar fixa para desktop -->
-    <div class="sidebar d-none d-lg-block">
+    <div class="d-none d-lg-block">
         <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
     </div>
 
@@ -80,9 +80,11 @@
                     <label class="col-sm-4 col-form-label">Gerente</label>
                     <div class="col-sm-8">
                         <select class="form-control" th:field="*{gerenteSetor}" th:errorclass="is-invalid">
-                            <option value="" disabled selected>Selecione um colaborador</option>
-                            <option th:each="colaborador : ${colaboradores}" th:value="${colaborador.id}"
-                                th:text="${colaborador.nome}"></option>
+                            <option value="">Nenhum gerente</option>
+                            <option th:each="colaborador : ${colaboradores}"
+                                    th:value="${colaborador.id}"
+                                    th:text="${colaborador.nome}">
+                            </option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('gerenteSetor')}"
                             th:errors="*{gerenteSetor}"></div>

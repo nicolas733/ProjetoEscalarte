@@ -3,6 +3,7 @@ package br.com.sistemacadastro.sistemacadastro.dto;
 import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
 import br.com.sistemacadastro.sistemacadastro.model.Contrato;
 import br.com.sistemacadastro.sistemacadastro.model.Endereco;
+import br.com.sistemacadastro.sistemacadastro.model.Turnos;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class ColaboradorDTO {
@@ -42,7 +44,8 @@ public class ColaboradorDTO {
     @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?\\d{4,5}[- ]?\\d{4}$",message = "Telefone inválido. Use formatos como (XX) XXXXX-XXXX ou XX XXXXX XXXX")
     private String telefone;
 
-    @NotNull(message = "A data de nascimento é obrigatorio")
+    @PastOrPresent(message = "A data de nascimento não pode ser no futuro")
+    @NotNull(message = "A data de nascimento é obrigatória")
     private LocalDate dataNascimento;
 
     @Valid
@@ -53,8 +56,12 @@ public class ColaboradorDTO {
     @NotNull
     private Contrato contrato;
 
+    @Size(min = 1, message = "Selecione pelo menos um dia de folga")
+    private List<Contrato.DiaFolga> diasFolga;
+
     @NotNull(message = "Selecione um cargo")
     private Integer cargoId;
 
-
+    @Size(min = 1, message = "Selecione exatamente um turno")
+    private List<Integer> turnosIds;
 }

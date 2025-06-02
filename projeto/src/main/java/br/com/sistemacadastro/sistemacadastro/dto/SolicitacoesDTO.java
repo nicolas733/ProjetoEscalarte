@@ -17,7 +17,7 @@ public class SolicitacoesDTO {
     private LocalDate dataSolicitacao;
 
     @NotBlank(message = "Descreva o motivo da alteração")
-    @Size(min = 8, max = 100, message = "A descrição deve ter entre 8 e 100 caracteres")
+    @Size(min = 8, message = "A descrição deve ter no minimo 8 caracteres e no maximo 100", max = 100)
     private String descricaoSolicitacao;
 
     @AssertTrue(message = "A data da solicitação deve ser a data de hoje.")

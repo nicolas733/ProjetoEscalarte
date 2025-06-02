@@ -60,9 +60,6 @@ a {
 
 }
 
-.sidebar .logo {
-
-}
 
 .sidebar .menu {
   list-style: none;
@@ -87,7 +84,6 @@ a {
 
 .sidebar .menu li.active > a,
 .sidebar .menu a.active {
-
   font-weight: bold;
 }
 

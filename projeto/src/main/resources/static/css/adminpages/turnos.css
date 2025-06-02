@@ -1,4 +1,4 @@
-/* Solici.css */
+/* usuarios.css */
 
 * {
     text-decoration: none;
@@ -12,57 +12,9 @@ body {
     text-decoration: none;
 }
 
-.sidebar {
-    width: 240px;
-    height: 100vh;
-
-}
-
-/* Aumentar espaçamento entre linhas */
-tbody tr {
-    vertical-align: middle;
-}
-
-/* Aumentar padding das células */
-table td,
-table th {
-    padding: 16px 12px;
-}
-
-/* Melhorar espaçamento e alinhamento dos botões */
-td .btn {
-    white-space: nowrap;
-}
-
-/* Descrição quebrando texto longo */
-/* Aplicar estilo específico para a célula de descrição */
-td.descricao {
-    max-height: 100px;         /* altura máxima antes de ativar a rolagem */
-    overflow-y: auto;          /* rolagem vertical quando necessário */
-    word-break: break-word;    /* quebra palavras muito grandes */
-    max-width: 300px;          /* largura máxima da célula */
-}
-
-
-
-.sidebar .logo {
-
-}
-
-.sidebar .menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar .menu li {
-    margin: 10px 0;
-}
-
-
-
-.sidebar .menu a i {
-    font-size: 1.2rem;
+.menu li.logout {
+    background-color: #000000;
+    color: #000000;
 }
 
 .sidebar .menu a:hover,
@@ -72,17 +24,12 @@ td.descricao {
 
 .sidebar .menu li.active > a,
 .sidebar .menu a.active {
-
     font-weight: bold;
 }
-
-.sidebar .menu .logout a {
-    color: #fff;
-}
-
-.menu li.logout {
-    background-color: #000000;
-    color: #000000;
+.menu li:hover,
+.menu li.active {
+    background-color: #ef5350;
+    color: white;
 }
 
 .menu li.logout a {
@@ -121,6 +68,32 @@ td.descricao {
     color: #e53935;
 }
 
+.sidebar {
+    width: 240px;
+    height: 100vh;
+
+}
+
+.sidebar .menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .menu li {
+    margin: 10px 0;
+}
+
+
+
+.sidebar .menu a i {
+    font-size: 1.2rem;
+}
+
+.sidebar .menu .logout a {
+    color: #fff;
+}
+
 .menu {
     list-style: none;
     padding: 0;
@@ -129,7 +102,7 @@ td.descricao {
 .menu li {
     display: flex;
     align-items: center;
-    padding: 10px 14px;
+    padding: 10px 20px;
     border-radius: 8px;
     font-size: 15px;
     color: #444;
@@ -154,25 +127,21 @@ td.descricao {
     margin-right: 10px;
 }
 
-.menu li.active,
-.menu li:hover {
-    background-color: #ef5350;
-    color: white;
-}
-
 .main {
     flex: 1;
     padding: 30px;
 }
 
 .btn-primary {
-    background-color: #ef5350;
+    background-color: #ef5350; /* Vermelho padrão */
+    border-color: #ef5350;
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #c62828;
+    background-color: #c62828; /* Vermelho escuro no hover */
     border-color: #c62828;
+    color: white;
 }
 
 .btn-primary:focus,
@@ -180,18 +149,68 @@ td.descricao {
     background-color: #c62828;
     border-color: #c62828;
     box-shadow: 0 0 0 0.25rem rgba(198, 40, 40, 0.5);
+    color: white;
     outline: none;
 }
 
 .btn-primary:active {
-    background-color: #b71c1c;
-    border-color: #b71c1c;
-    box-shadow: none;
+    background-color: #b71c1c !important;
+    border-color: #b71c1c !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+.btn-cadastrar {
+    background-color: #ef5350  !important; /* Laranja escuro */
+    color: white !important;
+    border: none !important;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-cadastrar:hover {
+    background-color: #c62828 !important; /* Laranja queimado */
+    color: white !important;
+}
+
+.btn-cadastrar:focus {
+    background-color: #c62828 !important;
+    outline: none !important;
+}
+
+.btn-cadastrar:active {
+    background-color: #c62828 !important; /* Laranja mais escuro */
+    box-shadow: none !important;
 }
 
 .btn-primary.btn-sm {
-    background-color: orange;
+    background-color: #fb8c00 !important; /* Laranja escuro */
+    color: white !important;
+    border: none !important;
 }
+
+.btn-primary.btn-sm:hover {
+    background-color: #ef6c00 !important; /* Laranja queimado */
+    color: white !important;
+    border: none !important;
+}
+
+.btn-primary.btn-sm:focus,
+.btn-primary.btn-sm:focus-visible {
+    background-color: #ef6c00 !important;
+    box-shadow: 0 0 0 0.25rem rgba(239, 108, 0, 0.5) !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.btn-primary.btn-sm:active {
+    background-color: #e65100 !important; /* Laranja mais escuro */
+    box-shadow: none !important;
+    border: none !important;
+}
+
 
 .btn-danger {
     background-color: #d32f2f;
@@ -260,64 +279,30 @@ td strong {
         padding: 20px;
     }
 
-    .card {
-        padding: 10px;
-        overflow-x: auto;
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
+    td {
+        padding: 10px 0;
+        border: none;
     }
 
-    thead {
+    th {
         display: none;
     }
-
-    tbody,
-    tr,
-    td {
-        display: block;
-        width: 100%;
-    }
-
-    tr {
-        margin-bottom: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 10px;
-        background-color: #fff;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-        border: none;
-        border-bottom: 1px solid #eee;
-    }
-
-    td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-weight: bold;
-        text-align: left;
-        white-space: nowrap;
-        color: #666;
-    }
-
-    td.descricao {
-        max-width: 100%;
-    }
 }
 
-@media (max-width: 991.98px) {
-     .main {
-         margin-left: 0;
-         padding-top: 80px; /* para não ficar por baixo da navbar */
-     }
-}
+
+
+
+
+
+
+
+

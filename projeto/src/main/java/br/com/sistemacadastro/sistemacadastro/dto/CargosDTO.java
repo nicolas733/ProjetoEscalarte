@@ -17,6 +17,10 @@ public class CargosDTO {
     @Min(value = 1, message = "A carga horária deve ser maior que zero.")
     private Integer cargoHorarioLimite;
 
+    @NotNull(message = "Deve ser cadastrado")
+    @Min(value = 11, message = "O tempo minimo de iterjornada é de 11 horas")
+    private Integer intervaloInterjornada;
+
     @NotNull(message = "O setor é obrigatório")
     private Integer setorId;
 

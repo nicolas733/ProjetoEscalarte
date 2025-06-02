@@ -44,6 +44,16 @@ public class ColaboradorService {
     }
 
     public void salvarColaborador(ColaboradorDTO colaboradorDto) {
+        // Validação de CPF duplicado
+        if (colaboradorRepository.existsByCpf(colaboradorDto.getCpf())) {
+            throw new IllegalArgumentException("Este CPF já está cadastrado");
+        }
+
+        // Validação de data de nascimento no futuro
+        if (colaboradorDto.getDataNascimento().isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("Data de nascimento não pode ser no futuro");
+        }
+
         Colaborador colaborador = new Colaborador();
         colaborador.setNome(colaboradorDto.getNome());
         colaborador.setEmail(colaboradorDto.getEmail());
@@ -96,8 +106,12 @@ public class ColaboradorService {
         colaboradorRepository.save(colaborador);
     }
 
-    public void deletarColaborador(int id) {
-        Colaborador colaborador = colaboradorRepository.findById(id);
-        colaboradorRepository.delete(colaborador);
-    }
+//    public void deletarColaborador(int id) {
+//        Colaborador colaborador = colaboradorRepository.findById(id);
+//        colaboradorRepository.delete(colaborador);
+//    }
+//
+//    public List<Colaborador> buscarPorSetorComContratoAtivo(Long setorId) {
+//        return colaboradorRepository.findBySetor_IdAndContratoAtivoTrue(setorId);
+//    }
 }

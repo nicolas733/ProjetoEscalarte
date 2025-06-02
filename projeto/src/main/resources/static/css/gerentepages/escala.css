@@ -16,6 +16,21 @@ body {
   box-sizing: border-box;
 }
 
+div.d-flex.flex-wrap.mt-2.mt-md-0 {
+  gap: 2rem;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+form#enviarForm.mb-3 {
+  margin-top: 20px;
+  padding-bottom: 30px;
+}
+
+div.mudar {
+  margin-top: 16px;
+}
+
 .menu li.logout {
   background-color: #000000;
   color: #000000;

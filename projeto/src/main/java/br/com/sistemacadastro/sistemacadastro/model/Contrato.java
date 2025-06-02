@@ -4,15 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ToString(exclude = "colaborador")
+@EqualsAndHashCode(exclude = "colaborador")
 @Entity(name= "contrato")
 public class Contrato {
 
@@ -32,9 +36,16 @@ public class Contrato {
     @NotNull(message = "Deve ser cadastrado")
     private Integer diasTrabalhadosMensal;
 
-    @NotNull(message = "Deve ser cadastrado")
-    @Min(value = 11, message = "O tempo minimo de iterjornada é de 11 horas")
-    private Integer intervaloInterjornada;
+    @NotNull(message = "Selecionar dia(s) de folga")
+    public enum DiaFolga {
+        SUNDAY,
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY,
+        SATURDAY
+    }
 
     @CreationTimestamp
     private LocalDate createdAt;
@@ -61,5 +72,11 @@ public class Contrato {
     //insertable  = false, updatable = false diz que essa propriedade é apenas de leitura
     @Column(name = "cargos_id", insertable = false, updatable = false)
     private Integer cargosId;
+
+    @ElementCollection(targetClass = DiaFolga.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "contrato_diafolga", joinColumns = @JoinColumn(name = "contrato_id"))
+    @Column(name = "dia_folga")
+    private List<DiaFolga> diasFolga;
 
 }

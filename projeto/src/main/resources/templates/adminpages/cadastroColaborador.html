@@ -16,7 +16,7 @@
 <body>
 
     <!-- Sidebar fixa para desktop -->
-    <div class="sidebar d-none d-lg-block">
+    <div class="d-none d-lg-block">
         <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
     </div>
 
@@ -83,15 +83,17 @@
 
                 </div>
 
+
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Senha</label>
                     <div class="col-sm-8">
-                        <input class="form-control" th:field="*{senha}" th:errorclass="is-invalid">
+                        <input type="password" class="form-control" th:field="*{senha}" th:errorclass="is-invalid">
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
                     </div>
                 </div>
 
                 <div class="row mb-3">
+                    <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">CPF</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{cpf}" th:errorclass="is-invalid">
@@ -103,12 +105,11 @@
                     <label class="col-sm-4 col-form-label">Tipo de Usuário</label>
                     <div class="col-sm-8">
                         <select class="form-select" th:field="*{tipoUsuario}" th:errorclass="is-invalid">
-                            <option value="" selected>Selecione um tipo</option>
+                            <option value="" disabled  selected>Selecione um tipo</option>
                             <option value="ADMIN">Admin</option>
                             <option value="OPERADOR">Operador</option>
                         </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoUsuario')}"
-                            th:errors="*{tipoUsuario}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('tipoUsuario')}" th:errors="*{tipoUsuario}"></div>
                     </div>
                 </div>
 
@@ -117,16 +118,14 @@
                     <label class="col-sm-4 col-form-label">Telefone</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{telefone}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}">
-                        </div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-4 col-form-label">Data de Nascimento</label>
                     <div class="col-sm-8">
                         <input type="date" class="form-control" th:field="*{dataNascimento}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('dataNascimento')}"
-                            th:errors="*{dataNascimento}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></div>
                     </div>
                 </div>
                 <h2>Endereço</h2>
@@ -134,8 +133,7 @@
                     <label class="col-sm-4 col-form-label">Bairro</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{endereco.bairro}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.bairro')}"
-                            th:errors="*{endereco.bairro}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.bairro')}" th:errors="*{endereco.bairro}"></div>
                     </div>
                 </div>
 
@@ -143,8 +141,7 @@
                     <label class="col-sm-4 col-form-label">Rua</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{endereco.rua}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.rua')}"
-                            th:errors="*{endereco.rua}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.rua')}" th:errors="*{endereco.rua}"></div>
                     </div>
                 </div>
 
@@ -152,8 +149,7 @@
                     <label class="col-sm-4 col-form-label">Cep</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{endereco.cep}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.cep')}"
-                            th:errors="*{endereco.cep}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.cep')}" th:errors="*{endereco.cep}"></div>
                     </div>
                 </div>
 
@@ -161,8 +157,7 @@
                     <label class="col-sm-4 col-form-label">Complemento</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{endereco.complemento}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.complemento')}"
-                            th:errors="*{endereco.complemento}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.complemento')}" th:errors="*{endereco.complemento}"></div>
                     </div>
                 </div>
 
@@ -170,129 +165,138 @@
                     <label class="col-sm-4 col-form-label">Numero</label>
                     <div class="col-sm-8">
                         <input class="form-control" th:field="*{endereco.numero}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.numero')}"
-                            th:errors="*{endereco.numero}"></div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('endereco.numero')}" th:errors="*{endereco.numero}"></div>
                     </div>
                 </div>
 
-                <h2>Contrato</h2>
-                <p>De acordo com o contrato feito preencha os campos</p>
+            <h2>Contrato</h2>
+            <p>De acordo com o contrato feito preencha os campos</p>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Cargo</label>
+                <div class="col-sm-8">
+                    <select class="form-select" th:field="*{cargoId}" th:errorclass="is-invalid">
+                        <option value="" disabled selected>Selecione um cargo</option>
+                        <option th:each="cargo : ${cargos}"
+                                th:value="${cargo.id}"
+                                th:text="${cargo.nomeCargo}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoId')}" th:errors="*{cargoId}"></div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Carga Horaria Diaria</label>
+                <div class="col-sm-8">
+                    <input class="form-control" th:field="*{contrato.cargaHorariaDiaria}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.cargaHorariaDiaria')}" th:errors="*{contrato.cargaHorariaDiaria}"></div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por semana</label>
+                <div class="col-sm-8">
+                    <input class="form-control" th:field="*{contrato.diasTrabalhadosSemanal}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosSemanal')}" th:errors="*{contrato.diasTrabalhadosSemanal}"></div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Turno</label>
+                <div class="col-sm-8">
+                    <select class="form-select" th:field="*{turnosIds}">
+                        <option value="" disabled selected>Selecione um turno</option>
+                        <option th:each="turno : ${turnos}"
+                                th:value="${turno.id}"
+                                th:text="${turno.nome + ' (' + turno.horarioInicio + ' - ' + turno.horarioFim + ')'}">
+                        </option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('turnosIds')}" th:errors="*{turnosIds}"></div>
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por mês</label>
+                <div class="col-sm-8">
+                    <input class="form-control" th:field="*{contrato.diasTrabalhadosMensal}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosMensal')}" th:errors="*{contrato.diasTrabalhadosMensal}"></div>
+                </div>
+            </div>
 
                 <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Cargo</label>
+                    <label class="col-sm-4 col-form-label">Dias de folga</label>
                     <div class="col-sm-8">
-                        <select class="form-select" th:field="*{cargoId}" th:errorclass="is-invalid">
-                            <option value="" selected>Selecione um cargo</option>
-                            <option th:each="cargo : ${cargos}" th:value="${cargo.id}" th:text="${cargo.nomeCargo}">
-                            </option>
-                        </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('cargoId')}" th:errors="*{cargoId}">
+                        <div class="form-check" th:each="dia : ${diasSemana}">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   th:value="${dia}"
+                                   th:field="*{diasFolga}"
+                                   th:id="${'dia-' + dia}" />
+                            <label class="form-check-label" th:for="${'dia-' + dia}" th:text="${dia}">Dia</label>
                         </div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('diasFolga')}" th:errors="*{diasFolga}"></div>
                     </div>
                 </div>
+
+
 
                 <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Carga Horaria Diaria</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" th:field="*{contrato.cargaHorariaDiaria}"
-                            th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.cargaHorariaDiaria')}"
-                            th:errors="*{contrato.cargaHorariaDiaria}"></div>
-                    </div>
+                <label class="col-sm-4 col-form-label">Data do fim do contrato</label>
+                <div class="col-sm-8">
+                    <input class="form-control" th:field="*{contrato.dataFimContrato}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.dataFimContrato')}" th:errors="*{contrato.dataFimContrato}"></div>
                 </div>
+            </div>
 
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por semana</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" th:field="*{contrato.diasTrabalhadosSemanal}"
-                            th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosSemanal')}"
-                            th:errors="*{contrato.diasTrabalhadosSemanal}"></div>
-                    </div>
+            <div class="row">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
                 </div>
-
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Quantidade de Dias de trabalho por mês</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" th:field="*{contrato.diasTrabalhadosMensal}"
-                            th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.diasTrabalhadosMensal')}"
-                            th:errors="*{contrato.diasTrabalhadosMensal}"></div>
-                    </div>
+                <div class="col-sm-4 d-grid">
+                    <a class="btn btn-outline-primary" href="/admin/main" role="button">Cancelar</a>
                 </div>
-
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Tempo de intevalo de Interjornada</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" th:field="*{contrato.intervaloInterjornada}"
-                            th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.intervaloInterjornada')}"
-                            th:errors="*{contrato.intervaloInterjornada}"></div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <label class="col-sm-4 col-form-label">Data do fim do contrato</label>
-                    <div class="col-sm-8">
-                        <input class="form-control" th:field="*{contrato.dataFimContrato}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('contrato.dataFimContrato')}"
-                            th:errors="*{contrato.dataFimContrato}"></div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="offset-sm-4 col-sm-4 d-grid">
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
-                    </div>
-                    <div class="col-sm-4 d-grid">
-                        <a class="btn btn-outline-primary" href="/admin/main" role="button">Cancelar</a>
-                    </div>
-                </div>
+            </div>
 
             </form>
         </div>
     </div>
-    </div>
-    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script th:inline="javascript">
-        // Sucesso
-        let urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('sucesso') === 'true') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso!',
-                text: 'Colaborador cadastrado com sucesso.',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                // Limpa o parâmetro da URL
-                window.history.replaceState({}, document.title, window.location.pathname);
-            });
-        }
-    </script>
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        let emailJaCadastrado = /*[[${emailJaCadastrado}]]*/ false;
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    // Sucesso
+    let urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('sucesso') === 'true') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Colaborador cadastrado com sucesso.',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            // Limpa o parâmetro da URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let emailJaCadastrado = /*[[${emailJaCadastrado}]]*/ false;
 
-        if (emailJaCadastrado) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro!',
-                text: 'Este e-mail já está cadastrado.',
-                confirmButtonColor: '#d33'
-            });
-        }
-        /*]]>*/
-    </script>
-
-
+    if (emailJaCadastrado) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: 'Este e-mail já está cadastrado.',
+            confirmButtonColor: '#d33'
+        });
+    }
+    /*]]>*/
+</script>
 
     <script>
         lucide.createIcons();

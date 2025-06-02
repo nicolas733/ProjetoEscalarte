@@ -1,16 +1,8 @@
 package br.com.sistemacadastro.sistemacadastro.controller;
 
 import br.com.sistemacadastro.sistemacadastro.dto.PasswordChangeDTO;
-import br.com.sistemacadastro.sistemacadastro.model.Cargos;
-import br.com.sistemacadastro.sistemacadastro.model.CargosPorSetor;
-import br.com.sistemacadastro.sistemacadastro.model.Colaborador;
-import br.com.sistemacadastro.sistemacadastro.model.Setores;
-import br.com.sistemacadastro.sistemacadastro.model.Solicitacoes;
-import br.com.sistemacadastro.sistemacadastro.repository.CargoRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.CargosPorSetorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.ColaboradorRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SetoresRepository;
-import br.com.sistemacadastro.sistemacadastro.repository.SolicitacoesRepository;
+import br.com.sistemacadastro.sistemacadastro.model.*;
+import br.com.sistemacadastro.sistemacadastro.repository.*;
 import br.com.sistemacadastro.sistemacadastro.util.UserSessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -40,6 +37,12 @@ public class AdminController {
 
     @Autowired
     private CargosPorSetorRepository cargosPorSetorRepository;
+
+    @Autowired
+    private TurnosRepository turnosRepository;
+
+    @Autowired
+    private EscalaRepository escalaRepository;
 
     private boolean verifyIsUserCredentialsCorrect(HttpSession session) {
         Long colaboradorId = UserSessionUtils.getIdUsuario(session);
@@ -62,6 +65,7 @@ public class AdminController {
         List<Colaborador> colaboradores = colaboradorRepository.findAll();
         model.addAttribute("colaboradores", colaboradores);
         model.addAttribute("colaborador", new Colaborador());
+
         return "adminpages/usuarios";
     }
 
@@ -124,10 +128,71 @@ public class AdminController {
     }
 
     @GetMapping("/escala")
-    public String mostrarEscala(Model model, HttpSession session) {
+    public String visualizarEscala(@RequestParam(name = "setorId", required = false) Integer setorId, Model model, HttpSession session) {
         if (!verifyIsUserCredentialsCorrect(session)) {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
+        model.addAttribute("setores", setoresRepository.findAll());
+        model.addAttribute("turnos", turnosRepository.findAll());
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate segunda = hoje.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate domingo = segunda.plusDays(6);
+        // garante sempre até domingo
+
+        List<LocalDate> diasSemana = new ArrayList<>();
+        for (int i = 0; i <= 6; i++)
+            diasSemana.add(segunda.plusDays(i));
+        model.addAttribute("diasSemana", diasSemana);
+
+        Date dataInicio = Date.valueOf(segunda);
+        Date dataFim = Date.valueOf(domingo);
+
+        List<Escalas> escalas = (setorId != null)
+                ? escalaRepository.findBySetoresIdAndDataEscalaBetweenOrderByDataEscala(setorId, dataInicio, dataFim)
+                : escalaRepository.findByDataEscalaBetweenOrderByDataEscala(dataInicio, dataFim);
+
+        if (setorId != null)
+            model.addAttribute("setorSelecionado", setorId);
+        if (setorId != null) {
+            Optional<Setores> setor = setoresRepository.findById(setorId);
+            setor.ifPresent(s -> model.addAttribute("setorSelecionadoNome", s.getNomesetor()));
+
+            boolean temEscala = !escalas.isEmpty(); // se encontrou alguma escala
+            model.addAttribute("temEscala", temEscala);
+        }
+
+        if (setorId != null) {
+            // List<Colaborador> colaboradoresDoSetor = colaboradorRepository.findByCargoPorSetor_Setor_Id(setorId);
+            List<Colaborador> colaboradoresDoSetor = setoresRepository.findColaboradoresBySetorId(setorId);
+            
+            model.addAttribute("ColaboradorDoSetor", colaboradoresDoSetor);
+        }
+
+        Map<Colaborador, Map<LocalDate, List<Escalas>>> mapaEscalasPorData = new TreeMap<>(
+                Comparator.comparing(Colaborador::getNome));
+
+        escalas.stream()
+                .collect(Collectors.groupingBy(
+                        Escalas::getColaborador,
+                        Collectors.groupingBy(e -> e.getDataEscala().toInstant()
+                                .atZone(ZoneId.systemDefault()).toLocalDate())))
+                .forEach(mapaEscalasPorData::put);
+
+        Map<Colaborador, Set<LocalDate>> mapaFolgas = new HashMap<>();
+        for (Colaborador colaborador : mapaEscalasPorData.keySet()) {
+            Set<LocalDate> diasFolga = new HashSet<>();
+            if (colaborador.getContrato() != null && colaborador.getContrato().getDiasFolga() != null) {
+                for (Contrato.DiaFolga diaFolga : colaborador.getContrato().getDiasFolga()) {
+                    diasFolga.add(segunda.with(DayOfWeek.valueOf(diaFolga.name())));
+                }
+            }
+            mapaFolgas.put(colaborador, diasFolga);
+        }
+
+        model.addAttribute("mapaEscalasPorData", mapaEscalasPorData);
+        model.addAttribute("mapaFolgas", mapaFolgas);
+
         return "adminpages/escala";
     }
 
@@ -250,6 +315,18 @@ public class AdminController {
             return "OK";
         }
         return "Erro";
+    }
+
+    @GetMapping("/turnos")
+    public String mostrarTurnos(HttpSession session, Model model) {
+        if (!verifyIsUserCredentialsCorrect(session)) {
+            return "redirect:" + LoginController.LOGIN_ROUTE;
+        }
+
+        List<Turnos> turnos = turnosRepository.findAll();
+        model.addAttribute("turnos", turnos);
+        model.addAttribute("turno", new Turnos());
+        return "adminpages/turnos";
     }
 
 }

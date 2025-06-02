@@ -14,7 +14,7 @@
 <body>
 
     <!-- Sidebar fixa para desktop -->
-    <div class="sidebar d-none d-lg-block">
+    <div class="d-none d-lg-block">
         <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
     </div>
 
@@ -58,64 +58,62 @@
         </div>
     </div>
 
-    <div class="main">
-        <div class="header">
-            <div class="header-title">Gerenciar Solicitações</div>
-        </div>
 
-
-        <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>ID USER</th>
-                        <th>Nome</th>
-                        <th>Cargo</th>
-                        <th>Setor</th>
-                        <th>Data</th>
-                        <th>Descrição</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr th:each="solicitacao : ${solicitacoes}">
-                        <td th:text="${solicitacao.id}"></td>
-                        <td th:text="${solicitacao.colaborador.id}"></td>
-                        <td th:text="${solicitacao.colaborador.nome} ?: 'N/A'"></td>
-                        <td th:text="${cargos[solicitacao.colaborador.id]} ?: 'Sem cargo'"></td>
-                        <td th:text="${setores[solicitacao.colaborador.id]} ?: 'Sem setor'"></td>
-                        <td th:text="${#temporals.format(solicitacao.dataSolicitacao, 'dd/MM/yyyy')}"></td>
-                        <td class="descricao" th:text="${solicitacao.descricaoSolicitacao}"></td>
-                        <td>
-                            <div th:switch="${solicitacao.status}">
-                                <div th:case="'Pendente'" class="d-flex gap-2">
-                                    <a href="#"
-                                        th:attr="data-url=@{'/admin/solicitacoes/aprovar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
-                                        onclick="confirmarAcao(this, 'aprovar')" class="btn btn-success btn-sm">
-                                        Aprovar
-                                    </a>
-
-                                    <a href="#"
-                                        th:attr="data-url=@{'/admin/solicitacoes/recusar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
-                                        onclick="confirmarAcao(this, 'recusar')" class="btn btn-danger btn-sm">
-                                        Recusar
-                                    </a>
-                                </div>
-
-                                <span th:case="'Aprovado'" class="text-success fw-bold">Aprovado</span>
-                                <span th:case="'Reprovado'" class="text-danger fw-bold">Reprovado</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
+<div class="main">
+    <div class="header">
+        <div class="header-title">Gerenciar Solicitações</div>
     </div>
 
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID USER</th>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Setor</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="solicitacao : ${solicitacoes}">
+                <td th:text="${solicitacao.id}"></td>
+                <td th:text="${solicitacao.colaborador.id}"></td>
+                <td th:text="${solicitacao.colaborador.nome} ?: 'N/A'"></td>
+                <td th:text="${cargos[solicitacao.colaborador.id]} ?: 'Sem cargo'"></td>
+                <td th:text="${setores[solicitacao.colaborador.id]} ?: 'Sem setor'"></td>
+                <td th:text="${#temporals.format(solicitacao.dataSolicitacao, 'dd/MM/yyyy')}"></td>
+                <td class="descricao" th:text="${solicitacao.descricaoSolicitacao}"></td>
+                <td>
+                    <div th:switch="${solicitacao.status}">
+                        <div th:case="'Pendente'" class="d-flex gap-2">
+                            <a href="#"
+                               th:attr="data-url=@{'/admin/solicitacoes/aprovar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
+                               onclick="confirmarAcao(this, 'aprovar')" class="btn btn-success btn-sm">
+                                Aprovar
+                            </a>
+
+                            <a href="#"
+                               th:attr="data-url=@{'/admin/solicitacoes/recusar/' + ${solicitacao.id}}, data-id=${solicitacao.id}"
+                               onclick="confirmarAcao(this, 'recusar')" class="btn btn-danger btn-sm">
+                                Recusar
+                            </a>
+                        </div>
+
+                        <span th:case="'Aprovado'" class="text-success fw-bold">Aprovado</span>
+                        <span th:case="'Reprovado'" class="text-danger fw-bold">Reprovado</span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>

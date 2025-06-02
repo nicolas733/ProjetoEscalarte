@@ -121,5 +121,17 @@ public class SetoresService {
         setoresRepository.delete(setor);
     }
 
+    public Integer getQtdMinimaColaboradores(Long setorId) {
+        Setores setor = setoresRepository.findById(setorId); // retorna diretamente
+        if (setor == null) {
+            throw new RuntimeException("Setor não encontrado");
+        }
+        return setor.getQuantidadeColaboradores();
+    }
+
+    public List<Setores> listarTodos() {
+        return setoresRepository.findAll();
+    }
+
 
 }

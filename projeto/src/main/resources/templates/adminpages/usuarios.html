@@ -14,7 +14,7 @@
 <body>
 
     <!-- Sidebar fixa para desktop -->
-    <div class="sidebar d-none d-lg-block">
+    <div class="d-none d-lg-block">
         <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
     </div>
 
@@ -57,120 +57,128 @@
 
         </div>
     </div>
-    <div class="main">
-        <div class="header">
-            <div class="header-title">Gerenciar Usuários</div>
-            <a class="btn btn-cadastrar" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
-        </div>
 
 
-        <div class="card">
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Tipo</th>
-                    <th>CPF</th>
-                    <th>Telefone</th>
-                    <th>Nascimento</th>
-                    <th>Contrato</th>
-                    <th>Cargo</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="colaborador : ${colaboradores}">
-                    <td data-label="ID" th:text="${colaborador.id}"></td>
-                    <td data-label="Nome" th:text="${colaborador.nome}"></td>
-                    <td data-label="Email" th:text="${colaborador.email}"></td>
-                    <td data-label="Tipo" th:text="${colaborador.tipoUsuario}"></td>
-                    <td data-label="CPF" th:text="${colaborador.cpf}"></td>
-                    <td data-label="Telefone" th:text="${colaborador.telefone}"></td>
-                    <td data-label="Nascimento" th:text="${colaborador.dataNascimento}"></td>
-                    <td data-label="Contrato" th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
-                    <td data-label="Cargo" th:text="${colaborador.contrato != null && colaborador.contrato.cargos != null ? colaborador.contrato.cargos.nomeCargo : 'Cargo não atribuído'}"></td>
-                    <td data-label="Ações" style="white-space: nowrap;">
-                        <a class="btn btn-primary btn-sm" th:href="@{/colaborador/editar/{id}(id=${colaborador.id})}">Editar</a>
-                        <a class="btn btn-danger btn-sm btn-excluir" href="#" th:attr="data-id=${colaborador.id}">Excluir</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
+<div class="main">
+    <div class="header">
+        <div class="header-title">Gerenciar Usuários</div>
+        <a class="btn btn-cadastrar" href="/colaborador/cadastrar">Cadastrar Colaboradores</a>
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Telefone</th>
+                <th>Contrato</th>
+                <th>Cargo</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="colaborador : ${colaboradores}">
+                <td th:text="${colaborador.id}"></td>
+                <td><strong th:text="${colaborador.nome}"></strong></td>
+                <td th:text="${colaborador.email}"></td>
+                <td th:text="${colaborador.tipoUsuario}"></td>
+                <td th:text="${colaborador.telefone}"></td>
+                <td th:text="${colaborador.contrato != null && colaborador.contrato.ativo ? 'Ativo' : 'Inativo'}"></td>
+                <td th:text="${colaborador.contrato != null && colaborador.contrato.cargos != null ? colaborador.contrato.cargos.nomeCargo : 'Cargo não atribuído'}"></td>
+                <td style="white-space: nowrap">
+                    <a class="btn btn-primary btn-sm"
+                       th:href="@{/colaborador/editar/{id}(id=${colaborador.id})}">Editar</a>
+                    <a class="btn btn-danger btn-sm btn-excluir"
+                       href="#"
+                       th:attr="data-id=${colaborador.id}">Excluir</a>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script th:inline="javascript">
-        let urlParams = new URLSearchParams(window.location.search);
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-        if (urlParams.get('sucesso') === 'true') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso!',
-                text: 'Colaborador cadastrado com sucesso.',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.history.replaceState({}, document.title, window.location.pathname);
-            });
-        }
+</div>
 
-        if (urlParams.get('editado') === 'true') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Sucesso!',
-                text: 'Colaborador editado com sucesso.',
-                confirmButtonColor: '#3085d6'
-            }).then(() => {
-                window.history.replaceState({}, document.title, window.location.pathname);
-            });
-        }
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            lucide.createIcons();
 
-            document.querySelectorAll('.btn-excluir').forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const colaboradorId = this.getAttribute('data-id');
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
-                    Swal.fire({
-                        title: 'Deseja realmente excluir?',
-                        text: "Essa ação não poderá ser desfeita!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Sim, excluir!',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = `/colaborador/deletar?id=${colaboradorId}&excluido=true`;
-                        }
-                    });
-                });
-            });
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script th:inline="javascript">
+    let urlParams = new URLSearchParams(window.location.search);
 
-            let urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('excluido') === 'true') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Excluído!',
-                    text: 'Colaborador excluído com sucesso.',
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                });
-            }
+    if (urlParams.get('sucesso') === 'true') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Colaborador cadastrado com sucesso.',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
         });
-    </script>
+    }
+
+    if (urlParams.get('editado') === 'true') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Colaborador editado com sucesso.',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+
+    if (urlParams.get('erro') === 'restricao') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro!',
+            text: 'Este colaborador está vinculado a uma escala e não pode ser excluído.',
+            confirmButtonColor: '#d33'
+        }).then(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".btn-excluir").forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                event.preventDefault(); // Impede o comportamento padrão do link
+
+                const colaboradorId = button.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Essa ação não poderá ser desfeita.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sim, excluir',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redireciona para o endpoint de exclusão
+                        window.location.href = `/colaborador/deletar?id=${colaboradorId}`;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 
 </body>
 

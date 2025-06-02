@@ -14,7 +14,7 @@
 
 <body>
   <!-- Sidebar fixa para desktop -->
-  <div class="sidebar d-none d-lg-block">
+  <div class="d-none d-lg-block">
     <div th:replace="~{layout/sidebarComponent :: sidebarAdmin}"></div>
   </div>
 
@@ -109,6 +109,7 @@
             <th>ID</th>
             <th>Nome do Cargo</th>
             <th>Carga Horária Limite Diaria</th>
+            <th>Int. Interjornada</th>
             <th>Setor</th>
             <th>Ações</th>
           </tr>
@@ -118,6 +119,7 @@
             <td th:text="${cargoPorSetor.cargo.id}"></td>
             <td th:text="${cargoPorSetor.cargo.nomeCargo}"></td>
             <td th:text="${cargoPorSetor.cargo.cargaHorarioLimite}"></td>
+            <td th:text="${cargoPorSetor.cargo.intervaloInterjornada}"></td>
             <td th:text="${cargoPorSetor.setor.nomesetor}"></td>
             <td>
               <div class="actions">
