@@ -89,8 +89,8 @@ public class EscalaService {
                             escala.setFolga(false);
                         }
 
-                        List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(),
-                                hoje);
+                        List<Escalas> escalasDaSemana = escalaRepository.findByColaboradorAndSemana(colaborador.getId(), segunda);
+
                         List<Escalas> escalasParaValidar = new ArrayList<>(escalasDaSemana);
                         escalasParaValidar.add(escala);
 
