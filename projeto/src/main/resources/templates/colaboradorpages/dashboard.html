@@ -76,13 +76,8 @@
     <div class="cards">
         <div class="card">
             <div class="card-title">Próximo Turno</div>
-            <div class="card-value">Amanhã, 08:00 - 17:00</div>
+            <div class="card-value" th:text="${#dates.format(dataEscala, 'EEE dd/MM') ?: 'Sem turno agendado'}">Amanhã, 08:00 - 17:00</div>
             <div class="card-icon"><i data-lucide="clock"></i></div>
-        </div>
-        <div class="card">
-            <div class="card-title">Horas Totais</div>
-            <div class="card-value">40h esta semana</div>
-            <div class="card-icon"><i data-lucide="hourglass"></i></div>
         </div>
         <div class="card">
             <div class="card-title">Solicitações Pendentes</div>

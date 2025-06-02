@@ -92,6 +92,14 @@ public class OperadorController {
         if (colaboradorId != null) {
             Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
             if (colaborador != null) {
+                LocalDate tomorrow = LocalDate.now().plusDays(1);
+                Escalas escala = escalaRepository.findByColaboradorIdAndDataEscala(colaboradorId, Date.valueOf(tomorrow));
+                if (escala != null && escala.getDataEscala() != null) {
+                    model.addAttribute("dataEscala", escala.getDataEscala());
+                } else {
+                    model.addAttribute("dataEscala", null);
+                }
+
                 String nomeCompleto = colaborador.getNome();
                 model.addAttribute("nome", nomeCompleto);
                 model.addAttribute("iniciais", getIniciais(nomeCompleto));
@@ -124,7 +132,7 @@ public class OperadorController {
         if (!verifyIsUserCredentialsCorrect(session)) {
             return "redirect:" + LoginController.LOGIN_ROUTE;
         }
-        
+
         Long colaboradorId = UserSessionUtils.getIdUsuario(session);
         Setores setor = colaboradorRepository.findSetorByColaboradorId(colaboradorId);
         Integer setorId = (setor != null) ? setor.getId() : null;
