@@ -240,7 +240,7 @@ public class GerenteController {
         boolean alterado = escalaService.alterarTurnoEscala(colaboradorId, dataEscala, turno);
 
         if (alterado) {
-            redirectAttributes.addFlashAttribute("msgSucesso", "Turno alterado com sucesso!");
+            redirectAttributes.addFlashAttribute("modificacaoSucesso",true);
         } else {
             redirectAttributes.addFlashAttribute("msgErro", "Não foi possível alterar o turno.");
         }

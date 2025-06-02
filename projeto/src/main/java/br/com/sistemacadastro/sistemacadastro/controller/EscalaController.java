@@ -27,7 +27,7 @@ public class EscalaController {
         escalaService.gerarEscalasSemanais();
 
         redirectAttributes.addFlashAttribute("escalaGeradaSucesso", true);
-        return "redirect:/admin/escala?setorId=" + setorId;
+        return "redirect:/admin/escala";
     }
 
     @PostMapping("/modificar")
@@ -73,14 +73,14 @@ public class EscalaController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("msgErro", "Erro ao enviar escala para revisão.");
         }
-        return "redirect:/admin/escala?setorId=" + setorId;
+        return "redirect:/admin/escala";
     }
 
     @PostMapping("/aprovar")
     public String aprovarEscala(@RequestParam("setorId") Integer setorId, RedirectAttributes redirectAttributes) {
         try {
             escalaService.aprovarEscalasSemanaSetor(setorId);
-            redirectAttributes.addFlashAttribute("msgSucesso", "Escala enviada para os operadores com sucesso!");
+            redirectAttributes.addFlashAttribute("enviadoComSucesso",true);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("msgErro", "Erro ao enviar escala para os operadores.");
         }

@@ -328,6 +328,10 @@
           modal.show();
         });
     </script>
+    <!-- Primeiro, carregue o SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Alerta de Escala Gerada com Sucesso -->
     <script th:if="${escalaGeradaSucesso}">
         Swal.fire({
             icon: 'success',
@@ -337,8 +341,8 @@
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script th:if="${escalaModificada}">
+    <!-- Alerta de Escala Modificada com Sucesso -->
+    <script th:if="${modificacaoSucesso}">
         Swal.fire({
             icon: 'success',
             title: 'Escala Modificada com Sucesso',
@@ -346,6 +350,8 @@
             timer: 2000
         });
     </script>
+
+    <!-- Alerta de Escala Enviada com Sucesso -->
     <script th:if="${enviadoComSucesso}">
         Swal.fire({
             title: 'Enviado!',
@@ -355,5 +361,6 @@
             confirmButtonText: 'OK'
         });
     </script>
-  </body>
+
+</body>
 </html>
