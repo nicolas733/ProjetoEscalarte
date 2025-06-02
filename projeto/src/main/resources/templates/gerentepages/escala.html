@@ -175,5 +175,30 @@
 
     aplicarCoresAosTurnos();
 </script>
+<!-- Primeiro, carregue o SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<!-- Alerta de Escala Modificada com Sucesso -->
+<script th:if="${modificacaoSucesso}">
+    Swal.fire({
+        icon: 'success',
+        title: 'Escala Modificada com Sucesso',
+        showConfirmButton: false,
+        timer: 2000
+    });
+</script>
+
+<!-- Alerta de Escala Enviada com Sucesso -->
+<script th:if="${enviadoComSucesso}">
+    Swal.fire({
+        title: 'Aprovado!',
+        text: 'Escala enviada com sucesso para os Colaboradores.',
+        icon: 'success',
+        confirmButtonColor: '#ef5350',
+        confirmButtonText: 'OK'
+    });
+</script>
+
 </body>
 </html>
